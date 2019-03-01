@@ -1,0 +1,45 @@
+[submodule "NCEPLIBS-bacio"]
+	path = NCEPLIBS-bacio
+	url = gerrit:NCEPLIBS-bacio
+[submodule "NCEPLIBS-bufr"]
+	path = NCEPLIBS-bufr
+	url = gerrit:NCEPLIBS-bufr
+[submodule "NCEPLIBS-chem"]
+	path = NCEPLIBS-chem
+	url = gerrit:NCEPLIBS-chem
+[submodule "NCEPLIBS-g2"]
+	path = NCEPLIBS-g2
+	url = gerrit:NCEPLIBS-g2
+[submodule "NCEPLIBS-g2c"]
+	path = NCEPLIBS-g2c
+	url = gerrit:NCEPLIBS-g2c
+[submodule "NCEPLIBS-g2tmpl"]
+	path = NCEPLIBS-g2tmpl
+	url = gerrit:NCEPLIBS-g2tmpl
+[submodule "NCEPLIBS-gfsio"]
+	path = NCEPLIBS-gfsio
+	url = gerrit:NCEPLIBS-gfsio
+[submodule "NCEPLIBS-gph"]
+	path = NCEPLIBS-gph
+	url = gerrit:NCEPLIBS-gph
+[submodule "NCEPLIBS-gphcntr"]
+	path = NCEPLIBS-gphcntr
+	url = gerrit:NCEPLIBS-gphcntr
+[submodule "NCEPLIBS-graphics"]
+	path = NCEPLIBS-graphics
+	url = gerrit:NCEPLIBS-graphics
+[submodule "NCEPLIBS-grib_util"]
+	path = NCEPLIBS-grib_util
+	url = gerrit:NCEPLIBS-grib_util
+[submodule "NCEPLIBS-ip"]
+	path = NCEPLIBS-ip
+	url = gerrit:NCEPLIBS-ip
+[submodule "NCEPLIBS-ip2"]
+	path = NCEPLIBS-ip2
+	url = gerrit:NCEPLIBS-ip2
+[submodule "NCEPLIBS-landsfcutil"]
+	path = NCEPLIBS-landsfcutil
+	url = gerrit:NCEPLIBS-landsfcutil
+[submodule "NCEPLIBS-miscutil"]
+	path = NCEPLIBS-miscutil
+	url = gerrit:NCEPLIBS-miscutil
