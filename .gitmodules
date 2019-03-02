@@ -43,3 +43,48 @@
 [submodule "NCEPLIBS-miscutil"]
 	path = NCEPLIBS-miscutil
 	url = gerrit:NCEPLIBS-miscutil
+[submodule "NCEPLIBS-nemsio"]
+	path = NCEPLIBS-nemsio
+	url = gerrit:NCEPLIBS-nemsio
+[submodule "NCEPLIBS-nemsiogfs"]
+	path = NCEPLIBS-nemsiogfs
+	url = gerrit:NCEPLIBS-nemsiogfs
+[submodule "NCEPLIBS-phys"]
+	path = NCEPLIBS-phys
+	url = gerrit:NCEPLIBS-phys
+[submodule "NCEPLIBS-prod_util"]
+	path = NCEPLIBS-prod_util
+	url = gerrit:NCEPLIBS-prod_util
+[submodule "NCEPLIBS-pyprodutil"]
+	path = NCEPLIBS-pyprodutil
+	url = gerrit:NCEPLIBS-pyprodutil
+[submodule "NCEPLIBS-sfcio"]
+	path = NCEPLIBS-sfcio
+	url = gerrit:NCEPLIBS-sfcio
+[submodule "NCEPLIBS-sigio"]
+	path = NCEPLIBS-sigio
+	url = gerrit:NCEPLIBS-sigio
+[submodule "NCEPLIBS-sp"]
+	path = NCEPLIBS-sp
+	url = gerrit:NCEPLIBS-sp
+[submodule "NCEPLIBS-umbrella"]
+	path = NCEPLIBS-umbrella
+	url = gerrit:NCEPLIBS-umbrella
+[submodule "NCEPLIBS-util"]
+	path = NCEPLIBS-util
+	url = gerrit:NCEPLIBS-util
+[submodule "NCEPLIBS-util_shared"]
+	path = NCEPLIBS-util_shared
+	url = gerrit:NCEPLIBS-util_shared
+[submodule "NCEPLIBS-w3emc"]
+	path = NCEPLIBS-w3emc
+	url = gerrit:NCEPLIBS-w3emc
+[submodule "NCEPLIBS-w3nco"]
+	path = NCEPLIBS-w3nco
+	url = gerrit:NCEPLIBS-w3nco
+[submodule "NCEPLIBS-wrf_shared"]
+	path = NCEPLIBS-wrf_shared
+	url = gerrit:NCEPLIBS-wrf_shared
+[submodule "NCEPLIBS-xmlparse"]
+	path = NCEPLIBS-xmlparse
+	url = gerrit:NCEPLIBS-xmlparse
