@@ -1,0 +1,15 @@
+#
+# The make include file of the suffix and compilation rules to be used
+# in the Profile_Utility library build.
+#
+# $Id: make.rules 99117 2017-11-27 18:37:14Z tong.zhu@noaa.gov $
+#
+
+.SUFFIXES:
+.SUFFIXES: .fpp .f90 .o
+.fpp.o:
+	$(FC) $(FCFLAGS) $(EXTRA_FCFLAGS) $(FPPFLAGS) $<
+
+.f90.o:
+	$(FC) $(FCFLAGS) $(EXTRA_FCFLAGS) $<
+

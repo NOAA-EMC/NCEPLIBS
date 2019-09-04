@@ -1,10 +1,75 @@
 # disable in source builds to protect against overwriting other Makefiles
 #set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
-project(NCEPLIBS)
-  enable_language (Fortran)
-  cmake_policy(SET CMP0009 NEW)
-  include(ExternalProject)
+if( NOT DEFINED ENV{CC} )
+  find_path( crayComp "ftn" )
+  find_path( wcossIntel "mpfort" )
+  find_path( intelComp "ifort" )
+  find_path( pgiComp "pgf90" )
+  if( crayComp )
+    message("Setting CrayLinuxEnvironment")
+    set(CMAKE_SYSTEM_NAME "CrayLinuxEnvironment")
+    set(CMAKE_C_COMPILER "${crayComp}/cc")
+    set(CMAKE_CXX_COMPILER "${crayComp}/CC")
+    set(CMAKE_Fortran_COMPILER "${crayComp}/ftn")
+  endif()
+  if( intelComp )
+    set(ENV{CC} "icc")
+    set(ENV{CXX} "icpc")
+    set(ENV{FC} "ifort")
+  endif()
+  if( wcossIntel )
+    message("Setting env for wcoss intel")
+    set(ENV{CC} "mpcc")
+    set(ENV{CXX} "mpCC")
+    set(ENV{FC} "mpfort")
+  endif()
+  if( pgiComp )
+    set(ENV{CC} "pgcc")
+    set(ENV{CXX} "pgCC")
+    set(ENV{FC} "pgf90")
+  endif()
+endif()
 
+project(NCEPLIBS)
+  cmake_minimum_required(VERSION 3.6)
+  enable_language (Fortran)
+# Options for CMake
+
+#Set up module and lib paths for build
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
+  SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+  SET(ARCHIVE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+  set(CMAKE_INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
+  set(CMAKE_INCLUDE_4_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include_4")
+  set(Fortran_MODULE_DIRECTORY "${PROJECT_BINARY_DIR}/include")
+  set(CMAKE_Fortran_MODULE_DIRECTORY "${PROJECT_BINARY_DIR}/include")
+  file(MAKE_DIRECTORY ${CMAKE_INCLUDE_OUTPUT_DIRECTORY})
+  file(MAKE_DIRECTORY ${CMAKE_INCLUDE_4_OUTPUT_DIRECTORY})
+
+#Include all the macros/functions
+  include(${CMAKE_SOURCE_DIR}/cmake/Modules/setPlatformVariables.cmake)
+  include(${CMAKE_SOURCE_DIR}/cmake/Modules/setIntelFlags.cmake)
+  include(${CMAKE_SOURCE_DIR}/cmake/Modules/setGNUFlags.cmake)
+  include(${CMAKE_SOURCE_DIR}/cmake/Modules/setPGIFlags.cmake)
+  include(${CMAKE_SOURCE_DIR}/cmake/Modules/setHOST.cmake)
+
+#Set cmake policies
+  if(POLICY CMP0009)
+    cmake_policy(SET CMP0009 NEW)
+  endif()
+  if(POLICY CMP0046)
+    cmake_policy(SET CMP0046 NEW)
+  endif()
+  if(POLICY CMP0074)
+    cmake_policy(SET CMP0074 NEW)
+  endif()
+
+#Find the OpenMP flag
+  find_package(OpenMP)
+
+# make sure that the default is a RELEASE
   if (NOT CMAKE_BUILD_TYPE)
     set (CMAKE_BUILD_TYPE RELEASE CACHE STRING
         "Choose the type of build, options are: PRODUCTION Debug Release."
@@ -14,79 +79,73 @@ project(NCEPLIBS)
   STRING(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "RelWithDebInfo" BUILD_RELEASE)
   STRING(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "PRODUCTION" BUILD_PRODUCTION)
   STRING(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "PROFILE" BUILD_PROFILE)
-  message("HEY, install dir is ${CMAKE_INSTALL_PREFIX}")
-  ExternalProject_Add(NCEPLIBS-bacio 
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-bacio 
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bacio 
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  ExternalProject_Add(NCEPLIBS-bufr  
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-bufr  
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bufr  
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  ExternalProject_Add(NCEPLIBS-nemsio
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-nemsio
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-nemsio
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  ExternalProject_Add(NCEPLIBS-sigio 
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-sigio
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sigio 
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  ExternalProject_Add(NCEPLIBS-sfcio 
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-sfcio 
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sfcio 
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  ExternalProject_Add(NCEPLIBS-sp    
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-sp    
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sp    
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  ExternalProject_Add(NCEPLIBS-w3nco 
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-w3nco 
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-w3nco 
-    DEPENDS NCEPLIBS-sigio
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  ExternalProject_Add(NCEPLIBS-w3emc 
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/NCEPLIBS-w3emc 
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-      -DEXTRA_INCLUDE=${CMAKE_INSTALL_PREFIX}/include
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-w3emc 
-    DEPENDS NCEPLIBS-sigio
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
+  if( BUILD_PRODUCTION )
+    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/exec )
+  endif()
+
+#Set compiler-based flags
+# set(CMAKE_Fortran_FLAGS_RELEASE "")  
+# if (CMAKE_CXX_COMPILER_ID MATCHES "GNU*")
+#   message("Setting GNU flags")
+#   setGNU()
+# elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+#   message("Setting Intel flags")
+#   setIntel()
+# elseif(CMAKE_C_COMPILER MATCHES "pgc*")
+#   message("Setting PGI flags")
+#   setPGI()
+# endif()
+
+#BASELIBS for NASA
+  if(FIND_HDF5_HL)
+    find_package(HDF5 COMPONENTS C HL Fortran_HL )
+  elseif(FIND_HDF5)
+    find_package(HDF5)
+  endif()
+  find_package( NetCDF REQUIRED)
+  if(NETCDF4)
+    if(CMAKE_MAJOR_VERSION GREATER 2)
+      find_package( ZLIB )
+    endif()
+    find_package( CURL )
+  endif()
+  find_package(MPI REQUIRED)
+
+#report on MPI version
+  message("MPI version is ${MPI_Fortran_VERSION}")
+  message("MPI f90 version is ${MPI_Fortran_HAVE_F90_MODULE}")
+  message("MPI f08 version is ${MPI_Fortran_HAVE_F08_MODULE}")
+# set this after HDF5 so that MPI is not linked in automatically
+  add_definitions(${MPI_Fortran_COMPILE_FLAGS})
+  include_directories(${MPI_Fortran_INCLUDE_DIRS} ${MPI_INCLUDE_PATH} "./" ${CMAKE_INCLUDE_OUTPUT_DIRECTORY})
+  link_directories(${MPI_Fortran_LIBRARIES} ${ARCHIVE_OUTPUT_PATH} )
+
+#some platforms don't need lapack
+# if( ( NOT HOST-WCOSS_D ) AND ( NOT HOST-WCOSS_C ) AND ( NOT HOST-Gaea ) ) 
+#   message(" trying to find lapack, ${host}")
+#   find_package( LAPACK )
+# endif()
+
+  set(BUILD_BACIO "ON" CACHE STRING "Build the BACIO library" )
+  set(BUILD_BUFR "ON" CACHE STRING "Build the BUFR library" )
+  set(BUILD_SFCIO "ON" CACHE STRING "Build the SFCIO library" )
+  set(BUILD_SIGIO "ON" CACHE STRING "Build the SIGIO library" )
+  set(BUILD_NEMSIO "ON" CACHE STRING "Build the NEMSIO library" )
+  set(BUILD_SP "ON" CACHE STRING "Build the SP library" )
+  set(BUILD_CRTM "ON" CACHE STRING "Build the CRTM library" )
+  set(BUILD_W3EMC "ON" CACHE STRING "Build the W3EMC library" )
+  set(BUILD_W3NCO "ON" CACHE STRING "Build the W3NCO library" )
+  set(BUILD_G2 "ON" CACHE STRING "Build the G2 library" )
+  set(BUILD_G2C "ON" CACHE STRING "Build the G2C library" )
+  find_package( BACIO )
+  find_package( BUFR )
+  find_package( SIGIO )
+  find_package( NEMSIO )
+# find_package( CRTM )
+  find_package( SP )
+  find_package( SFCIO )
+  find_package( W3EMC )
+  find_package( W3NCO )
+  find_package( G2 )
+  find_package( G2C )
+
