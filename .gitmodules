@@ -1,90 +1,93 @@
 [submodule "NCEPLIBS-bacio"]
 	path = NCEPLIBS-bacio
-	url = gerrit:NCEPLIBS-bacio
+	url = git@github.com:NOAA-EMC/NCEPLIBS-bacio.git
 [submodule "NCEPLIBS-bufr"]
 	path = NCEPLIBS-bufr
-	url = gerrit:NCEPLIBS-bufr
+	url = git@github.com:NOAA-EMC/NCEPLIBS-bufr.git
 [submodule "NCEPLIBS-chem"]
 	path = NCEPLIBS-chem
-	url = gerrit:NCEPLIBS-chem
+	url = git@github.com:NOAA-EMC/NCEPLIBS-chem.git
 [submodule "NCEPLIBS-g2"]
 	path = NCEPLIBS-g2
-	url = gerrit:NCEPLIBS-g2
+	url = git@github.com:NOAA-EMC/NCEPLIBS-g2.git
 [submodule "NCEPLIBS-g2c"]
 	path = NCEPLIBS-g2c
-	url = gerrit:NCEPLIBS-g2c
+	url = git@github.com:NOAA-EMC/NCEPLIBS-g2c.git
 [submodule "NCEPLIBS-g2tmpl"]
 	path = NCEPLIBS-g2tmpl
-	url = gerrit:NCEPLIBS-g2tmpl
+	url = git@github.com:NOAA-EMC/NCEPLIBS-g2tmpl.git
 [submodule "NCEPLIBS-gfsio"]
 	path = NCEPLIBS-gfsio
-	url = gerrit:NCEPLIBS-gfsio
+	url = git@github.com:NOAA-EMC/NCEPLIBS-gfsio.git
 [submodule "NCEPLIBS-gph"]
 	path = NCEPLIBS-gph
-	url = gerrit:NCEPLIBS-gph
+	url = git@github.com:NOAA-EMC/NCEPLIBS-gph.git
 [submodule "NCEPLIBS-gphcntr"]
 	path = NCEPLIBS-gphcntr
-	url = gerrit:NCEPLIBS-gphcntr
+	url = git@github.com:NOAA-EMC/NCEPLIBS-gphcntr.git
 [submodule "NCEPLIBS-graphics"]
 	path = NCEPLIBS-graphics
-	url = gerrit:NCEPLIBS-graphics
+	url = git@github.com:NOAA-EMC/NCEPLIBS-graphics.git
 [submodule "NCEPLIBS-grib_util"]
 	path = NCEPLIBS-grib_util
-	url = gerrit:NCEPLIBS-grib_util
+	url = git@github.com:NOAA-EMC/NCEPLIBS-grib_util.git
 [submodule "NCEPLIBS-ip"]
 	path = NCEPLIBS-ip
-	url = gerrit:NCEPLIBS-ip
+	url = git@github.com:NOAA-EMC/NCEPLIBS-ip.git
 [submodule "NCEPLIBS-ip2"]
 	path = NCEPLIBS-ip2
-	url = gerrit:NCEPLIBS-ip2
+	url = git@github.com:NOAA-EMC/NCEPLIBS-ip2.git
 [submodule "NCEPLIBS-landsfcutil"]
 	path = NCEPLIBS-landsfcutil
-	url = gerrit:NCEPLIBS-landsfcutil
+	url = git@github.com:NOAA-EMC/NCEPLIBS-landsfcutil.git
 [submodule "NCEPLIBS-miscutil"]
 	path = NCEPLIBS-miscutil
-	url = gerrit:NCEPLIBS-miscutil
+	url = git@github.com:NOAA-EMC/NCEPLIBS-miscutil.git
 [submodule "NCEPLIBS-nemsio"]
 	path = NCEPLIBS-nemsio
-	url = gerrit:NCEPLIBS-nemsio
+	url = git@github.com:NOAA-EMC/NCEPLIBS-nemsio.git
 [submodule "NCEPLIBS-nemsiogfs"]
 	path = NCEPLIBS-nemsiogfs
-	url = gerrit:NCEPLIBS-nemsiogfs
+	url = git@github.com:NOAA-EMC/NCEPLIBS-nemsiogfs.git
 [submodule "NCEPLIBS-phys"]
 	path = NCEPLIBS-phys
-	url = gerrit:NCEPLIBS-phys
+	url = git@github.com:NOAA-EMC/NCEPLIBS-phys.git
 [submodule "NCEPLIBS-prod_util"]
 	path = NCEPLIBS-prod_util
-	url = gerrit:NCEPLIBS-prod_util
+	url = git@github.com:NOAA-EMC/NCEPLIBS-prod_util
 [submodule "NCEPLIBS-pyprodutil"]
 	path = NCEPLIBS-pyprodutil
-	url = gerrit:NCEPLIBS-pyprodutil
+	url = git@github.com:NOAA-EMC/NCEPLIBS-pyprodutil
 [submodule "NCEPLIBS-sfcio"]
 	path = NCEPLIBS-sfcio
-	url = gerrit:NCEPLIBS-sfcio
+	url = git@github.com:NOAA-EMC/NCEPLIBS-sfcio
 [submodule "NCEPLIBS-sigio"]
 	path = NCEPLIBS-sigio
-	url = gerrit:NCEPLIBS-sigio
+	url = git@github.com:NOAA-EMC/NCEPLIBS-sigio
 [submodule "NCEPLIBS-sp"]
 	path = NCEPLIBS-sp
-	url = gerrit:NCEPLIBS-sp
+	url = git@github.com:NOAA-EMC/NCEPLIBS-sp
 [submodule "NCEPLIBS-umbrella"]
 	path = NCEPLIBS-umbrella
-	url = gerrit:NCEPLIBS-umbrella
+	url = git@github.com:NOAA-EMC/NCEPLIBS-umbrella
 [submodule "NCEPLIBS-util"]
 	path = NCEPLIBS-util
-	url = gerrit:NCEPLIBS-util
+	url = git@github.com:NOAA-EMC/NCEPLIBS-util
 [submodule "NCEPLIBS-util_shared"]
 	path = NCEPLIBS-util_shared
-	url = gerrit:NCEPLIBS-util_shared
+	url = git@github.com:NOAA-EMC/NCEPLIBS-util_shared
 [submodule "NCEPLIBS-w3emc"]
 	path = NCEPLIBS-w3emc
-	url = gerrit:NCEPLIBS-w3emc
+	url = git@github.com:NOAA-EMC/NCEPLIBS-w3emc
 [submodule "NCEPLIBS-w3nco"]
 	path = NCEPLIBS-w3nco
-	url = gerrit:NCEPLIBS-w3nco
+	url = git@github.com:NOAA-EMC/NCEPLIBS-w3nco
 [submodule "NCEPLIBS-wrf_shared"]
 	path = NCEPLIBS-wrf_shared
-	url = gerrit:NCEPLIBS-wrf_shared
+	url = git@github.com:NOAA-EMC/NCEPLIBS-wrf_shared
 [submodule "NCEPLIBS-xmlparse"]
 	path = NCEPLIBS-xmlparse
-	url = gerrit:NCEPLIBS-xmlparse
+	url = git@github.com:NOAA-EMC/NCEPLIBS-xmlparse
+[submodule "cmake"]
+	path = cmake
+	url = git@github.com:NOAA-EMC/CMakeModules.git
