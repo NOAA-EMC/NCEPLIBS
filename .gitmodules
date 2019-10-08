@@ -54,40 +54,40 @@
 	url = git@github.com:NOAA-EMC/NCEPLIBS-phys.git
 [submodule "NCEPLIBS-prod_util"]
 	path = NCEPLIBS-prod_util
-	url = git@github.com:NOAA-EMC/NCEPLIBS-prod_util
+	url = git@github.com:NOAA-EMC/NCEPLIBS-prod_util.git
 [submodule "NCEPLIBS-pyprodutil"]
 	path = NCEPLIBS-pyprodutil
-	url = git@github.com:NOAA-EMC/NCEPLIBS-pyprodutil
+	url = git@github.com:NOAA-EMC/NCEPLIBS-pyprodutil.git
 [submodule "NCEPLIBS-sfcio"]
 	path = NCEPLIBS-sfcio
-	url = git@github.com:NOAA-EMC/NCEPLIBS-sfcio
+	url = git@github.com:NOAA-EMC/NCEPLIBS-sfcio.git
 [submodule "NCEPLIBS-sigio"]
 	path = NCEPLIBS-sigio
-	url = git@github.com:NOAA-EMC/NCEPLIBS-sigio
+	url = git@github.com:NOAA-EMC/NCEPLIBS-sigio.git
 [submodule "NCEPLIBS-sp"]
 	path = NCEPLIBS-sp
-	url = git@github.com:NOAA-EMC/NCEPLIBS-sp
+	url = git@github.com:NOAA-EMC/NCEPLIBS-sp.git
 [submodule "NCEPLIBS-umbrella"]
 	path = NCEPLIBS-umbrella
-	url = git@github.com:NOAA-EMC/NCEPLIBS-umbrella
+	url = git@github.com:NOAA-EMC/NCEPLIBS-umbrella.git
 [submodule "NCEPLIBS-util"]
 	path = NCEPLIBS-util
-	url = git@github.com:NOAA-EMC/NCEPLIBS-util
+	url = git@github.com:NOAA-EMC/NCEPLIBS-util.git
 [submodule "NCEPLIBS-util_shared"]
 	path = NCEPLIBS-util_shared
-	url = git@github.com:NOAA-EMC/NCEPLIBS-util_shared
+	url = git@github.com:NOAA-EMC/NCEPLIBS-util_shared.git
 [submodule "NCEPLIBS-w3emc"]
 	path = NCEPLIBS-w3emc
-	url = git@github.com:NOAA-EMC/NCEPLIBS-w3emc
+	url = git@github.com:NOAA-EMC/NCEPLIBS-w3emc.git
 [submodule "NCEPLIBS-w3nco"]
 	path = NCEPLIBS-w3nco
-	url = git@github.com:NOAA-EMC/NCEPLIBS-w3nco
+	url = git@github.com:NOAA-EMC/NCEPLIBS-w3nco.git
 [submodule "NCEPLIBS-wrf_shared"]
 	path = NCEPLIBS-wrf_shared
-	url = git@github.com:NOAA-EMC/NCEPLIBS-wrf_shared
+	url = git@github.com:NOAA-EMC/NCEPLIBS-wrf_shared.git
 [submodule "NCEPLIBS-xmlparse"]
 	path = NCEPLIBS-xmlparse
-	url = git@github.com:NOAA-EMC/NCEPLIBS-xmlparse
+	url = git@github.com:NOAA-EMC/NCEPLIBS-xmlparse.git
 [submodule "cmake"]
 	path = cmake
 	url = git@github.com:NOAA-EMC/CMakeModules.git
