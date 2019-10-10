@@ -1,2 +1,0 @@
-/scratch1/NCEPDEV/da/Mark.Potts/NCEPLIBS/NCEPLIBS-crtm/build/CMakeFiles/copy.dir
-/scratch1/NCEPDEV/da/Mark.Potts/NCEPLIBS/NCEPLIBS-crtm/build/CMakeFiles/crtm.dir

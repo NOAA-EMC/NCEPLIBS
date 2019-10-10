@@ -52,3 +52,12 @@
 [submodule "cmake"]
 	path = cmake
 	url = git@github.com:NOAA-EMC/CMakeModules.git
+[submodule "NCEPLIBS-crtm"]
+	path = NCEPLIBS-crtm
+	url = gerrit:EMC_crtm
+[submodule "NCEPLIBS-post"]
+	path = NCEPLIBS-post
+	url = gerrit:EMC_post
+[submodule "NCEPLIBS-gsi"]
+	path = NCEPLIBS-gsi
+	url = gerrit:ProdGSI

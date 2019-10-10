@@ -415,7 +415,7 @@ if(BUILD_ALL)
     INSTALL_COMMAND make install
   )
 
-if(0)  
+if(1)  
   include(ExternalProject)
     ExternalProject_Add(ProdGSI
     PREFIX ${PROJECT_BINARY_DIR}/ProdGSI
@@ -439,6 +439,8 @@ if(0)
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
+endif()
+if(0)  
   include(ExternalProject)
     ExternalProject_Add(NEMSfv3gfs
     PREFIX ${PROJECT_BINARY_DIR}/NEMSfv3gfs
@@ -462,16 +464,17 @@ if(0)
     INSTALL_COMMAND make install
   )
   
+endif()
   include(ExternalProject)
-    ExternalProject_Add(EMC_post
-    PREFIX ${PROJECT_BINARY_DIR}/EMC_post
+    ExternalProject_Add(NCEPLIBS-post
+    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-post
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/EMC_post
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-post
     DEPENDS NCEPLIBS-sigio
     DEPENDS NCEPLIBS-w3nco
     DEPENDS NCEPLIBS-g2
@@ -489,7 +492,6 @@ if(0)
     INSTALL_COMMAND make install
   )
   
-endif()
 
 endif()
 
