@@ -86,18 +86,6 @@ project(NCEPLIBS)
     set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/exec )
   endif()
 
-  if(FIND_HDF5_HL)
-    find_package(HDF5 COMPONENTS C HL Fortran_HL )
-  elseif(FIND_HDF5)
-    find_package(HDF5)
-  endif()
-  find_package( NetCDF REQUIRED)
-  if(NETCDF4)
-    if(CMAKE_MAJOR_VERSION GREATER 2)
-      find_package( ZLIB )
-    endif()
-    find_package( CURL )
-  endif()
   find_package(MPI REQUIRED)
 
 #report on MPI version
@@ -109,11 +97,131 @@ project(NCEPLIBS)
   include_directories(${MPI_Fortran_INCLUDE_DIRS} ${MPI_INCLUDE_PATH} "./" ${CMAKE_INCLUDE_OUTPUT_DIRECTORY})
   link_directories(${MPI_Fortran_LIBRARIES} ${ARCHIVE_OUTPUT_PATH} )
 
-#some platforms don't need lapack
-# if( ( NOT HOST-WCOSS_D ) AND ( NOT HOST-WCOSS_C ) AND ( NOT HOST-Gaea ) ) 
-#   message(" trying to find lapack, ${host}")
-#   find_package( LAPACK )
-# endif()
+
+  option(BUILD_HDF5 "Build HDF5" ON)
+  option(BUILD_NETCDF "Build NETCDF" ON)
+  option(BUILD_JASPER "Build JASPER" ON)
+    include(ExternalProject)
+      ExternalProject_Add(zlib  
+      PREFIX ${PROJECT_BINARY_DIR}/zlib  
+      CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DCMAKE_BUILD_TYPE=RELEASE
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/zlib  
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      BUILD_COMMAND make 
+      INSTALL_COMMAND make install
+    )
+    include(ExternalProject)
+      ExternalProject_Add(curl  
+      PREFIX ${PROJECT_BINARY_DIR}/curl  
+      CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DCMAKE_USE_OPENSSL=False
+        -DHTTP_ONLY=True
+        -DCMAKE_BUILD_TYPE=RELEASE
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/curl  
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      BUILD_COMMAND make 
+      INSTALL_COMMAND make install
+    )
+    include(ExternalProject)
+      ExternalProject_Add(libpng
+      PREFIX ${PROJECT_BINARY_DIR}/libpng
+      CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DCMAKE_BUILD_TYPE=RELEASE
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/libpng
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      BUILD_COMMAND make 
+      INSTALL_COMMAND make install
+    )
+
+  if(BUILD_JASPER)
+    include(ExternalProject)
+      ExternalProject_Add(jasper
+      PREFIX ${PROJECT_BINARY_DIR}/jasper
+      CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DCMAKE_BUILD_TYPE=RELEASE
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/jasper
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      BUILD_COMMAND make 
+      INSTALL_COMMAND make install
+    )
+  endif()
+  if(NOT BUILD_HDF5)
+    find_package(HDF5 COMPONENTS C HL Fortran_HL )
+    set(hdf5 ${HDF5_ROOT})
+  else()
+    include(ExternalProject)
+      ExternalProject_Add(hdf5
+      PREFIX ${PROJECT_BINARY_DIR}/hdf5
+      CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_CXX_COMPILER=${MPI_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${MPI_C_COMPILER}
+        -DCMAKE_Fortran_COMPILER=${MPI_Fortran_COMPILER}
+        -DHDF5_BUILD_FORTRAN:BOOL=ON
+        -DHDF5_BUILD_HL_LIB:BOOL=ON
+        -DCMAKE_BUILD_TYPE=RELEASE
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/hdf5
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      BUILD_COMMAND make -j
+      INSTALL_COMMAND make install
+    )
+  endif()
+
+  if(NOT BUILD_NETCDF)
+    find_package( NetCDF )
+  else()
+    include(ExternalProject)
+      ExternalProject_Add(netcdf  
+      PREFIX ${PROJECT_BINARY_DIR}/netcdf
+      CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_CXX_COMPILER=${MPI_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${MPI_C_COMPILER}
+        -DCMAKE_Fortran_COMPILER=${MPI_Fortran_COMPILER}
+        -DHDF5_DIR=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_BUILD_TYPE=RELEASE
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf    
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      DEPENDS hdf5
+      DEPENDS curl
+      BUILD_COMMAND make -j
+      INSTALL_COMMAND make install
+    )
+    include(ExternalProject)
+      ExternalProject_Add(netcdf-fortran  
+      PREFIX ${PROJECT_BINARY_DIR}/netcdf-fortran
+      CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_CXX_COMPILER=${MPI_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${MPI_C_COMPILER}
+        -DCMAKE_Fortran_COMPILER=${MPI_Fortran_COMPILER}
+        -DnetCDF_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include
+        -DENABLE_TESTS=OFF
+        -DnetCDF_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib64/libnetcdf.so
+        -DHDF5_DIR=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_BUILD_TYPE=RELEASE
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf-fortran    
+      INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+      DEPENDS netcdf
+      BUILD_COMMAND make -j
+      INSTALL_COMMAND make install
+    )
+    set(NETCDF_DIR ${CMAKE_INSTALL_PREFIX})
+  endif()
+
 set(BUILD_ALL True)
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-ip  
@@ -126,6 +234,7 @@ set(BUILD_ALL True)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-ip    
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -141,6 +250,7 @@ set(BUILD_ALL True)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bacio 
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -156,6 +266,7 @@ set(BUILD_ALL True)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-g2    
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -171,6 +282,7 @@ set(BUILD_ALL True)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sigio 
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -201,6 +313,7 @@ set(BUILD_ALL True)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-nemsio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -218,6 +331,7 @@ set(BUILD_ALL True)
     DEPENDS NCEPLIBS-nemsio
     DEPENDS NCEPLIBS-sigio 
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -238,6 +352,7 @@ set(BUILD_ALL True)
     DEPENDS NCEPLIBS-g2
     DEPENDS NCEPLIBS-w3nco
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -255,6 +370,7 @@ if(BUILD_ALL)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bufr  
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -270,6 +386,7 @@ if(BUILD_ALL)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-crtm  
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -300,6 +417,7 @@ if(BUILD_ALL)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-g2tmpl
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -315,6 +433,7 @@ if(BUILD_ALL)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-gfsio 
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -345,6 +464,7 @@ if(BUILD_ALL)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-landsfcutil
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -360,6 +480,7 @@ if(BUILD_ALL)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sfcio 
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -377,6 +498,7 @@ if(BUILD_ALL)
     DEPENDS NCEPLIBS-sigio 
     DEPENDS NCEPLIBS-nemsio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -395,6 +517,7 @@ if(BUILD_ALL)
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-prod_util
     DEPENDS NCEPLIBS-w3nco
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -411,6 +534,7 @@ if(BUILD_ALL)
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-nemsiogfs
     DEPENDS NCEPLIBS-nemsio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
@@ -424,6 +548,7 @@ if(1)
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
+      -DNETCDF_DIR=${NETCDF_DIR}
       -DBUILD_CORELIBS=FALSE
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-gsi
@@ -436,8 +561,9 @@ if(1)
     DEPENDS NCEPLIBS-sp
     DEPENDS NCEPLIBS-w3nco
     DEPENDS NCEPLIBS-w3emc 
+    DEPENDS netcdf-fortran
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
+    BUILD_COMMAND make -j 10
     INSTALL_COMMAND make install
   )
 endif()
@@ -460,6 +586,7 @@ if(0)
     DEPENDS NCEPLIBS-sp
     DEPENDS NCEPLIBS-w3nco
     DEPENDS NCEPLIBS-w3emc 
+    DEPENDS netcdf-fortran
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make
     INSTALL_COMMAND make install
@@ -474,6 +601,7 @@ endif()
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
+      -DNETCDF_DIR=${NETCDF_DIR}
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-post
     DEPENDS NCEPLIBS-sigio
@@ -488,8 +616,9 @@ endif()
     DEPENDS NCEPLIBS-w3emc 
     DEPENDS NCEPLIBS-gfsio 
     DEPENDS NCEPLIBS-crtm
+    DEPENDS netcdf-fortran
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
+    BUILD_COMMAND make -j 10
     INSTALL_COMMAND make install
   )
   
