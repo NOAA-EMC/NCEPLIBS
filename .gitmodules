@@ -51,7 +51,7 @@
 	url = git@github.com:NOAA-EMC/NCEPLIBS-w3nco.git
 [submodule "cmake"]
 	path = cmake
-	url = git@github.com:NOAA-EMC/CMakeModules.git
+	url = https://github.com/NOAA-EMC/CMakeModules.git
 [submodule "NCEPLIBS-crtm"]
 	path = NCEPLIBS-crtm
 	url = gerrit:EMC_crtm
