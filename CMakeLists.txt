@@ -152,6 +152,7 @@ project(NCEPLIBS)
         -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
         -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
         -DCMAKE_BUILD_TYPE=RELEASE
+        -DJAS_ENABLE_DOC=FALSE
       SOURCE_DIR ${PROJECT_SOURCE_DIR}/jasper
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       BUILD_COMMAND make 
@@ -175,7 +176,7 @@ project(NCEPLIBS)
         -DCMAKE_BUILD_TYPE=RELEASE
       SOURCE_DIR ${PROJECT_SOURCE_DIR}/hdf5
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-      BUILD_COMMAND make -j
+      BUILD_COMMAND make -j 5
       INSTALL_COMMAND make install
     )
   endif()
@@ -197,7 +198,7 @@ project(NCEPLIBS)
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       DEPENDS hdf5
       DEPENDS curl
-      BUILD_COMMAND make -j
+      BUILD_COMMAND make -j 5
       INSTALL_COMMAND make install
     )
     include(ExternalProject)
@@ -216,7 +217,7 @@ project(NCEPLIBS)
       SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf-fortran    
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       DEPENDS netcdf
-      BUILD_COMMAND make -j
+      BUILD_COMMAND make -j 5
       INSTALL_COMMAND make install
     )
     set(NETCDF_DIR ${CMAKE_INSTALL_PREFIX})
@@ -539,34 +540,6 @@ if(BUILD_ALL)
     INSTALL_COMMAND make install
   )
 
-if(1)  
-  include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-gsi
-    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-gsi
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-      -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
-      -DNETCDF_DIR=${NETCDF_DIR}
-      -DBUILD_CORELIBS=FALSE
-      -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-gsi
-    DEPENDS NCEPLIBS-bufr
-    DEPENDS NCEPLIBS-bacio
-    DEPENDS NCEPLIBS-crtm
-    DEPENDS NCEPLIBS-sigio
-    DEPENDS NCEPLIBS-sfcio
-    DEPENDS NCEPLIBS-nemsio
-    DEPENDS NCEPLIBS-sp
-    DEPENDS NCEPLIBS-w3nco
-    DEPENDS NCEPLIBS-w3emc 
-    DEPENDS netcdf-fortran
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make -j 10
-    INSTALL_COMMAND make install
-  )
-endif()
 if(0)  
   include(ExternalProject)
     ExternalProject_Add(NEMSfv3gfs

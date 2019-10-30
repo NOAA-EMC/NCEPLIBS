@@ -58,9 +58,6 @@
 [submodule "NCEPLIBS-post"]
 	path = NCEPLIBS-post
 	url = gerrit:EMC_post
-[submodule "NCEPLIBS-gsi"]
-	path = NCEPLIBS-gsi
-	url = gerrit:ProdGSI
 [submodule "netcdf"]
 	path = netcdf
 	url = https://github.com/Unidata/netcdf-c
