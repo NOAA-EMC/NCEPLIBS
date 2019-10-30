@@ -68,11 +68,11 @@
 	branch = spack-build
 [submodule "NCEPLIBS-crtm"]
 	path = NCEPLIBS-crtm
-	url = gerrit:EMC_crtm
+	url = git@github.com:NOAA-EMC/EMC_crtm.git
 	branch = spack-build
 [submodule "NCEPLIBS-post"]
 	path = NCEPLIBS-post
-	url = gerrit:EMC_post
+	url = git@github.com:NOAA-EMC/EMC_post.git
 	branch = spack-build
 [submodule "netcdf"]
 	path = netcdf
