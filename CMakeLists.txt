@@ -595,7 +595,22 @@ endif()
     INSTALL_COMMAND make install
   )
   
+if(0)
+  include(ExternalProject)
+    ExternalProject_Add(esmf
+    CONFIGURE_COMMAND ""
+    PREFIX ${PROJECT_BINARY_DIR}/esmf
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/esmf
+    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+#   BUILD_COMMAND cp -r ${CMAKE_SOURCE_DIR}/esmf/* .;${CMAKE_SOURCE_DIR}/esmf/mymake
+    BUILD_COMMAND ${CMAKE_SOURCE_DIR}/esmf/mymake
+    INSTALL_COMMAND make install
+  )
+  
 
 endif()
+
+endif()
+
 
 
