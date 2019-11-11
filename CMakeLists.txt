@@ -540,6 +540,36 @@ if(BUILD_ALL)
     INSTALL_COMMAND make install
   )
 
+  include(ExternalProject)
+    ExternalProject_Add(UFS_UTILS
+    PREFIX ${PROJECT_BINARY_DIR}/UFS_UTILS
+    CMAKE_ARGS
+      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+      -DNETCDF_DIR=${CMAKE_INSTALL_PREFIX}
+      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+      -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
+      -DCMAKE_BUILD_TYPE=RELEASE
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/UFS_UTILS
+    DEPENDS NCEPLIBS-landsfcutil
+    DEPENDS NCEPLIBS-sfcio
+    DEPENDS NCEPLIBS-w3nco
+    DEPENDS NCEPLIBS-g2
+    DEPENDS NCEPLIBS-bacio
+    DEPENDS NCEPLIBS-nemsio
+    DEPENDS NCEPLIBS-nemsiogfs
+    DEPENDS NCEPLIBS-sigio
+    DEPENDS NCEPLIBS-ip
+    DEPENDS NCEPLIBS-sp
+    DEPENDS jasper
+    DEPENDS libpng
+    DEPENDS zlib
+    DEPENDS hdf5
+    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS netcdf-fortran
+    BUILD_COMMAND make
+    INSTALL_COMMAND make install
+  )
 if(0)  
   include(ExternalProject)
     ExternalProject_Add(NEMSfv3gfs

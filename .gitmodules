@@ -78,3 +78,7 @@
 	path = netcdf
 	url = https://github.com/Unidata/netcdf-c
 	branch = master
+[submodule "UFS_UTILS"]
+	path = UFS_UTILS
+	url = git@github.com:NOAA-EMC/UFS_UTILS.git
+	branch = spack-build
