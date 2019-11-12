@@ -82,3 +82,6 @@
 	path = UFS_UTILS
 	url = git@github.com:NOAA-EMC/UFS_UTILS.git
 	branch = spack-build
+[submodule "esmf"]
+	path = esmf
+	url = https://git.code.sf.net/p/esmf/esmf

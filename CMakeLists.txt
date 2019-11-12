@@ -34,7 +34,6 @@ project(NCEPLIBS)
   cmake_minimum_required(VERSION 3.6)
   enable_language (Fortran)
 # Options for CMake
-
 #Set up module and lib paths for build
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
@@ -98,6 +97,7 @@ project(NCEPLIBS)
   link_directories(${MPI_Fortran_LIBRARIES} ${ARCHIVE_OUTPUT_PATH} )
 
 
+  option(MPITYPE "TYPE of MPI for esmf--intelmpi, mvapich2, mpich2, openmpi, mpi(cray)" intelmpi)
   option(BUILD_HDF5 "Build HDF5" ON)
   option(BUILD_NETCDF "Build NETCDF" ON)
   option(BUILD_JASPER "Build JASPER" ON)
@@ -512,7 +512,6 @@ if(BUILD_ALL)
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
-#     -DCMAKE_ADDITIONAL_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include;${CMAKE_INSTALL_PREFIX}/include_4;${CMAKE_INSTALL_PREFIX}/include_d
       -DW3NCO_4_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/libw3nco_v2.0.6_4.a
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-prod_util
@@ -539,6 +538,25 @@ if(BUILD_ALL)
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
+if(1)
+  include(ExternalProject)
+    if(${CMAKE_C_COMPILER_ID} STREQUAL "Intel")
+       set(comp "intel")
+    elseif(${CMAKE_C_COMPILER_ID} STREQUAL "GNU")
+       set(comp "gfortran")
+    endif()
+    ExternalProject_Add(esmf
+    PREFIX ${PROJECT_BINARY_DIR}/esmf
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/esmf
+    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    BUILD_IN_SOURCE 1
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ${CMAKE_COMMAND} -E env ESMF_DIR=${PROJECT_SOURCE_DIR}/esmf ESMF_COMM=intelmpi ESMF_COMPILER=intel ESMF_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} make -j 12
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E env ESMF_DIR=${PROJECT_SOURCE_DIR}/esmf ESMF_COMM=intelmpi ESMF_COMPILER=intel ESMF_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} ESMF_INSTALL_HEADERDIR=${CMAKE_INSTALL_PREFIX}/include ESMF_INSTALL_MODDIR=${CMAKE_INSTALL_PREFIX}/include ESMF_INSTALL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib ESMF_INSTALL_BINDIR=${CMAKE_INSTALL_PREFIX}/bin make install
+    DEPENDS netcdf
+    DEPENDS netcdf-fortran
+  )
+endif()
 
   include(ExternalProject)
     ExternalProject_Add(UFS_UTILS
@@ -549,6 +567,8 @@ if(BUILD_ALL)
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
+      -DESMF_LIB=${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so
+      -DESMF_INC=${CMAKE_INSTALL_PREFIX}/include
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/UFS_UTILS
     DEPENDS NCEPLIBS-landsfcutil
@@ -564,6 +584,7 @@ if(BUILD_ALL)
     DEPENDS jasper
     DEPENDS libpng
     DEPENDS zlib
+    DEPENDS esmf
     DEPENDS hdf5
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
@@ -596,6 +617,7 @@ if(0)
   )
   
 endif()
+if(1)
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-post
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-post
@@ -624,21 +646,7 @@ endif()
     BUILD_COMMAND make -j 10
     INSTALL_COMMAND make install
   )
-  
-if(0)
-  include(ExternalProject)
-    ExternalProject_Add(esmf
-    CONFIGURE_COMMAND ""
-    PREFIX ${PROJECT_BINARY_DIR}/esmf
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/esmf
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-#   BUILD_COMMAND cp -r ${CMAKE_SOURCE_DIR}/esmf/* .;${CMAKE_SOURCE_DIR}/esmf/mymake
-    BUILD_COMMAND ${CMAKE_SOURCE_DIR}/esmf/mymake
-    INSTALL_COMMAND make install
-  )
-  
-
-endif()
+endif()  
 
 endif()
 
