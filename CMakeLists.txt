@@ -33,6 +33,13 @@ endif()
 project(NCEPLIBS)
   cmake_minimum_required(VERSION 3.6)
   enable_language (Fortran)
+
+  option(MPITYPE "TYPE of MPI for esmf--intelmpi, mvapich2, mpich2, openmpi, mpi(cray)" intelmpi)
+  option(BUILD_HDF5 "Build HDF5" OFF)
+  option(BUILD_NETCDF "Build NETCDF" OFF)
+  option(BUILD_JASPER "Build JASPER" OFF)
+  option(BUILD_JASPER "Build ESMF" OFF)
+
 # Options for CMake
 #Set up module and lib paths for build
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -67,6 +74,49 @@ project(NCEPLIBS)
 
 #Find the OpenMP flag
   find_package(OpenMP)
+#If ESMF_LIB is defined, we won't build ESMF
+  if(NOT DEFINED ENV{ESMF_LIB})
+  message("HEY, didn't find ESMF")
+  #if not found, build it
+    set(BUILD_ESMF "ON")
+    set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so)
+    set(ESMF_INC ${CMAKE_INSTALL_PREFIX}/include)
+  else()
+    #create fake targets so external project dependencies will work
+    set(ESMF_LIB $ENV{ESMF_LIB})
+    set(ESMF_INC $ENV{ESMF_INC})
+    add_custom_target(esmf env )
+  endif()
+  message("HEY esmf inc is ${ESMF_INC}")
+#Look for jasper in environment
+  if(NOT DEFINED ENV{JASPER})
+  #if not found, build it
+    set(BUILD_JASPER "ON")
+  else()
+    #create fake targets so external project dependencies will work
+    add_custom_target(jasper env )
+  endif()
+#Look for HDF5 in environment
+  find_package(HDF5 COMPONENTS C HL Fortran_HL )
+  if(NOT HDF5_FOUND)
+  #if not found, build it
+    set(BUILD_HDF5 "ON")
+    set(HDF5_DIR ${CMAKE_INSTALL_PREFIX})
+  else()
+    #create fake targets so external project dependencies will work
+    add_custom_target(hdf5 env )
+  endif()
+#Look for HDF5 in environment
+  find_package(NetCDF)
+  if("${NETCDF_DIR}" STREQUAL "")
+  #if not found, build it
+    set(BUILD_NETCDF "ON")
+    set(NETCDF_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib64/libnetcdf.so)
+  else()
+    #create fake targets so external project dependencies will work
+    add_custom_target(netcdf env )
+    add_custom_target(netcdf-fortran env )
+  endif()
 
 # make sure that the default is a RELEASE
   if (NOT CMAKE_BUILD_TYPE)
@@ -97,11 +147,7 @@ project(NCEPLIBS)
   link_directories(${MPI_Fortran_LIBRARIES} ${ARCHIVE_OUTPUT_PATH} )
 
 
-  option(MPITYPE "TYPE of MPI for esmf--intelmpi, mvapich2, mpich2, openmpi, mpi(cray)" intelmpi)
-  option(BUILD_HDF5 "Build HDF5" ON)
-  option(BUILD_NETCDF "Build NETCDF" ON)
-  option(BUILD_JASPER "Build JASPER" ON)
-    include(ExternalProject)
+  include(ExternalProject)
       ExternalProject_Add(zlib  
       PREFIX ${PROJECT_BINARY_DIR}/zlib  
       CMAKE_ARGS
@@ -113,8 +159,8 @@ project(NCEPLIBS)
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       BUILD_COMMAND make 
       INSTALL_COMMAND make install
-    )
-    include(ExternalProject)
+  )
+  include(ExternalProject)
       ExternalProject_Add(curl  
       PREFIX ${PROJECT_BINARY_DIR}/curl  
       CMAKE_ARGS
@@ -128,8 +174,8 @@ project(NCEPLIBS)
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       BUILD_COMMAND make 
       INSTALL_COMMAND make install
-    )
-    include(ExternalProject)
+  )
+  include(ExternalProject)
       ExternalProject_Add(libpng
       PREFIX ${PROJECT_BINARY_DIR}/libpng
       CMAKE_ARGS
@@ -141,7 +187,7 @@ project(NCEPLIBS)
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       BUILD_COMMAND make 
       INSTALL_COMMAND make install
-    )
+  )
 
   if(BUILD_JASPER)
     include(ExternalProject)
@@ -159,10 +205,7 @@ project(NCEPLIBS)
       INSTALL_COMMAND make install
     )
   endif()
-  if(NOT BUILD_HDF5)
-    find_package(HDF5 COMPONENTS C HL Fortran_HL )
-    set(hdf5 ${HDF5_ROOT})
-  else()
+  if(BUILD_HDF5)
     include(ExternalProject)
       ExternalProject_Add(hdf5
       PREFIX ${PROJECT_BINARY_DIR}/hdf5
@@ -183,9 +226,7 @@ project(NCEPLIBS)
     )
   endif()
 
-  if(NOT BUILD_NETCDF)
-    find_package( NetCDF )
-  else()
+  if(BUILD_NETCDF)
     include(ExternalProject)
       ExternalProject_Add(netcdf  
       PREFIX ${PROJECT_BINARY_DIR}/netcdf
@@ -213,8 +254,8 @@ project(NCEPLIBS)
         -DCMAKE_Fortran_COMPILER=${MPI_Fortran_COMPILER}
         -DnetCDF_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include
         -DENABLE_TESTS=OFF
-        -DnetCDF_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib64/libnetcdf.so
-        -DHDF5_DIR=${CMAKE_INSTALL_PREFIX}
+        -DnetCDF_LIBRARIES=${NETCDF_LIBRARIES}
+        -DHDF5_DIR=${HDF5_DIR}
         -DCMAKE_BUILD_TYPE=RELEASE
       SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf-fortran    
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
@@ -225,7 +266,6 @@ project(NCEPLIBS)
     set(NETCDF_DIR ${CMAKE_INSTALL_PREFIX})
   endif()
 
-set(BUILD_ALL True)
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-ip  
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-ip   
@@ -359,9 +399,6 @@ set(BUILD_ALL True)
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
-
-
-if(BUILD_ALL)
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-bufr  
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-bufr 
@@ -394,21 +431,6 @@ if(BUILD_ALL)
     INSTALL_COMMAND make install
   )
 
-# include(ExternalProject)
-#   ExternalProject_Add(NCEPLIBS-g2c   
-#   PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-g2c  
-#   CMAKE_ARGS
-#     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-#     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-#     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-#     -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
-#     -DCMAKE_BUILD_TYPE=RELEASE
-#   SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-g2c   
-#   INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-#   BUILD_COMMAND make
-#   INSTALL_COMMAND make install
-# )
-
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-g2tmpl
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-g2tmpl
@@ -440,21 +462,6 @@ if(BUILD_ALL)
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
-
-# include(ExternalProject)
-#   ExternalProject_Add(NCEPLIBS-ip2   
-#   PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-ip2  
-#   CMAKE_ARGS
-#     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-#     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-#     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-#     -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
-#     -DCMAKE_BUILD_TYPE=RELEASE
-#   SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-ip2   
-#   INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-#   BUILD_COMMAND make
-#   INSTALL_COMMAND make install
-# )
 
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-landsfcutil
@@ -540,7 +547,7 @@ if(BUILD_ALL)
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
-if(1)
+  if(BUILD_ESMF)
   include(ExternalProject)
     if(${CMAKE_C_COMPILER_ID} STREQUAL "Intel")
        set(comp "intel")
@@ -558,8 +565,7 @@ if(1)
     DEPENDS netcdf
     DEPENDS netcdf-fortran
   )
-endif()
-
+  endif()
   include(ExternalProject)
     ExternalProject_Add(UFS_UTILS
     PREFIX ${PROJECT_BINARY_DIR}/UFS_UTILS
@@ -569,8 +575,8 @@ endif()
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
-      -DESMF_LIB=${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so
-      -DESMF_INC=${CMAKE_INSTALL_PREFIX}/include
+      -DESMF_LIB=${ESMF_LIB}
+      -DESMF_INC=${ESMF_INC}
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/UFS_UTILS
     DEPENDS NCEPLIBS-landsfcutil
@@ -593,33 +599,6 @@ endif()
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
-if(0)  
-  include(ExternalProject)
-    ExternalProject_Add(NEMSfv3gfs
-    PREFIX ${PROJECT_BINARY_DIR}/NEMSfv3gfs
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-      -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
-      -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NEMSfv3gfs
-    DEPENDS NCEPLIBS-bufr
-    DEPENDS NCEPLIBS-bacio
-    DEPENDS NCEPLIBS-sigio
-    DEPENDS NCEPLIBS-sfcio
-    DEPENDS NCEPLIBS-nemsio
-    DEPENDS NCEPLIBS-sp
-    DEPENDS NCEPLIBS-w3nco
-    DEPENDS NCEPLIBS-w3emc 
-    DEPENDS netcdf-fortran
-    INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install
-  )
-  
-endif()
-if(1)
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-post
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-post
@@ -648,9 +627,7 @@ if(1)
     BUILD_COMMAND make -j 10
     INSTALL_COMMAND make install
   )
-endif()  
 
-endif()
 
 
 
