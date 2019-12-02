@@ -38,7 +38,11 @@ project(NCEPLIBS)
   option(BUILD_HDF5 "Build HDF5" OFF)
   option(BUILD_NETCDF "Build NETCDF" OFF)
   option(BUILD_JASPER "Build JASPER" OFF)
+<<<<<<< HEAD
   option(BUILD_ESMF "Build ESMF" OFF)
+=======
+  option(BUILD_JASPER "Build ESMF" OFF)
+>>>>>>> e9131cc1ed1e6dee6889723b2a39eb6c1e1b6d72
 
 # Options for CMake
 #Set up module and lib paths for build
@@ -76,9 +80,15 @@ project(NCEPLIBS)
 #Find the OpenMP flag
 if ((NOT DEFINED OPENMP) OR OPENMP)
   find_package(OpenMP)
+<<<<<<< HEAD
 endif ((NOT DEFINED OPENMP) OR OPENMP)
 #If ESMF_LIB is defined, we won't build ESMF
   if(NOT DEFINED ENV{ESMF_LIB})
+=======
+#If ESMF_LIB is defined, we won't build ESMF
+  if(NOT DEFINED ENV{ESMF_LIB})
+  message("HEY, didn't find ESMF")
+>>>>>>> e9131cc1ed1e6dee6889723b2a39eb6c1e1b6d72
   #if not found, build it
     set(BUILD_ESMF "ON")
     set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so)
@@ -150,6 +160,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
 
 
   include(ExternalProject)
+<<<<<<< HEAD
 # if(HDF5_ROOT)
 #   option(BUILD_HDF5 "Build HDF5" OFF)
 # else(HDF5_ROOT)
@@ -166,6 +177,8 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
 #   option(BUILD_JASPER "Build JASPER" ON)
 # endif(JASPER)
 
+=======
+>>>>>>> e9131cc1ed1e6dee6889723b2a39eb6c1e1b6d72
       ExternalProject_Add(zlib  
       PREFIX ${PROJECT_BINARY_DIR}/zlib  
       CMAKE_ARGS
@@ -584,7 +597,10 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     DEPENDS netcdf-fortran
   )
   endif()
+<<<<<<< HEAD
   if(1)
+=======
+>>>>>>> e9131cc1ed1e6dee6889723b2a39eb6c1e1b6d72
   include(ExternalProject)
     ExternalProject_Add(UFS_UTILS
     PREFIX ${PROJECT_BINARY_DIR}/UFS_UTILS
@@ -618,7 +634,10 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     BUILD_COMMAND make
     INSTALL_COMMAND make install
   )
+<<<<<<< HEAD
   endif()
+=======
+>>>>>>> e9131cc1ed1e6dee6889723b2a39eb6c1e1b6d72
   include(ExternalProject)
     ExternalProject_Add(NCEPLIBS-post
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-post

@@ -231,9 +231,4 @@ hid_t H5E_CANTPACK_g       = FAIL;      /* Can't pack messages */
 hid_t H5E_CANTRESET_g      = FAIL;      /* Can't reset object */
 hid_t H5E_CANTRENAME_g     = FAIL;      /* Unable to rename object */
 
-/* Free space errors */
-hid_t H5E_CANTMERGE_g      = FAIL;      /* Can't merge objects */
-hid_t H5E_CANTREVIVE_g     = FAIL;      /* Can't revive object */
-hid_t H5E_CANTSHRINK_g     = FAIL;      /* Can't shrink container */
-
 #endif /* H5Edefin_H */
