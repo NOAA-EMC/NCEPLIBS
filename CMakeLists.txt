@@ -584,7 +584,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     DEPENDS netcdf-fortran
   )
   endif()
-  if(0)
+  if(1)
   include(ExternalProject)
     ExternalProject_Add(UFS_UTILS
     PREFIX ${PROJECT_BINARY_DIR}/UFS_UTILS
@@ -643,6 +643,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     DEPENDS NCEPLIBS-gfsio 
     DEPENDS NCEPLIBS-crtm
     DEPENDS netcdf-fortran
+    DEPENDS esmf
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make -j 10
     INSTALL_COMMAND make install
