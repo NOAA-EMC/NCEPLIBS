@@ -485,7 +485,7 @@ IF (UNIX AND ${CMAKE_SIZEOF_VOID_P} MATCHES "8")
   IF (APPLE)
     IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fmacro-backtrace-limit=0")
-   ENDIF()
+    ENDIF()
   ENDIF(APPLE)
 ENDIF()
 
