@@ -81,7 +81,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   if(NOT DEFINED ENV{ESMF_LIB})
   #if not found, build it
     set(BUILD_ESMF "ON")
-    set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so)
+    set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked${CMAKE_SHARED_LIBRARY_SUFFIX})
     set(ESMF_INC ${CMAKE_INSTALL_PREFIX}/include)
   else()
     #create fake targets so external project dependencies will work
@@ -113,7 +113,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   if("${NETCDF_DIR}" STREQUAL "")
   #if not found, build it
     set(BUILD_NETCDF "ON")
-    set(NETCDF_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib64/libnetcdf.so)
+    set(NETCDF_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib64/libnetcdf${CMAKE_SHARED_LIBRARY_SUFFIX})
   else()
     #create fake targets so external project dependencies will work
     add_custom_target(netcdf env )
