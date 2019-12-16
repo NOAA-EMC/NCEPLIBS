@@ -34,6 +34,11 @@ project(NCEPLIBS)
   cmake_minimum_required(VERSION 3.6)
   enable_language (Fortran)
 
+  # set default install path if not provided
+  if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "default install path" FORCE )
+  endif()
+
   option(MPITYPE "TYPE of MPI for esmf--intelmpi, mvapich2, mpich2, openmpi, mpi(cray)" intelmpi)
   option(BUILD_HDF5 "Build HDF5" OFF)
   option(BUILD_NETCDF "Build NETCDF" OFF)
