@@ -54,6 +54,7 @@ project(NCEPLIBS)
   file(MAKE_DIRECTORY ${CMAKE_INCLUDE_4_OUTPUT_DIRECTORY})
 
 #Include all the macros/functions
+  include(GNUInstallDirs)
 # include(${CMAKE_SOURCE_DIR}/cmake/Modules/setPlatformVariables.cmake)
   include(${CMAKE_SOURCE_DIR}/cmake/Modules/setIntelFlags.cmake)
   include(${CMAKE_SOURCE_DIR}/cmake/Modules/setGNUFlags.cmake)
@@ -84,8 +85,8 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       set(MPITYPE CACHE STRING intelmpi "TYPE of MPI for esmf--intelmpi, mvapich2, mpich2, openmpi, mpi(cray)")
       message("Attempting to build ESMF with ESMF_COMM=intelmpi, use -DMPITYPE=ESMF_COMM to select an alternative")
     endif()
-    set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so)
-    set(ESMF_INC ${CMAKE_INSTALL_PREFIX}/include)
+    set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libesmf_fullylinked${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(ESMF_INC ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
   else()
     #create fake targets so external project dependencies will work
     set(ESMF_LIB $ENV{ESMF_LIB})
@@ -116,7 +117,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   if("${NETCDF_DIR}" STREQUAL "")
   #if not found, build it
     set(BUILD_NETCDF "ON")
-    set(NETCDF_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib64/libnetcdf.so)
+    set(NETCDF_LIBRARIES ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libnetcdf${CMAKE_SHARED_LIBRARY_SUFFIX})
   else()
     #create fake targets so external project dependencies will work
     add_custom_target(netcdf env )
@@ -169,21 +170,21 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
 #   option(BUILD_JASPER "Build JASPER" ON)
 # endif(JASPER)
 
-      ExternalProject_Add(zlib  
-      PREFIX ${PROJECT_BINARY_DIR}/zlib  
+      ExternalProject_Add(zlib
+      PREFIX ${PROJECT_BINARY_DIR}/zlib
       CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
         -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
         -DCMAKE_BUILD_TYPE=RELEASE
-      SOURCE_DIR ${PROJECT_SOURCE_DIR}/zlib  
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/zlib
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-      BUILD_COMMAND make 
+      BUILD_COMMAND make
       INSTALL_COMMAND make install
   )
   include(ExternalProject)
-      ExternalProject_Add(curl  
-      PREFIX ${PROJECT_BINARY_DIR}/curl  
+      ExternalProject_Add(curl
+      PREFIX ${PROJECT_BINARY_DIR}/curl
       CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
@@ -191,9 +192,9 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
         -DCMAKE_USE_OPENSSL=False
         -DHTTP_ONLY=True
         -DCMAKE_BUILD_TYPE=RELEASE
-      SOURCE_DIR ${PROJECT_SOURCE_DIR}/curl  
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/curl
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-      BUILD_COMMAND make 
+      BUILD_COMMAND make
       INSTALL_COMMAND make install
   )
   include(ExternalProject)
@@ -206,7 +207,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
         -DCMAKE_BUILD_TYPE=RELEASE
       SOURCE_DIR ${PROJECT_SOURCE_DIR}/libpng
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-      BUILD_COMMAND make 
+      BUILD_COMMAND make
       INSTALL_COMMAND make install
   )
 
@@ -222,7 +223,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
         -DJAS_ENABLE_DOC=FALSE
       SOURCE_DIR ${PROJECT_SOURCE_DIR}/jasper
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-      BUILD_COMMAND make 
+      BUILD_COMMAND make
       INSTALL_COMMAND make install
     )
   endif()
@@ -249,7 +250,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
 
   if(BUILD_NETCDF)
     include(ExternalProject)
-      ExternalProject_Add(netcdf  
+      ExternalProject_Add(netcdf
       PREFIX ${PROJECT_BINARY_DIR}/netcdf
       CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -258,7 +259,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
         -DCMAKE_Fortran_COMPILER=${MPI_Fortran_COMPILER}
         -DHDF5_DIR=${CMAKE_INSTALL_PREFIX}
         -DCMAKE_BUILD_TYPE=RELEASE
-      SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf    
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       DEPENDS hdf5
       DEPENDS curl
@@ -266,19 +267,19 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       INSTALL_COMMAND make install
     )
     include(ExternalProject)
-      ExternalProject_Add(netcdf-fortran  
+      ExternalProject_Add(netcdf-fortran
       PREFIX ${PROJECT_BINARY_DIR}/netcdf-fortran
       CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DCMAKE_CXX_COMPILER=${MPI_CXX_COMPILER}
         -DCMAKE_C_COMPILER=${MPI_C_COMPILER}
         -DCMAKE_Fortran_COMPILER=${MPI_Fortran_COMPILER}
-        -DnetCDF_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include
+        -DnetCDF_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}
         -DENABLE_TESTS=OFF
         -DnetCDF_LIBRARIES=${NETCDF_LIBRARIES}
         -DHDF5_DIR=${HDF5_DIR}
         -DCMAKE_BUILD_TYPE=RELEASE
-      SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf-fortran    
+      SOURCE_DIR ${PROJECT_SOURCE_DIR}/netcdf-fortran
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       DEPENDS netcdf
       BUILD_COMMAND make -j 5
@@ -288,15 +289,15 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   endif()
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-ip  
-    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-ip   
+    ExternalProject_Add(NCEPLIBS-ip
+    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-ip
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-ip    
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-ip
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -304,7 +305,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-bacio 
+    ExternalProject_Add(NCEPLIBS-bacio
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-bacio
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -312,7 +313,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bacio 
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bacio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -320,15 +321,15 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-g2    
-    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-g2   
+    ExternalProject_Add(NCEPLIBS-g2
+    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-g2
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-g2    
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-g2
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -336,7 +337,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-sigio 
+    ExternalProject_Add(NCEPLIBS-sigio
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-sigio
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -344,7 +345,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sigio 
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sigio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -352,15 +353,15 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-sp    
-    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-sp   
+    ExternalProject_Add(NCEPLIBS-sp
+    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-sp
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sp    
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sp
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make
     INSTALL_COMMAND make install
@@ -383,7 +384,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-w3nco 
+    ExternalProject_Add(NCEPLIBS-w3nco
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-w3nco
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -391,9 +392,9 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-w3nco 
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-w3nco
     DEPENDS NCEPLIBS-nemsio
-    DEPENDS NCEPLIBS-sigio 
+    DEPENDS NCEPLIBS-sigio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -421,15 +422,15 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     INSTALL_COMMAND make install
   )
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-bufr  
-    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-bufr 
+    ExternalProject_Add(NCEPLIBS-bufr
+    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-bufr
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bufr  
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-bufr
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -437,15 +438,15 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-crtm  
-    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-crtm 
+    ExternalProject_Add(NCEPLIBS-crtm
+    PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-crtm
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-crtm  
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-crtm
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -469,7 +470,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-gfsio 
+    ExternalProject_Add(NCEPLIBS-gfsio
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-gfsio
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -477,7 +478,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-gfsio 
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-gfsio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -501,7 +502,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-sfcio 
+    ExternalProject_Add(NCEPLIBS-sfcio
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-sfcio
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -509,7 +510,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sfcio 
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-sfcio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
@@ -517,7 +518,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   )
 
   include(ExternalProject)
-    ExternalProject_Add(NCEPLIBS-w3emc 
+    ExternalProject_Add(NCEPLIBS-w3emc
     PREFIX ${PROJECT_BINARY_DIR}/NCEPLIBS-w3emc
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -525,8 +526,8 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -DCMAKE_BUILD_TYPE=RELEASE
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-w3emc 
-    DEPENDS NCEPLIBS-sigio 
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-w3emc
+    DEPENDS NCEPLIBS-sigio
     DEPENDS NCEPLIBS-nemsio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
     DEPENDS netcdf-fortran
@@ -643,8 +644,8 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     DEPENDS NCEPLIBS-sp
     DEPENDS NCEPLIBS-sfcio
     DEPENDS NCEPLIBS-nemsio
-    DEPENDS NCEPLIBS-w3emc 
-    DEPENDS NCEPLIBS-gfsio 
+    DEPENDS NCEPLIBS-w3emc
+    DEPENDS NCEPLIBS-gfsio
     DEPENDS NCEPLIBS-crtm
     DEPENDS netcdf-fortran
     DEPENDS esmf
