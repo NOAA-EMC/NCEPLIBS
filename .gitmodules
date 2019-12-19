@@ -81,7 +81,7 @@
 [submodule "UFS_UTILS"]
 	path = UFS_UTILS
 	url = git@github.com:NOAA-EMC/UFS_UTILS.git
-	branch = ufs_release_v1.0
+	branch = release/ufs_release_v1.0
 [submodule "esmf"]
 	path = esmf
 	url = https://git.code.sf.net/p/esmf/esmf
