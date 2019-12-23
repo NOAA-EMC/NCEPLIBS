@@ -65,6 +65,7 @@ project(NCEPLIBS)
   include(${CMAKE_SOURCE_DIR}/cmake/Modules/setIntelFlags.cmake)
   include(${CMAKE_SOURCE_DIR}/cmake/Modules/setGNUFlags.cmake)
   include(${CMAKE_SOURCE_DIR}/cmake/Modules/setPGIFlags.cmake)
+  include(${CMAKE_SOURCE_DIR}/esmf/cmake/FindESMF.cmake)
 #  include(${CMAKE_SOURCE_DIR}/cmake/Modules/setHOST.cmake)
 
 #Set cmake policies
@@ -84,19 +85,26 @@ if ((NOT DEFINED OPENMP) OR OPENMP)
   find_package(OpenMP)
 endif ((NOT DEFINED OPENMP) OR OPENMP)
 #If ESMF_LIB is defined, we won't build ESMF
-  if(NOT DEFINED ENV{ESMF_LIB})
+  if(NOT DEFINED ENV{ESMFMKFILE})
   #if not found, build it
     set(BUILD_ESMF "ON")
     if(NOT DEFINED MPITYPE)
       set(MPITYPE CACHE STRING intelmpi "TYPE of MPI for esmf--intelmpi, mvapich2, mpich2, openmpi, mpi(cray)")
       message("Attempting to build ESMF with ESMF_COMM=intelmpi, use -DMPITYPE=ESMF_COMM to select an alternative")
     endif()
-    set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libesmf_fullylinked${CMAKE_SHARED_LIBRARY_SUFFIX})
-    set(ESMF_INC ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+    set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}esmf_fullylinked${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(ESMF_INC ${CMAKE_INSTALL_PREFIX}/mod)
   else()
-    #create fake targets so external project dependencies will work
-    set(ESMF_LIB $ENV{ESMF_LIB})
-    set(ESMF_INC $ENV{ESMF_INC})
+    find_package(ESMF)
+    message(INFO "ESMF_LIBSDIR: ${ESMF_LIBSDIR}")
+    if (NOT DEFINED ESMF_LIBSDIR)
+      message(FATAL_ERROR "Unable to determine ESMF configuration from ESMFMKFILE ${ESMFMKFILE}")
+    endif()
+    message(INFO "ESMF_LIBSDIR: ${ESMF_LIBSDIR}")
+    set(ESMF_LIB ${ESMF_LIBSDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}esmf_fullylinked${CMAKE_SHARED_LIBRARY_SUFFIX})
+    # Note - this only works if the include directory sits next to the lib directory
+    set(ESMF_INC ${ESMF_LIBSDIR}/../mod)
+    message(STATUS "Determined ESMF configuration from ESMFMKFILE ${ESMFMKFILE}")
     add_custom_target(esmf env )
   endif()
   message("HEY esmf inc is ${ESMF_INC}")
@@ -123,7 +131,8 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
   if("${NETCDF_DIR}" STREQUAL "")
   #if not found, build it
     set(BUILD_NETCDF "ON")
-    set(NETCDF_LIBRARIES ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libnetcdf${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(NETCDF_DIR ${CMAKE_INSTALL_PREFIX})
+    set(NETCDF_LIBRARIES ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}netcdf${CMAKE_SHARED_LIBRARY_SUFFIX})
   else()
     #create fake targets so external project dependencies will work
     add_custom_target(netcdf env )
@@ -291,7 +300,6 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       BUILD_COMMAND make -j 5
       INSTALL_COMMAND make install
     )
-    set(NETCDF_DIR ${CMAKE_INSTALL_PREFIX})
   endif()
 
   include(ExternalProject)
@@ -337,6 +345,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-g2
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS jasper
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
@@ -470,6 +479,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-g2tmpl
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS jasper
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
@@ -486,6 +496,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
       -DCMAKE_BUILD_TYPE=RELEASE
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/NCEPLIBS-gfsio
     INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    DEPENDS jasper
     DEPENDS netcdf-fortran
     BUILD_COMMAND make
     INSTALL_COMMAND make install
@@ -589,7 +600,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND} -E env ESMF_DIR=${PROJECT_SOURCE_DIR}/esmf ESMF_COMM=${MPITYPE} ESMF_COMPILER=${comp} ESMF_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} make -j 12
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E env ESMF_DIR=${PROJECT_SOURCE_DIR}/esmf ESMF_COMM=${MPITYPE} ESMF_COMPILER=${comp} ESMF_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} ESMF_INSTALL_HEADERDIR=${CMAKE_INSTALL_PREFIX}/include ESMF_INSTALL_MODDIR=${CMAKE_INSTALL_PREFIX}/include ESMF_INSTALL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib ESMF_INSTALL_BINDIR=${CMAKE_INSTALL_PREFIX}/bin make install
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E env ESMF_DIR=${PROJECT_SOURCE_DIR}/esmf ESMF_COMM=${MPITYPE} ESMF_COMPILER=${comp} ESMF_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} ESMF_INSTALL_HEADERDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR} ESMF_INSTALL_MODDIR=${CMAKE_INSTALL_PREFIX}/mod ESMF_INSTALL_LIBDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR} ESMF_INSTALL_BINDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR} make install
     DEPENDS netcdf
     DEPENDS netcdf-fortran
   )
@@ -600,7 +611,7 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     PREFIX ${PROJECT_BINARY_DIR}/UFS_UTILS
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-      -DNETCDF_DIR=${CMAKE_INSTALL_PREFIX}
+      -DNETCDF_DIR=${NETCDF_DIR}
       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
