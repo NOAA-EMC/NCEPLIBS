@@ -1,87 +1,87 @@
 [submodule "NCEPLIBS-bacio"]
 	path = NCEPLIBS-bacio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-bacio.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-bacio.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-bufr"]
 	path = NCEPLIBS-bufr
-	url = https://github.com/NOAA-EMC/NCEPLIBS-bufr.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-bufr.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-g2"]
 	path = NCEPLIBS-g2
-	url = https://github.com/NOAA-EMC/NCEPLIBS-g2.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-g2.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-g2tmpl"]
 	path = NCEPLIBS-g2tmpl
-	url = https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-g2tmpl.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-gfsio"]
 	path = NCEPLIBS-gfsio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-gfsio.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-gfsio.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-grib_util"]
 	path = NCEPLIBS-grib_util
-	url = https://github.com/NOAA-EMC/NCEPLIBS-grib_util.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-grib_util.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-ip"]
 	path = NCEPLIBS-ip
-	url = https://github.com/NOAA-EMC/NCEPLIBS-ip.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-ip.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-landsfcutil"]
 	path = NCEPLIBS-landsfcutil
-	url = https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-landsfcutil.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-nemsio"]
 	path = NCEPLIBS-nemsio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-nemsio.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-nemsio.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-nemsiogfs"]
 	path = NCEPLIBS-nemsiogfs
-	url = https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-nemsiogfs.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-prod_util"]
 	path = NCEPLIBS-prod_util
-	url = https://github.com/NOAA-EMC/NCEPLIBS-prod_util.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-prod_util.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-sfcio"]
 	path = NCEPLIBS-sfcio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-sfcio.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-sfcio.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-sigio"]
 	path = NCEPLIBS-sigio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-sigio.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-sigio.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-sp"]
 	path = NCEPLIBS-sp
-	url = https://github.com/NOAA-EMC/NCEPLIBS-sp.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-sp.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-w3emc"]
 	path = NCEPLIBS-w3emc
-	url = https://github.com/NOAA-EMC/NCEPLIBS-w3emc.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-w3emc.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-w3nco"]
 	path = NCEPLIBS-w3nco
-	url = https://github.com/NOAA-EMC/NCEPLIBS-w3nco.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/NCEPLIBS-w3nco.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "cmake"]
 	path = cmake
 	url = https://github.com/NOAA-EMC/CMakeModules.git
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-crtm"]
 	path = NCEPLIBS-crtm
-	url = https://github.com/NOAA-EMC/EMC_crtm.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/EMC_crtm.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "NCEPLIBS-post"]
 	path = NCEPLIBS-post
-	url = https://github.com/NOAA-EMC/EMC_post
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/EMC_post
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "netcdf"]
 	path = netcdf
 	url = git@github.com:NOAA-EMC/netcdf-c.git
-	branch = ufs_release_v1.0
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "UFS_UTILS"]
 	path = UFS_UTILS
-	url = https://github.com/NOAA-EMC/UFS_UTILS.git
-	branch = ufs_release_v1.0
+	url = https://github.com/climbfuji/UFS_UTILS.git
+	branch = update_ufs_release_1p0_macos_gnu
 [submodule "esmf"]
 	path = esmf
 	url = https://git.code.sf.net/p/esmf/esmf
