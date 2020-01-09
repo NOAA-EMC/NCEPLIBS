@@ -94,10 +94,8 @@
 	branch = dom_cleanup_work_20191206
 [submodule "cmake"]
 	path = cmake
-	#url = https://github.com/NOAA-EMC/CMakeModules
-	#branch = ufs_release_v1.0
-	url = https://github.com/climbfuji/CMakeModules
-	branch = dom_cleanup_work_20191206
+	url = https://github.com/NOAA-EMC/CMakeModules
+	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-crtm"]
 	path = NCEPLIBS-crtm
 	#url = https://github.com/NOAA-EMC/EMC_crtm
