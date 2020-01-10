@@ -73,7 +73,7 @@
 [submodule "NCEPLIBS-post"]
 	path = NCEPLIBS-post
 	url = https://github.com/NOAA-EMC/EMC_post
-	branch = ufs_release_v1.0
+	branch = ufs_public_release
 [submodule "netcdf"]
 	path = netcdf
 	url = https://github.com/NOAA-EMC/netcdf-c
