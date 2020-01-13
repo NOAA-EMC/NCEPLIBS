@@ -48,6 +48,7 @@ project(NCEPLIBS)
 # Options for CMake
 #Set up module and lib paths for build
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/esmf/cmake/")
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
   SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
   SET(ARCHIVE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -96,16 +97,27 @@ endif ((NOT DEFINED OPENMP) OR OPENMP)
     set(ESMF_INC ${CMAKE_INSTALL_PREFIX}/mod)
   else()
     find_package(ESMF)
-    message(INFO "ESMF_LIBSDIR: ${ESMF_LIBSDIR}")
     if (NOT DEFINED ESMF_LIBSDIR)
       message(FATAL_ERROR "Unable to determine ESMF configuration from ESMFMKFILE ${ESMFMKFILE}")
     endif()
-    message(INFO "ESMF_LIBSDIR: ${ESMF_LIBSDIR}")
+    # Set ESMF library
     set(ESMF_LIB ${ESMF_LIBSDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}esmf_fullylinked${CMAKE_SHARED_LIBRARY_SUFFIX})
-    # Note - this only works if the include directory sits next to the lib directory
-    set(ESMF_INC ${ESMF_LIBSDIR}/../mod)
+    # Set ESMF directory containing the Fortran module files,
+    # convert include flag string -Idir1 -Idir2 etc to list
+    separate_arguments(ESMF_F90COMPILEPATHS)
+    # Make sure the list is not empty
+    IF (NOT ESMF_F90COMPILEPATHS)
+      message(FATAL_ERROR "Unable to determine ESMF module directory from ESMFMKFILE ${ESMFMKFILE}")
+    endif()
+    # The first (leftmost) include directory contains the ESMF Fortran modules
+    list(GET ESMF_F90COMPILEPATHS 0 ESMF_INCFLAG)
+    # Extract the directory path /dir1 from the include flag string -I/dir1
+    string(REGEX REPLACE "^-I/" "/" ESMF_INC ${ESMF_INCFLAG})
+    #
     message(STATUS "Determined ESMF configuration from ESMFMKFILE ${ESMFMKFILE}")
-    add_custom_target(esmf env )
+    message(STATUS "  ESMF_LIB: ${ESMF_LIB}")
+    message(STATUS "  ESMF_INC: ${ESMF_INC}")
+    add_custom_target(esmf env)
   endif()
 #Look for jasper in environment
   if(NOT DEFINED ENV{JASPER})
