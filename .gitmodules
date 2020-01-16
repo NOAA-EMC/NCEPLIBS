@@ -1,6 +1,6 @@
 [submodule "NCEPLIBS-bacio"]
 	path = NCEPLIBS-bacio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-bacio
+	url = https://github.com/kgerheiser/NCEPLIBS-bacio
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-bufr"]
 	path = NCEPLIBS-bufr
