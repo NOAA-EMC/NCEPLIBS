@@ -78,3 +78,27 @@
 	path = UFS_UTILS
 	url = https://github.com/kgerheiser/UFS_UTILS
 	branch = release/ufs_release_v1.0
+[submodule "third-party-libraries/curl"]
+	path = third-party-libraries/curl
+	url = https://github.com/curl/curl.git
+[submodule "third-party-libraries/hdf5"]
+	path = third-party-libraries/hdf5
+	url = https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
+[submodule "third-party-libraries/jasper"]
+	path = third-party-libraries/jasper
+	url = https://github.com/mdadams/jasper.git
+[submodule "third-party-libraries/libpng"]
+	path = third-party-libraries/libpng
+	url = https://github.com/glennrp/libpng.git
+[submodule "third-party-libraries/netcdf-c"]
+	path = third-party-libraries/netcdf-c
+	url = https://github.com/Unidata/netcdf-c.git
+[submodule "third-party-libraries/netcdf-fortran"]
+	path = third-party-libraries/netcdf-fortran
+	url = https://github.com/Unidata/netcdf-fortran.git
+[submodule "third-party-libraries/zlib"]
+	path = third-party-libraries/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "third-party-libraries/esmf"]
+	path = third-party-libraries/esmf
+	url = https://git.code.sf.net/p/esmf/esmf
