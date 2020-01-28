@@ -73,7 +73,7 @@
 [submodule "NCEPLIBS-post"]
 	path = NCEPLIBS-post
 	url = https://github.com/kgerheiser/EMC_post
-	branch = ufs_release_v1.0
+	branch = ufs_public_release
 [submodule "UFS_UTILS"]
 	path = UFS_UTILS
 	url = https://github.com/kgerheiser/UFS_UTILS
