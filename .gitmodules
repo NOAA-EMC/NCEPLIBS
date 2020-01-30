@@ -1,104 +1,82 @@
 [submodule "NCEPLIBS-bacio"]
 	path = NCEPLIBS-bacio
-	url = https://github.com/kgerheiser/NCEPLIBS-bacio
+	url = https://github.com/NOAA-EMC/NCEPLIBS-bacio
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-bufr"]
 	path = NCEPLIBS-bufr
-	url = https://github.com/kgerheiser/NCEPLIBS-bufr
+	url = https://github.com/NOAA-EMC/NCEPLIBS-bufr
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-g2"]
 	path = NCEPLIBS-g2
-	url = https://github.com/kgerheiser/NCEPLIBS-g2
+	url = https://github.com/NOAA-EMC/NCEPLIBS-g2
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-g2tmpl"]
 	path = NCEPLIBS-g2tmpl
-	url = https://github.com/kgerheiser/NCEPLIBS-g2tmpl
+	url = https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-gfsio"]
 	path = NCEPLIBS-gfsio
-	url = https://github.com/kgerheiser/NCEPLIBS-gfsio
+	url = https://github.com/NOAA-EMC/NCEPLIBS-gfsio
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-grib_util"]
 	path = NCEPLIBS-grib_util
-	url = https://github.com/kgerheiser/NCEPLIBS-grib_util
+	url = https://github.com/NOAA-EMC/NCEPLIBS-grib_util
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-ip"]
 	path = NCEPLIBS-ip
-	url = https://github.com/kgerheiser/NCEPLIBS-ip
+	url = https://github.com/NOAA-EMC/NCEPLIBS-ip
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-landsfcutil"]
 	path = NCEPLIBS-landsfcutil
-	url = https://github.com/kgerheiser/NCEPLIBS-landsfcutil
+	url = https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-nemsio"]
 	path = NCEPLIBS-nemsio
-	url = https://github.com/kgerheiser/NCEPLIBS-nemsio
+	url = https://github.com/NOAA-EMC/NCEPLIBS-nemsio
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-nemsiogfs"]
 	path = NCEPLIBS-nemsiogfs
-	url = https://github.com/kgerheiser/NCEPLIBS-nemsiogfs
+	url = https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-prod_util"]
 	path = NCEPLIBS-prod_util
-	url = https://github.com/kgerheiser/NCEPLIBS-prod_util
+	url = https://github.com/NOAA-EMC/NCEPLIBS-prod_util
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-sfcio"]
 	path = NCEPLIBS-sfcio
-	url = https://github.com/kgerheiser/NCEPLIBS-sfcio
+	url = https://github.com/NOAA-EMC/NCEPLIBS-sfcio
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-sigio"]
 	path = NCEPLIBS-sigio
-	url = https://github.com/kgerheiser/NCEPLIBS-sigio
+	url = https://github.com/NOAA-EMC/NCEPLIBS-sigio
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-sp"]
 	path = NCEPLIBS-sp
-	url = https://github.com/kgerheiser/NCEPLIBS-sp
+	url = https://github.com/NOAA-EMC/NCEPLIBS-sp
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-w3emc"]
 	path = NCEPLIBS-w3emc
-	url = https://github.com/kgerheiser/NCEPLIBS-w3emc
+	url = https://github.com/NOAA-EMC/NCEPLIBS-w3emc
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-w3nco"]
 	path = NCEPLIBS-w3nco
-	url = https://github.com/kgerheiser/NCEPLIBS-w3nco
+	url = https://github.com/NOAA-EMC/NCEPLIBS-w3nco
 	branch = ufs_release_v1.0
 [submodule "cmake"]
 	path = cmake
-	url = https://github.com/kgerheiser/CMakeModules
+	url = https://github.com/NOAA-EMC/CMakeModules
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-crtm"]
 	path = NCEPLIBS-crtm
-	url = https://github.com/kgerheiser/EMC_crtm
+	url = https://github.com/NOAA-EMC/EMC_crtm
 	branch = ufs_release_v1.0
 [submodule "NCEPLIBS-post"]
 	path = NCEPLIBS-post
-	url = https://github.com/kgerheiser/EMC_post
+	url = https://github.com/NOAA-EMC/EMC_post
 	branch = ufs_public_release
 [submodule "UFS_UTILS"]
 	path = UFS_UTILS
-	url = https://github.com/kgerheiser/UFS_UTILS
+	url = https://github.com/NOAA-EMC/UFS_UTILS
 	branch = release/ufs_release_v1.0
-[submodule "third-party-libraries/curl"]
-	path = third-party-libraries/curl
-	url = https://github.com/curl/curl.git
-[submodule "third-party-libraries/hdf5"]
-	path = third-party-libraries/hdf5
-	url = https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
-[submodule "third-party-libraries/jasper"]
-	path = third-party-libraries/jasper
-	url = https://github.com/mdadams/jasper.git
-[submodule "third-party-libraries/libpng"]
-	path = third-party-libraries/libpng
-	url = https://github.com/glennrp/libpng.git
-[submodule "third-party-libraries/netcdf-c"]
-	path = third-party-libraries/netcdf-c
-	url = https://github.com/Unidata/netcdf-c.git
-[submodule "third-party-libraries/netcdf-fortran"]
-	path = third-party-libraries/netcdf-fortran
-	url = https://github.com/Unidata/netcdf-fortran.git
-[submodule "third-party-libraries/zlib"]
-	path = third-party-libraries/zlib
-	url = https://github.com/madler/zlib.git
-[submodule "third-party-libraries/esmf"]
-	path = third-party-libraries/esmf
-	url = https://git.code.sf.net/p/esmf/esmf
+
+

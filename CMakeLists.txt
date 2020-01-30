@@ -14,9 +14,7 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-
 project(NCEPLIBS)
-cmake_minimum_required(VERSION 3.15)
 enable_language(Fortran)
 
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
