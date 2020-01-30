@@ -74,15 +74,9 @@
 	path = NCEPLIBS-post
 	url = https://github.com/NOAA-EMC/EMC_post
 	branch = ufs_public_release
-[submodule "netcdf"]
-	path = netcdf
-	url = https://github.com/NOAA-EMC/netcdf-c
-	branch = ufs_release_v1.0
 [submodule "UFS_UTILS"]
 	path = UFS_UTILS
 	url = https://github.com/NOAA-EMC/UFS_UTILS
-# Fix me - move branch release/ufs_release_1.0 to ufs_release_1.0 and update here
 	branch = release/ufs_release_v1.0
-[submodule "esmf"]
-	path = esmf
-	url = https://git.code.sf.net/p/esmf/esmf
+
+
