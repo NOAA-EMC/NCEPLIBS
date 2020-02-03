@@ -77,7 +77,7 @@ endif()
 # Begin workaround for cmake completely ignoring "find_package(NetCDF REQUIRED)"
 find_package(NetCDF REQUIRED)
 if(NOT NETCDF_INCLUDES OR NOT NETCDF_LIBRARIES)
-  message(DEBUG "Applying workaround for cmake ignoring find_package(NetCDF REQUIRED)"
+  message(DEBUG "Applying workaround for cmake ignoring find_package(NetCDF REQUIRED)")
   set(NETCDF_INCLUDES ${NETCDF}/${CMAKE_INSTALL_INCLUDEDIR})
   set(NETCDF_LIBRARIES ${NETCDF}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}netcdff${CMAKE_SHARED_LIBRARY_SUFFIX};${NETCDF}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}netcdf${CMAKE_SHARED_LIBRARY_SUFFIX})
 endif()
