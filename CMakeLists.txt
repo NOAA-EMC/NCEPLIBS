@@ -1,15 +1,19 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.14)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 cmake_policy(SET CMP0048 NEW)
 
 #Set cmake policies
+
+# FILE GLOB_RECURSE calls should not follow symlinks by default
 if(POLICY CMP0009)
   cmake_policy(SET CMP0009 NEW)
 endif()
+# Error on non-existent dependency in add_dependencies
 if(POLICY CMP0046)
   cmake_policy(SET CMP0046 NEW)
 endif()
+# CMP0074: find_package uses PackageName_ROOT variables
 if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
@@ -47,6 +51,9 @@ if( BUILD_PRODUCTION )
 endif()
 
 if(DEFINED EXTERNAL_LIBS_DIR)
+  if(NOT DEFINED ENV{MPI_ROOT})
+    set(MPI_ROOT ${EXTERNAL_LIBS_DIR})
+  endif()
   if(NOT DEFINED ENV{Jasper_ROOT})
     set(Jasper_ROOT ${EXTERNAL_LIBS_DIR})
   endif()
@@ -71,6 +78,10 @@ if(DEFINED EXTERNAL_LIBS_DIR)
   if(NOT DEFINED ENV{NETCDF})
     set(NETCDF ${EXTERNAL_LIBS_DIR})
   endif()
+  if(NOT DEFINED ENV{WGRIB2_ROOT})
+    set(WGRIB2_ROOT ${EXTERNAL_LIBS_DIR})
+  endif()
+  # Set RPATH for macOS
   set(CMAKE_INSTALL_RPATH "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}")
 endif()
 
@@ -83,6 +94,7 @@ if(NOT NETCDF_INCLUDES OR NOT NETCDF_LIBRARIES)
 endif()
 # End workaround
 
+# Configure RPATH for macOS
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
 
 add_subdirectory(NCEPLIBS-bacio)
@@ -114,6 +126,9 @@ file( WRITE  ${SCRIPT_NAME_BASH} "#/bin/bash\n")
 file( APPEND ${SCRIPT_NAME_BASH} "\n")
 file( APPEND ${SCRIPT_NAME_BASH} "echo 'Setting environment variables for NCEPLIBS and its dependencies'\n")
 file( APPEND ${SCRIPT_NAME_BASH} "# Dependencies\n")
+file( APPEND ${SCRIPT_NAME_BASH} "export PATH=\"${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_BINDIR}:\$\{PATH\}\"\n")
+file( APPEND ${SCRIPT_NAME_BASH} "export LD_LIBRARY_PATH=\"${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}:\$\{LD_LIBRARY_PATH\}\"\n")
+file( APPEND ${SCRIPT_NAME_BASH} "export MPI_ROOT=${MPI_ROOT}\n")
 file( APPEND ${SCRIPT_NAME_BASH} "export Jasper_ROOT=${Jasper_ROOT}\n")
 file( APPEND ${SCRIPT_NAME_BASH} "export PNG_ROOT=${PNG_ROOT}\n")
 file( APPEND ${SCRIPT_NAME_BASH} "export ZLIB_ROOT=${ZLIB_ROOT}\n")
@@ -136,6 +151,13 @@ file( WRITE  ${SCRIPT_NAME_TCSH} "#/bin/tcsh\n")
 file( APPEND ${SCRIPT_NAME_TCSH} "\n")
 file( APPEND ${SCRIPT_NAME_TCSH} "echo 'Setting environment variables for NCEPLIBS and its dependencies'\n")
 file( APPEND ${SCRIPT_NAME_TCSH} "# Dependencies\n")
+file( APPEND ${SCRIPT_NAME_TCSH} "setenv PATH \"${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_BINDIR}:\$\{PATH\}\"\n")
+file( APPEND ${SCRIPT_NAME_TCSH} "if ( $?LD_LIBRARY_PATH ) then\n")
+file( APPEND ${SCRIPT_NAME_TCSH} "  setenv LD_LIBRARY_PATH \"${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}:\$\{LD_LIBRARY_PATH\}\"\n")
+file( APPEND ${SCRIPT_NAME_TCSH} "else\n")
+file( APPEND ${SCRIPT_NAME_TCSH} "  setenv LD_LIBRARY_PATH \"${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}\"\n")
+file( APPEND ${SCRIPT_NAME_TCSH} "endif\n")
+file( APPEND ${SCRIPT_NAME_TCSH} "setenv MPI_ROOT ${MPI_ROOT}\n")
 file( APPEND ${SCRIPT_NAME_TCSH} "setenv Jasper_ROOT ${Jasper_ROOT}\n")
 file( APPEND ${SCRIPT_NAME_TCSH} "setenv PNG_ROOT ${PNG_ROOT}\n")
 file( APPEND ${SCRIPT_NAME_TCSH} "setenv ZLIB_ROOT ${ZLIB_ROOT}\n")
