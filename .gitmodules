@@ -20,8 +20,10 @@
 	branch = release/public-v1
 [submodule "NCEPLIBS-grib_util"]
 	path = NCEPLIBS-grib_util
-	url = https://github.com/NOAA-EMC/NCEPLIBS-grib_util
-	branch = release/public-v1
+	#url = https://github.com/NOAA-EMC/NCEPLIBS-grib_util
+	#branch = release/public-v1
+	url = https://github.com/climbfuji/NCEPLIBS-grib_util
+	branch = no_static_linking
 [submodule "NCEPLIBS-ip"]
 	path = NCEPLIBS-ip
 	url = https://github.com/NOAA-EMC/NCEPLIBS-ip
