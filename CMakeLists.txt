@@ -51,7 +51,7 @@ if( BUILD_PRODUCTION )
 endif()
 
 if(DEFINED EXTERNAL_LIBS_DIR)
-  # Import the configuration configuration from the NCEPLIBS-external cmake configuration file
+  # Import the configuration from the NCEPLIBS-external cmake configuration file
   set(CMAKE_CONFIG_FILE_EXTERNAL "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_DATAROOTDIR}/nceplibs-external.cmake.config")
   if(EXISTS CMAKE_CONFIG_FILE_EXTERNAL)
     message(STATUS "importing configuration from ${CMAKE_CONFIG_FILE_EXTERNAL}")
