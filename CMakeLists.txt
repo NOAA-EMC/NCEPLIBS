@@ -68,7 +68,9 @@ if(DEFINED EXTERNAL_LIBS_DIR)
     message(FATAL_ERROR "CMake configuration for NCEPLIBS-external not found: ${CMAKE_CONFIG_FILE_EXTERNAL}")
   endif()
   # Set RPATH for macOS
-  set(CMAKE_INSTALL_RPATH "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}")
+  if(APPLE)
+    set(CMAKE_INSTALL_RPATH "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}")
+  endif()
 endif()
 
 # Workaround: configure NetCDF here to avoid issues later on
@@ -81,7 +83,9 @@ endif()
 # End workaround
 
 # Configure RPATH for macOS
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+if(APPLE)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+endif()
 
 add_subdirectory(NCEPLIBS-bacio)
 add_subdirectory(NCEPLIBS-ip)
