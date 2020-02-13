@@ -30,6 +30,14 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "default install path" FORCE )
 endif()
 
+# When building on macOS using ifort add the -c flag to ranlib so that common symbols are visible
+# in the .a. Otherwise uninitialized module variables will report as missing symbols
+if(APPLE)
+  if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+    set(CMAKE_Fortran_ARCHIVE_FINISH "<CMAKE_RANLIB> -c <TARGET>")
+  endif()
+endif()
+
 #Set up module and lib paths for build
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
