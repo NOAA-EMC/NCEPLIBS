@@ -30,6 +30,9 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "default install path" FORCE )
 endif()
 
+# By default turn off OpenMP support
+option(OPENMP "use OpenMP threading" OFF)
+
 # When building on macOS using ifort add the -c flag to ranlib so that common symbols are visible
 # in the .a. Otherwise uninitialized module variables will report as missing symbols
 if(APPLE)
