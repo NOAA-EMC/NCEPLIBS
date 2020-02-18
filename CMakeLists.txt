@@ -30,6 +30,11 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "default install path" FORCE )
 endif()
 
+# By default turn off OpenMP support
+option(OPENMP "use OpenMP threading" OFF)
+# Indicate to cmake what the default link type is
+option(STATIC_IS_DEFAULT "turn on for systems that use static linking by default" OFF)
+
 # When building on macOS using ifort add the -c flag to ranlib so that common symbols are visible
 # in the .a. Otherwise uninitialized module variables will report as missing symbols
 if(APPLE)
@@ -67,21 +72,20 @@ if(DEFINED EXTERNAL_LIBS_DIR)
   else()
     message(FATAL_ERROR "CMake configuration for NCEPLIBS-external not found: ${CMAKE_CONFIG_FILE_EXTERNAL}")
   endif()
-  # Set RPATH for macOS
-  set(CMAKE_INSTALL_RPATH "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}")
+  # Set RPATH for shared linking
+  if(NOT STATIC_IS_DEFAULT)
+    set(CMAKE_INSTALL_RPATH "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}")
+  endif()
 endif()
 
-# Workaround: configure NetCDF here to avoid issues later on
+# Workaround: detect NetCDF here using the MODULE logic to avoid issues later on
 find_package(NetCDF REQUIRED MODULE)
-if(NOT NETCDF_INCLUDES OR NOT NETCDF_LIBRARIES)
-  message(DEBUG "Applying workaround for cmake ignoring find_package(NetCDF REQUIRED)")
-  set(NETCDF_INCLUDES ${NETCDF}/${CMAKE_INSTALL_INCLUDEDIR})
-  set(NETCDF_LIBRARIES ${NETCDF}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}netcdff${CMAKE_SHARED_LIBRARY_SUFFIX};${NETCDF}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}netcdf${CMAKE_SHARED_LIBRARY_SUFFIX})
-endif()
 # End workaround
 
-# Configure RPATH for macOS
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+# Configure RPATH for shared linking
+if(NOT STATIC_IS_DEFAULT)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+endif()
 
 add_subdirectory(NCEPLIBS-bacio)
 add_subdirectory(NCEPLIBS-ip)
