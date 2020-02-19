@@ -1,56 +1,56 @@
 [submodule "NCEPLIBS-bacio"]
 	path = NCEPLIBS-bacio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-bacio
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-bacio
+	branch = feature/cleanup
 [submodule "NCEPLIBS-bufr"]
 	path = NCEPLIBS-bufr
-	url = https://github.com/NOAA-EMC/NCEPLIBS-bufr
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-bufr
+	branch = feature/cleanup
 [submodule "NCEPLIBS-g2"]
 	path = NCEPLIBS-g2
-	url = https://github.com/NOAA-EMC/NCEPLIBS-g2
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-g2
+	branch = feature/cleanup
 [submodule "NCEPLIBS-g2tmpl"]
 	path = NCEPLIBS-g2tmpl
-	url = https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-g2tmpl
+	branch = feature/cleanup
 [submodule "NCEPLIBS-gfsio"]
 	path = NCEPLIBS-gfsio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-gfsio
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-gfsio
+	branch = feature/cleanup
 [submodule "NCEPLIBS-ip"]
 	path = NCEPLIBS-ip
-	url = https://github.com/NOAA-EMC/NCEPLIBS-ip
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-ip
+	branch = feature/cleanup
 [submodule "NCEPLIBS-landsfcutil"]
 	path = NCEPLIBS-landsfcutil
-	url = https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-landsfcutil
+	branch = feature/cleanup
 [submodule "NCEPLIBS-nemsio"]
 	path = NCEPLIBS-nemsio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-nemsio
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-nemsio
+	branch = feature/cleanup
 [submodule "NCEPLIBS-nemsiogfs"]
 	path = NCEPLIBS-nemsiogfs
-	url = https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-nemsiogfs
+	branch = feature/cleanup
 [submodule "NCEPLIBS-sfcio"]
 	path = NCEPLIBS-sfcio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-sfcio
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-sfcio
+	branch = feature/cleanup
 [submodule "NCEPLIBS-sigio"]
 	path = NCEPLIBS-sigio
-	url = https://github.com/NOAA-EMC/NCEPLIBS-sigio
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-sigio
+	branch = feature/cleanup
 [submodule "NCEPLIBS-sp"]
 	path = NCEPLIBS-sp
-	url = https://github.com/NOAA-EMC/NCEPLIBS-sp
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-sp
+	branch = feature/cleanup
 [submodule "NCEPLIBS-w3emc"]
 	path = NCEPLIBS-w3emc
-	url = https://github.com/NOAA-EMC/NCEPLIBS-w3emc
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-w3emc
+	branch = feature/cleanup
 [submodule "NCEPLIBS-w3nco"]
 	path = NCEPLIBS-w3nco
-	url = https://github.com/NOAA-EMC/NCEPLIBS-w3nco
-	branch = release/public-v1
+	url = https://github.com/aerorahul/NCEPLIBS-w3nco
+	branch = feature/cleanup
