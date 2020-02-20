@@ -5,7 +5,7 @@
 [submodule "NCEPLIBS-bufr"]
 	path = NCEPLIBS-bufr
 	url = https://github.com/aerorahul/NCEPLIBS-bufr
-	branch = feature/cleanup
+	branch = release/public-v1
 [submodule "NCEPLIBS-g2"]
 	path = NCEPLIBS-g2
 	url = https://github.com/aerorahul/NCEPLIBS-g2
