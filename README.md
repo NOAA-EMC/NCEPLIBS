@@ -13,7 +13,7 @@ It includes the following libraries:
 | NCEP library         | Version                                               |
 |----------------------|-------------------------------------------------------|
 | NCEPLIBS-bacio       | 2.1.0                                                 |
-| NCEPLIBS- bufr       | 11.3.0                                                |
+| NCEPLIBS-bufr        | 11.3.0                                                |
 | NCEPLIBS-crtm        | 2.3.0                                                 |
 | NCEPLIBS-g2          | 3.1.0                                                 |
 | NCEPLIBS-g2tmpl      | 1.5.0                                                 |
