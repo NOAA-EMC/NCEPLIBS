@@ -17,10 +17,12 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
+file(STRINGS "VERSION" pVersion)
+
 project(
   NCEPLIBS
-  VERSION 1.0.0
-  LANGUAGES C CXX Fortran)
+  VERSION ${pVersion}
+  LANGUAGES C Fortran)
 
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
 
