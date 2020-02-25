@@ -100,7 +100,7 @@ add_subdirectory(NCEPLIBS-nemsiogfs)
 add_subdirectory(NCEPLIBS-grib_util)
 add_subdirectory(NCEPLIBS-prod_util)
 add_subdirectory(UFS_UTILS)
-add_subdirectory(NCEP_post)
+add_subdirectory(NCEPLIBS-post)
 
 # Create shell scripts for bash and csh to set
 # necessary environment variables for NCEPLIBS
