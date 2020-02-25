@@ -64,8 +64,8 @@
 	branch = release/public-v1
 [submodule "cmake"]
 	path = cmake
-	url = https://github.com/climbfuji/CMakeModules
-	branch = findesmf_prefer_static_library
+	url = https://github.com/NOAA-EMC/CMakeModules
+	branch = release/public-v1
 [submodule "NCEPLIBS-crtm"]
 	path = NCEPLIBS-crtm
 	url = https://github.com/NOAA-EMC/EMC_crtm
