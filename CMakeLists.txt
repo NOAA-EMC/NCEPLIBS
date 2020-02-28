@@ -75,16 +75,6 @@ if(DEFINED EXTERNAL_LIBS_DIR)
   endif()
 endif()
 
-# Workaround: detect NetCDF here using the MODULE logic to avoid issues later on
-find_package(NetCDF REQUIRED MODULE)
-if(STATIC_IS_DEFAULT)
-  find_package(HDF5 REQUIRED MODULE COMPONENTS "C" "HL")
-  find_package(ZLIB REQUIRED MODULE)
-  set(NETCDF_LIBRARIES "${NETCDF_LIBRARIES};${HDF5_HL_LIBRARIES};${HDF5_LIBRARIES};${ZLIB_LIBRARIES}")
-endif()
-LIST(REMOVE_DUPLICATES NETCDF_LIBRARIES)
-message(STATUS "NETCDF LIBRARIES: ${NETCDF_LIBRARIES}")
-
 # Configure RPATH for shared linking
 if(NOT STATIC_IS_DEFAULT)
   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
