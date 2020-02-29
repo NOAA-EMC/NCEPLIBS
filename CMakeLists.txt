@@ -77,6 +77,19 @@ if(DEFINED EXTERNAL_LIBS_DIR)
   endif()
 endif()
 
+# If NETCDF is not set in the NCEPLIBS-external cmake configuration file,
+# need to add environment variable NETCDF to CMAKE_PREFIX_PATH for PkgConfig
+if(NOT NETCDF)
+  if(NOT DEFINED ENV{NETCDF})
+    message(FATAL_ERROR "Environment variable NETCDF not set")
+  else()
+    list(APPEND CMAKE_PREFIX_PATH $ENV{NETCDF})
+  endif()
+  if(DEFINED ENV{NETCDF_FORTRAN})
+    list(APPEND CMAKE_PREFIX_PATH $ENV{NETCDF_FORTRAN})
+  endif()
+endif()
+
 # Configure RPATH for shared linking
 if(NOT STATIC_IS_DEFAULT)
   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
