@@ -61,6 +61,8 @@ option(OPENMP "use OpenMP threading" OFF)
 option(STATIC_IS_DEFAULT "turn on for systems that use static linking by default" OFF)
 
 if(DEFINED EXTERNAL_LIBS_DIR)
+  # Set CMAKE_PREFIX_PATH for PkgConfig
+  set(CMAKE_PREFIX_PATH ${EXTERNAL_LIBS_DIR})
   # Import the configuration from the NCEPLIBS-external cmake configuration file
   set(CMAKE_CONFIG_FILE_EXTERNAL "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_DATAROOTDIR}/nceplibs-external.cmake.config")
   if(EXISTS ${CMAKE_CONFIG_FILE_EXTERNAL})
@@ -78,6 +80,13 @@ endif()
 # Configure RPATH for shared linking
 if(NOT STATIC_IS_DEFAULT)
   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+endif()
+
+# Flag for using static netCDF
+if(STATIC_IS_DEFAULT)
+  set(NETCDF_USE_STATIC_LIBRARIES TRUE)
+else()
+  set(NETCDF_USE_STATIC_LIBRARIES FALSE)
 endif()
 
 add_subdirectory(NCEPLIBS-crtm)
