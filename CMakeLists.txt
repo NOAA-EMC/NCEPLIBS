@@ -61,8 +61,8 @@ option(OPENMP "use OpenMP threading" OFF)
 option(STATIC_IS_DEFAULT "turn on for systems that use static linking by default" OFF)
 
 if(DEFINED EXTERNAL_LIBS_DIR)
-  # Set CMAKE_PREFIX_PATH for PkgConfig
-  set(CMAKE_PREFIX_PATH ${EXTERNAL_LIBS_DIR})
+  # Append to CMAKE_PREFIX_PATH for PkgConfig
+  list(APPEND CMAKE_PREFIX_PATH ${EXTERNAL_LIBS_DIR})
   # Import the configuration from the NCEPLIBS-external cmake configuration file
   set(CMAKE_CONFIG_FILE_EXTERNAL "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_DATAROOTDIR}/nceplibs-external.cmake.config")
   if(EXISTS ${CMAKE_CONFIG_FILE_EXTERNAL})
