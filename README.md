@@ -12,24 +12,24 @@ It includes the following libraries:
 
 | NCEP library         | Version                                               |
 |----------------------|-------------------------------------------------------|
-| NCEPLIBS-bacio       | 2.1.0                                                 |
-| NCEPLIBS-bufr        | 11.3.0                                                |
+| NCEPLIBS-bacio       | 2.2.0                                                 |
+| NCEPLIBS-bufr        | not included in this release                          |
 | NCEPLIBS-crtm        | 2.3.0                                                 |
-| NCEPLIBS-g2          | 3.1.0                                                 |
-| NCEPLIBS-g2tmpl      | 1.5.0                                                 |
-| NCEPLIBS-gfsio       | 1.1.0                                                 |
-| NCEPLIBS-grib_util   | 1.1.1                                                 |
-| NCEPLIBS-ip          | 3.0.0                                                 |
-| NCEPLIBS-landsfcutil | 2.1.0                                                 |
-| NCEPLIBS-nemsio      | 2.2.3                                                 |
-| NCEPLIBS-nemsiogfs   | 2.2.1                                                 |
-| EMC_post             | 1.1.1                                                 |
-| NCEPLIBS-prod_util   | 1.1.1                                                 |
-| NCEPLIBS-sfcio       | 1.1.0                                                 |
-| NCEPLIBS-sigio       | 2.1.0                                                 |
-| NCEPLIBS-sp          | 2.0.2                                                 |
-| NCEPLIBS-w3emc       | 2.2.0                                                 |
-| NCEPLIBS-w3nco       | 2.0.6                                                 |
+| NCEPLIBS-g2          | 3.2.0                                                 |
+| NCEPLIBS-g2tmpl      | 1.7.0                                                 |
+| NCEPLIBS-gfsio       | 1.2.0                                                 |
+| NCEPLIBS-grib_util   | 1.2.0                                                 |
+| NCEPLIBS-ip          | 3.1.0                                                 |
+| NCEPLIBS-landsfcutil | 2.2.0                                                 |
+| NCEPLIBS-nemsio      | 2.3.0                                                 |
+| NCEPLIBS-nemsiogfs   | 2.3.0                                                 |
+| EMC_post             | 8.0.0                                                 |
+| NCEPLIBS-prod_util   | 1.2.0                                                 |
+| NCEPLIBS-sfcio       | 1.2.0                                                 |
+| NCEPLIBS-sigio       | 2.2.0                                                 |
+| NCEPLIBS-sp          | 2.1.0                                                 |
+| NCEPLIBS-w3emc       | 2.5.0                                                 |
+| NCEPLIBS-w3nco       | 2.1.0                                                 |
 | UFS_UTILS            | 1.1.1                                                 |
 
 ## Building, Requirements, Troubleshooting, Support
@@ -42,7 +42,7 @@ It includes the following libraries:
 
 | Compiler vendor | Supported (tested) versions                                |
 |-----------------|------------------------------------------------------------|
-| Intel           | 18.0.3.222, 18.0.5.274, 19.0.2.187, 19.0.5.281             |
+| Intel           | 18.0.3.222, 18.0.5.274, 19.0.2.187, 19.0.5.281, 19.1.0.166 |
 | GNU             | 8.3.0, 9.1.0, 9.2.0                                        |
 
 3. A supported MPI library unless installed as part of NCEPLIBS-external, see table below. Other versions may work, in particular if close to the versions listed below. It is recommended to compile the MPI library with the same compilers used to compile NCEPLIBS-external, NCEPLIBS and the UFS applications.
@@ -52,7 +52,7 @@ It includes the following libraries:
 | MPICH           | 3.3.1, 3.3.2                                               |
 | MVAPICH2        | 2.3.3                                                      |
 | Open MPI        | 4.0.2                                                      |
-| Intel MPI       | 2018.0.4, 2019.6.154                                       |
+| Intel MPI       | 2018.0.4, 2019.6.154, 2020.0.166                           |
 | SGI MPT         | 2.19                                                       |
 
 4. A software stack consisting of the following libraries, preferably compiled with the same compiler and MPI library (where applicable). Other versions may work, in particular if close to the versions listed below. The [NCEPLIBS-external project](https://github.com/NOAA-EMC/NCEPLIBS-external) provides an easy and convenient way to install the required libraries on supported platforms such as generic Linux/macOS systems. It is also possible to skip installing certain components and set the appropriate environment variables so that the NCEPLIBS build system finds them. This is also discussed in detail on the NCEPLIBS-external project.
