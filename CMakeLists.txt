@@ -124,6 +124,13 @@ add_subdirectory(NCEPLIBS-prod_util)
 add_subdirectory(UFS_UTILS)
 add_subdirectory(NCEPLIBS-post)
 
+# Get version from sub-directories
+file(STRINGS "NCEPLIBS-bacio/VERSION" bacioVersion)
+file(STRINGS "NCEPLIBS-nemsio/VERSION" nemsioVersion)
+file(STRINGS "NCEPLIBS-sp/VERSION" spVersion)
+file(STRINGS "NCEPLIBS-w3emc/VERSION" w3emcVersion)
+file(STRINGS "NCEPLIBS-w3nco/VERSION" w3ncoVersion)
+
 # Create shell scripts for bash and csh to set
 # necessary environment variables for NCEPLIBS
 message(STATUS "Creating shell scripts to set environment variables for using NCEPLIBS")
