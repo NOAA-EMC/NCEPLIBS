@@ -11,9 +11,9 @@ export NETCDF=@NETCDF@
 # NCEPLIBS
 export NCEPLIBS_DIR=@CMAKE_INSTALL_PREFIX@
 export NEMSIO_INC=@CMAKE_INSTALL_PREFIX@/include
-export NEMSIO_LIB=@CMAKE_INSTALL_PREFIX@/lib/libnemsio_v2.2.3.a
-export BACIO_LIB4=@CMAKE_INSTALL_PREFIX@/lib/libbacio_v2.1.0_4.a
-export SP_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libsp_v2.0.2_d.a
-export W3EMC_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libw3emc_v2.2.0_d.a
-export W3NCO_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libw3nco_v2.0.6_d.a
+export NEMSIO_LIB=@CMAKE_INSTALL_PREFIX@/lib/libnemsio_v@nemsioVersion@.a
+export BACIO_LIB4=@CMAKE_INSTALL_PREFIX@/lib/libbacio_v@bacioVersion@_4.a
+export SP_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libsp_v@spVersion@_d.a
+export W3EMC_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libw3emc_v@w3emcVersion@_d.a
+export W3NCO_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libw3nco_v@w3ncoVersion@_d.a
 
