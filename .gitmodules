@@ -62,10 +62,6 @@
 	path = NCEPLIBS-w3nco
 	url = https://github.com/NOAA-EMC/NCEPLIBS-w3nco
 	branch = release/public-v1
-[submodule "cmake"]
-	path = cmake
-	url = https://github.com/NOAA-EMC/CMakeModules
-	branch = release/public-v1
 [submodule "NCEPLIBS-crtm"]
 	path = NCEPLIBS-crtm
 	url = https://github.com/NOAA-EMC/EMC_crtm

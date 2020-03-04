@@ -1,2 +1,11 @@
-build
+build*/
+install*/
+test*/
+
+*.[ao]
+*.mod
+*.swp
+*.exe
+*.x
+
 .DS_Store
