@@ -79,11 +79,13 @@ endif()
 
 # If NETCDF is not set in the NCEPLIBS-external cmake configuration file,
 # need to add environment variable NETCDF to CMAKE_PREFIX_PATH for PkgConfig
+# and set cmake variable accordingly
 if(NOT NETCDF)
   if(NOT DEFINED ENV{NETCDF})
     message(FATAL_ERROR "Environment variable NETCDF not set")
   else()
     list(APPEND CMAKE_PREFIX_PATH $ENV{NETCDF})
+    set(NETCDF $ENV{NETCDF})
   endif()
   if(DEFINED ENV{NETCDF_FORTRAN})
     list(APPEND CMAKE_PREFIX_PATH $ENV{NETCDF_FORTRAN})
