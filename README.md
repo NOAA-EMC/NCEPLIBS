@@ -19,14 +19,14 @@ It includes the following libraries:
 | NCEPLIBS-landsfcutil | 2.2.0                                                 |
 | NCEPLIBS-nemsio      | 2.3.0                                                 |
 | NCEPLIBS-nemsiogfs   | 2.3.0                                                 |
-| EMC_post             | 8.0.0                                                 |
+| EMC_post             | 1.0.0                                                 |
 | NCEPLIBS-prod_util   | 1.2.0                                                 |
 | NCEPLIBS-sfcio       | 1.2.0                                                 |
 | NCEPLIBS-sigio       | 2.2.0                                                 |
 | NCEPLIBS-sp          | 2.1.0                                                 |
 | NCEPLIBS-w3emc       | 2.5.0                                                 |
 | NCEPLIBS-w3nco       | 2.1.0                                                 |
-| UFS_UTILS            | 1.1.1                                                 |
+| UFS_UTILS            | 1.0.0                                                 |
 
 ## Building, Requirements, Troubleshooting, Support
 
