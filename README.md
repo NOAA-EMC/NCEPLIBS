@@ -1,9 +1,5 @@
 # NCEPLIBS
 
-## Warning
-
-This repository and the documentation are rapidly changing and not ready for general community use.
-
 ## Introduction
 
 This is a compilation of libraries known as NCEPLIBS that are required for building and running the UFS weather model. For general information about NCEPLIBS and the UFS weather model, the user is referred to the [Wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki).
@@ -23,14 +19,14 @@ It includes the following libraries:
 | NCEPLIBS-landsfcutil | 2.2.0                                                 |
 | NCEPLIBS-nemsio      | 2.3.0                                                 |
 | NCEPLIBS-nemsiogfs   | 2.3.0                                                 |
-| EMC_post             | 8.0.0                                                 |
+| EMC_post             | 1.0.0                                                 |
 | NCEPLIBS-prod_util   | 1.2.0                                                 |
 | NCEPLIBS-sfcio       | 1.2.0                                                 |
 | NCEPLIBS-sigio       | 2.2.0                                                 |
 | NCEPLIBS-sp          | 2.1.0                                                 |
 | NCEPLIBS-w3emc       | 2.5.0                                                 |
 | NCEPLIBS-w3nco       | 2.1.0                                                 |
-| UFS_UTILS            | 1.1.1                                                 |
+| UFS_UTILS            | 1.0.0                                                 |
 
 ## Building, Requirements, Troubleshooting, Support
 
@@ -78,19 +74,9 @@ The [NCEPLIBS-external documentation](https://github.com/NOAA-EMC/NCEPLIBS-exter
 
 **Obtaining the code**
 
-First, clone the repository:
+Clone the repository and its submodules:
 
-`git clone https://github.com/NOAA-EMC/NCEPLIBS`
-
-Then, switch to the release branch:
-
-`cd NCEPLIBS`
-
-`git checkout release/public-v1`
-
-Since this project uses submodules they must be initialized by running:
-
-`git submodule update --init --recursive`
+`git clone -b ufs-v1.0.0 --recursive https://github.com/NOAA-EMC/NCEPLIBS`
 
 **Building**
 
