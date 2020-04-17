@@ -1,0 +1,25 @@
+#/bin/tcsh
+
+echo "Setting environment variables for NCEPLIBS and its dependencies"
+
+# Dependencies
+setenv PATH "@EXTERNAL_LIBS_DIR@/@CMAKE_INSTALL_BINDIR@:${PATH}"
+
+if ($?LD_LIBRARY_PATH) then
+   setenv LD_LIBRARY_PATH "@EXTERNAL_LIBS_DIR@/@CMAKE_INSTALL_LIBDIR@:${LD_LIBRARY_PATH}"
+else
+  setenv LD_LIBRARY_PATH "@EXTERNAL_LIBS_DIR@/@CMAKE_INSTALL_LIBDIR@"
+endif
+
+setenv ESMFMKFILE @ESMFMKFILE@
+setenv NETCDF @NETCDF@
+
+# NCEPLIBS
+setenv NCEPLIBS_DIR @CMAKE_INSTALL_PREFIX@
+setenv NEMSIO_INC @CMAKE_INSTALL_PREFIX@/include
+setenv NEMSIO_LIB @CMAKE_INSTALL_PREFIX@/lib/libnemsio_v@nemsioVersion@.a
+setenv BACIO_LIB4 @CMAKE_INSTALL_PREFIX@/lib/libbacio_v@bacioVersion@_4.a
+setenv SP_LIBd @CMAKE_INSTALL_PREFIX@/lib/libsp_v@spVersion@_d.a
+setenv W3EMC_LIBd @CMAKE_INSTALL_PREFIX@/lib/libw3emc_v@w3emcVersion@_d.a
+setenv W3NCO_LIBd @CMAKE_INSTALL_PREFIX@/lib/libw3nco_v@w3ncoVersion@_d.a
+

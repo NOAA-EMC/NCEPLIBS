@@ -1,0 +1,19 @@
+#/bin/bash
+
+echo "Setting environment variables for NCEPLIBS and its dependencies"
+
+# Dependencies
+export PATH="@EXTERNAL_LIBS_DIR@/@CMAKE_INSTALL_BINDIR@:${PATH}"
+export LD_LIBRARY_PATH="@EXTERNAL_LIBS_DIR@/@CMAKE_INSTALL_LIBDIR@:${LD_LIBRARY_PATH}"
+export ESMFMKFILE=@ESMFMKFILE@
+export NETCDF=@NETCDF@
+
+# NCEPLIBS
+export NCEPLIBS_DIR=@CMAKE_INSTALL_PREFIX@
+export NEMSIO_INC=@CMAKE_INSTALL_PREFIX@/include
+export NEMSIO_LIB=@CMAKE_INSTALL_PREFIX@/lib/libnemsio_v@nemsioVersion@.a
+export BACIO_LIB4=@CMAKE_INSTALL_PREFIX@/lib/libbacio_v@bacioVersion@_4.a
+export SP_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libsp_v@spVersion@_d.a
+export W3EMC_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libw3emc_v@w3emcVersion@_d.a
+export W3NCO_LIBd=@CMAKE_INSTALL_PREFIX@/lib/libw3nco_v@w3ncoVersion@_d.a
+
