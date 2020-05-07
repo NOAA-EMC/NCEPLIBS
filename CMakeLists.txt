@@ -136,5 +136,7 @@ file(STRINGS "NCEPLIBS-w3nco/VERSION" w3ncoVersion)
 # Create shell scripts for bash and csh to set
 # necessary environment variables for NCEPLIBS
 message(STATUS "Creating shell scripts to set environment variables for using NCEPLIBS")
-configure_file(setenv_nceplibs_csh_template.txt ${CMAKE_INSTALL_PREFIX}/bin/setenv_nceplibs.csh @ONLY)
-configure_file(setenv_nceplibs_bash_template.txt ${CMAKE_INSTALL_PREFIX}/bin/setenv_nceplibs.sh @ONLY)
+configure_file(setenv_nceplibs_csh_template.txt ${CMAKE_BINARY_DIR}/setenv_nceplibs.csh @ONLY)
+configure_file(setenv_nceplibs_bash_template.txt ${CMAKE_BINARY_DIR}/setenv_nceplibs.sh @ONLY)
+
+install(FILES ${CMAKE_BINARY_DIR}/setenv_nceplibs.csh ${CMAKE_BINARY_DIR}/setenv_nceplibs.sh DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
