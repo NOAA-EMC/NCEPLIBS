@@ -26,6 +26,15 @@ endif()
 option(OPENMP       "Enable OpenMP threading" OFF)
 option(ENABLE_TESTS "Enable testing"          OFF)
 option(BUILD_CRTM   "Build CRTM library"      ON)
+option(BUILD_POST   "Build NCEPpost library"  ON)
+
+# Enable CRTM if NCEPpost library is desired.
+if(BUILD_POST)
+  if(NOT BUILD_CRTM)
+    message(STATUS "Enabling NCEPpost will enable CRTM")
+  endif()
+  set(BUILD_CRTM ON)
+endif()
 
 ExternalProject_Add(bacio
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-bacio"
@@ -158,5 +167,17 @@ if(BUILD_CRTM)
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/crtm"
+    )
+endif()
+
+if(BUILD_POST)
+  ExternalProject_Add(post
+    GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
+    GIT_TAG        "feature/cmakepkg"
+    PREFIX         "${CMAKE_BINARY_DIR}/post"
+    CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
+                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/post"
+                   "-DBUILD_POSTEXEC=OFF"
+    DEPENDS        bacio sigio sfcio gfsio nemsio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
