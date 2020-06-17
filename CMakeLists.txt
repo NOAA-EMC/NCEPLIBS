@@ -171,12 +171,12 @@ if(BUILD_CRTM)
 endif()
 
 if(BUILD_POST)
-  ExternalProject_Add(post
+  ExternalProject_Add(nceppost
     GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
     GIT_TAG        "feature/cmakepkg"
-    PREFIX         "${CMAKE_BINARY_DIR}/post"
+    PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
-                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/post"
+                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/nceppost"
                    "-DBUILD_POSTEXEC=OFF"
     DEPENDS        bacio sigio sfcio gfsio nemsio w3nco w3emc g2 g2tmpl ip sp crtm
     )
