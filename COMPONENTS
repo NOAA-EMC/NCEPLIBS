@@ -1,0 +1,15 @@
+bacio : develop
+sigio : develop
+sfcio : develop
+gfsio : develop
+nemsio : develop
+nemsiogfs : develop
+w3emc : develop
+w3nco : develop
+ip : develop
+sp : develop
+landsfcutil : develop
+g2 : develop
+g2tmpl : develop
+crtm : develop
+nceppost : feature/cmake
