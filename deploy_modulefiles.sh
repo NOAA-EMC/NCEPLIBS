@@ -27,13 +27,16 @@ if [[ -d $modulesDestDir ]]; then
   echo "cannot overwrite, ABORT!"
   exit 1
 fi
+
+mkdir -p $(dirname $modulesDestDir)
 cp -R $modulesTmplDir $modulesDestDir
 
 # sed does not like delimiter (/) to be a part of replacement string
 # so do magic
 repl=$(echo ${nceplibsInstallDir} | sed -e "s#/#\\\/#g")
 
-# Replace templated nceplibs installation path with actual
+# Replace templated nceplibs installation path with actual and
+# rename modulefile based on version
 cd $modulesDestDir
 for i in $(ls -1); do
   echo "filling template of ... $i"
