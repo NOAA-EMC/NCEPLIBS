@@ -174,6 +174,7 @@ if(BUILD_POST)
   ExternalProject_Add(nceppost
     GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
     GIT_TAG        "feature/cmake"
+    GIT_SUBMODULES "CMakeModules"
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/nceppost"
