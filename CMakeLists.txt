@@ -36,28 +36,31 @@ if(BUILD_POST)
   set(BUILD_CRTM ON)
 endif()
 
-function(getVer fileName libName output_var)
-  set(${output_var} "develop" PARENT_SCOPE)
+# Function to get the Branch/Tag and Version
+function(getTagVer fileName libName tag ver)
+  set(${tag} "develop" PARENT_SCOPE)
   execute_process(
     COMMAND cat ${fileName}
     COMMAND grep ${libName}
-    COMMAND cut -d: -f2
+    COMMAND cut -d| -f2
     RESULT_VARIABLE _ret OUTPUT_VARIABLE _val)
   if( _ret EQUAL 0 )
     string( STRIP ${_val} _val )
-    set( ${output_var} ${_val} PARENT_SCOPE )
+    set( ${tag} ${_val} PARENT_SCOPE )
+  endif()
+  set(${ver} "develop" PARENT_SCOPE)
+  execute_process(
+    COMMAND cat ${fileName}
+    COMMAND grep ${libName}
+    COMMAND cut -d| -f3
+    RESULT_VARIABLE _ret OUTPUT_VARIABLE _val)
+  if( _ret EQUAL 0 )
+    string( STRIP ${_val} _val )
+    set( ${ver} ${_val} PARENT_SCOPE )
   endif()
 endfunction()
 
-function(setTag version libName output_var)
-  set(${output_var} "develop" PARENT_SCOPE)
-  if(NOT ${version} MATCHES "^(develop)$")
-    set( ${output_var} "${libName}_v${version}" PARENT_SCOPE )
-  endif()
-endfunction()
-
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "bacio" ver)
-setTag(${ver} "bacio" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "bacio" tag ver)
 ExternalProject_Add(bacio
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-bacio"
   GIT_TAG        "${tag}"
@@ -67,8 +70,7 @@ ExternalProject_Add(bacio
                  "-DENABLE_TESTS=${ENABLE_TESTS}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "sigio" ver)
-setTag(${ver} "sigio" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "sigio" tag ver)
 ExternalProject_Add(sigio
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-sigio"
   GIT_TAG        "${tag}"
@@ -78,8 +80,7 @@ ExternalProject_Add(sigio
                  "-DENABLE_TESTS=${ENABLE_TESTS}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "sfcio" ver)
-setTag(${ver} "sfcio" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "sfcio" tag ver)
 ExternalProject_Add(sfcio
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-sfcio"
   GIT_TAG        "${tag}"
@@ -89,8 +90,7 @@ ExternalProject_Add(sfcio
                  "-DENABLE_TESTS=${ENABLE_TESTS}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "gfsio" ver)
-setTag(${ver} "gfsio" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "gfsio" tag ver)
 ExternalProject_Add(gfsio
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-gfsio"
   GIT_TAG        "${tag}"
@@ -100,8 +100,7 @@ ExternalProject_Add(gfsio
                  "-DENABLE_TESTS=${ENABLE_TESTS}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "ip" ver)
-setTag(${ver} "ip" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "ip" tag ver)
 ExternalProject_Add(ip
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-ip"
   GIT_TAG        "${tag}"
@@ -112,8 +111,7 @@ ExternalProject_Add(ip
                  "-DOPENMP=${OPENMP}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "sp" ver)
-setTag(${ver} "sp" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "sp" tag ver)
 ExternalProject_Add(sp
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-sp"
   GIT_TAG        "${tag}"
@@ -124,8 +122,7 @@ ExternalProject_Add(sp
                  "-DOPENMP=${OPENMP}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "w3nco" ver)
-setTag(${ver} "w3nco" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "w3nco" tag ver)
 ExternalProject_Add(w3nco
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-w3nco"
   GIT_TAG        "${tag}"
@@ -135,8 +132,7 @@ ExternalProject_Add(w3nco
                  "-DENABLE_TESTS=${ENABLE_TESTS}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "nemsio" ver)
-setTag(${ver} "nemsio" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "nemsio" tag ver)
 ExternalProject_Add(nemsio
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-nemsio"
   GIT_TAG        "${tag}"
@@ -147,8 +143,7 @@ ExternalProject_Add(nemsio
   DEPENDS        bacio w3nco
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "nemsiogfs" ver)
-setTag(${ver} "nemsiogfs" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "nemsiogfs" tag ver)
 ExternalProject_Add(nemsiogfs
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-nemsiogfs"
   GIT_TAG        "${tag}"
@@ -160,8 +155,7 @@ ExternalProject_Add(nemsiogfs
   DEPENDS        nemsio
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "landsfcutil" ver)
-setTag(${ver} "landsfcutil" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "landsfcutil" tag ver)
 ExternalProject_Add(landsfcutil
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-landsfcutil"
   GIT_TAG        "${tag}"
@@ -172,8 +166,7 @@ ExternalProject_Add(landsfcutil
   DEPENDS        nemsio
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "g2" ver)
-setTag(${ver} "g2" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "g2" tag ver)
 ExternalProject_Add(g2
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-g2"
   GIT_TAG        "${tag}"
@@ -183,8 +176,7 @@ ExternalProject_Add(g2
                  "-DENABLE_TESTS=${ENABLE_TESTS}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "g2tmpl" ver)
-setTag(${ver} "g2tmpl" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "g2tmpl" tag ver)
 ExternalProject_Add(g2tmpl
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-g2tmpl"
   GIT_TAG        "${tag}"
@@ -194,8 +186,7 @@ ExternalProject_Add(g2tmpl
                  "-DENABLE_TESTS=${ENABLE_TESTS}"
   )
 
-getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "w3emc" ver)
-setTag(${ver} "w3emc" tag)
+getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "w3emc" tag ver)
 ExternalProject_Add(w3emc
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-w3emc"
   GIT_TAG        "${tag}"
@@ -207,8 +198,7 @@ ExternalProject_Add(w3emc
   )
 
 if(BUILD_CRTM)
-  getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "crtm" ver)
-  setTag(${ver} "crtm" tag)
+  getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "crtm" tag ver)
   ExternalProject_Add(crtm
     GIT_REPOSITORY "https://github.com/noaa-emc/emc_crtm"
     GIT_TAG        "${tag}"
@@ -219,8 +209,7 @@ if(BUILD_CRTM)
 endif()
 
 if(BUILD_POST)
-  getVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "nceppost" ver)
-  setTag(${ver} "nceppost" tag)
+  getTagVer("${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS" "nceppost" tag ver)
   ExternalProject_Add(nceppost
     GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
     GIT_TAG        "${tag}"

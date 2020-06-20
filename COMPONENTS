@@ -1,15 +1,19 @@
-bacio : develop
-sigio : develop
-sfcio : develop
-gfsio : develop
-nemsio : develop
-nemsiogfs : develop
-w3emc : develop
-w3nco : develop
-ip : develop
-sp : develop
-landsfcutil : develop
-g2 : develop
-g2tmpl : develop
-crtm : develop
-nceppost : feature/cmake
+--------------------------------------------------------
+COMPONENT   | BRANCH / TAG       | VERSION
+--------------------------------------------------------
+bacio       | develop            | develop
+sigio       | develop            | develop
+sfcio       | develop            | develop
+gfsio       | develop            | develop
+nemsio      | develop            | develop
+nemsiogfs   | develop            | develop
+w3emc       | develop            | develop
+w3nco       | develop            | develop
+ip          | develop            | develop
+sp          | develop            | develop
+landsfcutil | develop            | develop
+g2          | develop            | develop
+g2tmpl      | develop            | develop
+crtm        | develop            | develop
+nceppost    | feature/cmake      | feature/cmake
+--------------------------------------------------------
