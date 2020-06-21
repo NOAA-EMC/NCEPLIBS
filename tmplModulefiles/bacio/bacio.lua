@@ -1,16 +1,17 @@
 help([[
 ]])
 
-local pkgVersion = myModuleVersion()
 local pkgName = myModuleName()
+local pkgVersion = myModuleVersion()
 
 conflict(pkgName)
 
-local base = "@NCEPLIBS_ROOT@"
+local prefix = "#NCEPLIBS_ROOT#"
+local base = pathJoin(prefix,pkgName,pkgVersion)
 
-setenv("bacio_ROOT", pathJoin(base,"bacio"))
+setenv("bacio_ROOT", base)
 setenv("bacio_VERSION", pkgVersion)
-setenv("BACIO_INC4", pathJoin(base,"bacio/include_4"))
-setenv("BACIO_INC8", pathJoin(base,"bacio/include_8"))
-setenv("BACIO_LIB4", pathJoin(base,"bacio/lib/libbacio_4.a"))
-setenv("BACIO_LIB8", pathJoin(base,"bacio/lib/libbacio_8.a"))
+setenv("BACIO_INC4", pathJoin(base,"include_4"))
+setenv("BACIO_INC8", pathJoin(base,"include_8"))
+setenv("BACIO_LIB4", pathJoin(base,"lib/libbacio_4.a"))
+setenv("BACIO_LIB8", pathJoin(base,"lib/libbacio_8.a"))

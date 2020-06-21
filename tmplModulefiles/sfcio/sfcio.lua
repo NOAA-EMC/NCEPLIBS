@@ -1,14 +1,15 @@
 help([[
 ]])
 
-local pkgVersion = myModuleVersion()
 local pkgName = myModuleName()
+local pkgVersion = myModuleVersion()
 
 conflict(pkgName)
 
-local base = "@NCEPLIBS_ROOT@"
+local prefix = "#NCEPLIBS_ROOT#"
+local base = pathJoin(prefix,pkgName,pkgVersion)
 
-setenv("sfcio_ROOT", pathJoin(base,"sfcio"))
+setenv("sfcio_ROOT", base)
 setenv("sfcio_VERSION", pkgVersion)
-setenv("SFCIO_INC", pathJoin(base,"sfcio/include"))
-setenv("SFCIO_LIB", pathJoin(base,"sfcio/lib/libsfcio.a"))
+setenv("SFCIO_INC", pathJoin(base,"include"))
+setenv("SFCIO_LIB", pathJoin(base,"lib/libsfcio.a"))

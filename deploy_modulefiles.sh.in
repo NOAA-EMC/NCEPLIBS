@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+modulesDestDir=${1:-"/dev/null"} # modulesDestDir=@MODULES_INSTALL_PREFIX@
+OVERWRITE=${2:-"NO"}             # OVERWRITE=@MODULES_OVERWRITE@
+
+# These will be filled by CMake
+nceplibsInstallDir=@CMAKE_INSTALL_PREFIX@
+tmplModulefilesDir=@CMAKE_CURRENT_SOURCE_DIR@/tmplModulefiles
+LIBCOMPS=@LIBCOMPS_FILE@
+
+# sed does not like delimiter (/) to be a part of replacement string
+# so do magic
+repl=$(echo ${nceplibsInstallDir} | sed -e "s#/#\\\/#g")
+
+for libName in $(ls -1 $tmplModulefilesDir); do
+
+  # Ensure $libName is indeed a library being installed
+  isAbsent=$(cat $LIBCOMPS | grep -w $libName | wc -l)
+  [[ $isAbsent -eq 0 ]] && continue
+
+  echo "filling template of ... $libName"
+
+  # Get the version being installed (if a branch, replace "/" with "-")
+  ver=$(cat $LIBCOMPS | grep -w $libName | cut -d"|" -f3)
+  ver=$(echo ${ver} | sed -e "s/\//-/g")
+
+  # Define source and destination modulefile name
+  srcModulefile=$tmplModulefilesDir/$libName/$libName.lua
+  dstModulefile=$modulesDestDir/$libName/$libName-$ver.lua
+
+  # Create destination directory for the modulefile and copy template to it
+  mkdir -p $modulesDestDir/$libName
+  if [[ -f $dstModulefile ]]; then
+    [[ $OVERWRITE =~ [YyTt] ]] && ( echo "WARNING: $dstModulefile exists, OVERWRITING!"; \rm -f $dstModulefile ) \
+                               || ( echo "ERROR: $dstModulefile exists, ABORT!"; exit 1 )
+  fi
+  \cp $srcModulefile $dstModulefile
+
+  # Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
+  sed -i "" "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+
+done
+
+exit 0

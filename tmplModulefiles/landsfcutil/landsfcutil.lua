@@ -1,16 +1,17 @@
 help([[
 ]])
 
-local pkgVersion = myModuleVersion()
 local pkgName = myModuleName()
+local pkgVersion = myModuleVersion()
 
 conflict(pkgName)
 
-local base = "@NCEPLIBS_ROOT@"
+local prefix = "#NCEPLIBS_ROOT#"
+local base = pathJoin(prefix,pkgName,pkgVersion)
 
-setenv("landsfcutil_ROOT", pathJoin(base,"landsfcutil"))
+setenv("landsfcutil_ROOT", base)
 setenv("landsfcutil_VERSION", pkgVersion)
-setenv("LANDSFCUTIL_INC4", pathJoin(base,"landsfcutil/include_4"))
-setenv("LANDSFCUTIL_INCd", pathJoin(base,"landsfcutil/include_d"))
-setenv("LANDSFCUTIL_LIB4", pathJoin(base,"landsfcutil/lib/liblandsfcutil_4.a"))
-setenv("LANDSFCUTIL_LIBd", pathJoin(base,"landsfcutil/lib/liblandsfcutil_d.a"))
+setenv("LANDSFCUTIL_INC4", pathJoin(base,"include_4"))
+setenv("LANDSFCUTIL_INCd", pathJoin(base,"include_d"))
+setenv("LANDSFCUTIL_LIB4", pathJoin(base,"lib/liblandsfcutil_4.a"))
+setenv("LANDSFCUTIL_LIBd", pathJoin(base,"lib/liblandsfcutil_d.a"))

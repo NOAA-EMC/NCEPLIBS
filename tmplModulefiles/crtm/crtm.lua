@@ -1,14 +1,15 @@
 help([[
 ]])
 
-local pkgVersion = myModuleVersion()
 local pkgName = myModuleName()
+local pkgVersion = myModuleVersion()
 
 conflict(pkgName)
 
-local base = "@NCEPLIBS_ROOT@"
+local prefix = "#NCEPLIBS_ROOT#"
+local base = pathJoin(prefix,pkgName,pkgVersion)
 
-setenv("crtm_ROOT", pathJoin(base,"crtm"))
+setenv("crtm_ROOT", base)
 setenv("crtm_VERSION", pkgVersion)
-setenv("CRTM_INC", pathJoin(base,"crtm/include"))
-setenv("CRTM_LIB", pathJoin(base,"crtm/lib/libcrtm.a"))
+setenv("CRTM_INC", pathJoin(base,"include"))
+setenv("CRTM_LIB", pathJoin(base,"lib/libcrtm.a"))

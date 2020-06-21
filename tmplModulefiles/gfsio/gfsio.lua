@@ -1,14 +1,15 @@
 help([[
 ]])
 
-local pkgVersion = myModuleVersion()
 local pkgName = myModuleName()
+local pkgVersion = myModuleVersion()
 
 conflict(pkgName)
 
-local base = "@NCEPLIBS_ROOT@"
+local prefix = "#NCEPLIBS_ROOT#"
+local base = pathJoin(prefix,pkgName,pkgVersion)
 
-setenv("gfsio_ROOT", pathJoin(base,"gfsio"))
+setenv("gfsio_ROOT", base)
 setenv("gfsio_VERSION", pkgVersion)
-setenv("GFSIO_INC",  pathJoin(base,"gfsio/include"))
-setenv("GFSIO_LIB",  pathJoin(base,"gfsio/lib/libgfsio.a"))
+setenv("GFSIO_INC",  pathJoin(base,"include"))
+setenv("GFSIO_LIB",  pathJoin(base,"lib/libgfsio.a"))

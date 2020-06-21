@@ -37,7 +37,7 @@ if(NOT LIBCOMPS)
 else()
   set(LIBCOMPS_FILE ${LIBCOMPS})
 endif()
-message(STATUS "Installing NCEPLIBS from ${LIBCOMPS}")
+message(STATUS "Installing NCEPLIBS from ${LIBCOMPS_FILE}")
 
 # Enable CRTM if NCEPpost library is desired.
 if(BUILD_POST)
@@ -263,3 +263,11 @@ if(BUILD_POST)
     DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
+
+# Prepare to deploy modulefiles
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
+               ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+               @ONLY)
+add_custom_target(deploy ALL
+  COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
