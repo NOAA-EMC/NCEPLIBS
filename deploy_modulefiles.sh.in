@@ -2,13 +2,18 @@
 
 set -e
 
-modulesDestDir=${1:-"/dev/null"} # modulesDestDir=@MODULES_INSTALL_PREFIX@
-OVERWRITE=${2:-"NO"}             # OVERWRITE=@MODULES_OVERWRITE@
+# Defaults to user options will be provided by CMake
+modulesDestDir=${1:-"@CMAKE_INSTALL_PREFIX@/modules"}
+OVERWRITEMODULES=${2:-"@OVERWRITEMODULES@"}
 
 # These will be filled by CMake
 nceplibsInstallDir=@CMAKE_INSTALL_PREFIX@
 tmplModulefilesDir=@CMAKE_CURRENT_SOURCE_DIR@/tmplModulefiles
 LIBCOMPS=@LIBCOMPS_FILE@
+
+[[ $OVERWRITEMODULES == "ON" ]] && OVERWRITE="Y" || OVERWRITE="N"
+
+echo "Begin deploying modules ..."
 
 # sed does not like delimiter (/) to be a part of replacement string
 # so do magic
@@ -20,13 +25,15 @@ for libName in $(ls -1 $tmplModulefilesDir); do
   isAbsent=$(cat $LIBCOMPS | grep -w $libName | wc -l)
   [[ $isAbsent -eq 0 ]] && continue
 
-  echo "filling template of ... $libName"
+  echo "deploying modulefile for ... $libName"
 
   # Get the version being installed (if a branch, replace "/" with "-")
+  # Must be consistent with CMakeLists.txt
   ver=$(cat $LIBCOMPS | grep -w $libName | cut -d"|" -f3)
   ver=$(echo ${ver} | sed -e "s/\//-/g")
 
   # Define source and destination modulefile name
+  # Destination filename must be consistent with CMakeLists.txt
   srcModulefile=$tmplModulefilesDir/$libName/$libName.lua
   dstModulefile=$modulesDestDir/$libName/$libName-$ver.lua
 
@@ -42,5 +49,7 @@ for libName in $(ls -1 $tmplModulefilesDir); do
   sed -i "" "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
 
 done
+
+echo "Done deploying modules ..."
 
 exit 0
