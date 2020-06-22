@@ -26,12 +26,15 @@ endif()
 # Read Branch/Tag and Version of components from this file
 set(DEFAULT_LIBCOMPS ${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS)
 
+# User options
 option(OPENMP       "Enable OpenMP threading" OFF)
 option(ENABLE_TESTS "Enable testing"          OFF)
 option(BUILD_CRTM   "Build CRTM library"      ON)
 option(BUILD_POST   "Build NCEPpost library"  ON)
+option(DEPLOY       "Deploy modulefiles"      OFF)
 option(LIBCOMPS     "File to read components from" ${DEFAULT_LIBCOMPS})
 
+# Read list of components to install from:
 if(NOT LIBCOMPS)
   set(LIBCOMPS_FILE ${DEFAULT_LIBCOMPS})
 else()
@@ -47,6 +50,15 @@ if(BUILD_POST)
   set(BUILD_CRTM ON)
 endif()
 
+# Option to overwrite modulefile (if DEPLOY = ON)
+if(DEPLOY)
+  message(STATUS "Installing NCEPLIBS modulefiles at ${CMAKE_INSTALL_PREFIX}/modules")
+  option(OVERWRITEMODULES "Overwrite existing modules (if found!)" OFF)
+  if(OVERWRITEMODULES)
+    message(STATUS "WARNING: Overwriting NCEPLIBS modulefiles is ON")
+  endif()
+endif()
+
 # Function to get the Branch/Tag and Version
 function(getTagVer fileName libName tag ver)
   set(${tag} "develop" PARENT_SCOPE)
@@ -56,7 +68,7 @@ function(getTagVer fileName libName tag ver)
     COMMAND cut -d| -f2
     RESULT_VARIABLE _ret OUTPUT_VARIABLE _val)
   if( _ret EQUAL 0 )
-    string( STRIP ${_val} _val )
+    string( STRIP ${_val} _val ) # Strip out leading/trailing blanks
     set( ${tag} ${_val} PARENT_SCOPE )
   endif()
   set(${ver} "develop" PARENT_SCOPE)
@@ -66,12 +78,13 @@ function(getTagVer fileName libName tag ver)
     COMMAND cut -d| -f3
     RESULT_VARIABLE _ret OUTPUT_VARIABLE _val)
   if( _ret EQUAL 0 )
-    string( STRIP ${_val} _val )
-    string( REPLACE "/" "-" _val ${_val} )
+    string( STRIP ${_val} _val ) # Strip out leading/trailing blanks
+    string( REPLACE "/" "-" _val ${_val} ) # replace / in names with - (dont want subdirectories)
     set( ${ver} ${_val} PARENT_SCOPE )
   endif()
 endfunction()
 
+# Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
   bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc)
 if(BUILD_CRTM)
@@ -85,6 +98,7 @@ list(APPEND _cpath "${CMAKE_INSTALL_PREFIX}")
 foreach(_comp ${_comps})
   list(APPEND _cpath "${CMAKE_INSTALL_PREFIX}/${_comp}")
 endforeach()
+# Create CMAKE_PREFIX_PATH list with an alternate separator
 string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${_cpath}")
 
 getTagVer("${LIBCOMPS_FILE}" "bacio" tag ver)
@@ -263,4 +277,19 @@ if(BUILD_POST)
                    "-DBUILD_POSTEXEC=OFF"
     DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
+endif()
+
+# Prepare to deploy modulefiles
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
+               ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+               @ONLY)
+add_custom_target(prep2deploy ALL
+  COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
+
+# Deploy modulefiles (if enabled), but do not add to make all (make user do it)
+if(DEPLOY)
+  add_custom_target(deploy
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
+  add_dependencies(deploy prep2deploy)
 endif()
