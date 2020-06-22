@@ -35,7 +35,7 @@ for libName in $(ls -1 $tmplModulefilesDir); do
   # Define source and destination modulefile name
   # Destination filename must be consistent with CMakeLists.txt
   srcModulefile=$tmplModulefilesDir/$libName/$libName.lua
-  dstModulefile=$modulesDestDir/$libName/$libName-$ver.lua
+  dstModulefile=$modulesDestDir/$libName/$ver.lua
 
   # Create destination directory for the modulefile and copy template to it
   mkdir -p $modulesDestDir/$libName
