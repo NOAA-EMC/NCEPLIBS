@@ -7,7 +7,7 @@ local pkgVersion = myModuleVersion()
 conflict(pkgName)
 
 local prefix = "#NCEPLIBS_ROOT#"
-local base = pathJoin(prefix,pkgName,pkgVersion)
+local base = pathJoin(prefix,pkgName,pkgName .. '-' .. pkgVersion)
 
 setenv("g2tmpl_ROOT", base)
 setenv("g2tmpl_VERSION", pkgVersion)
