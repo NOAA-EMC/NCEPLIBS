@@ -1,5 +1,6 @@
 build*/
 install*/
+modules*/
 test*/
 
 *.[ao]
