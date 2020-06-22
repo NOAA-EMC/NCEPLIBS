@@ -46,7 +46,7 @@ for libName in $(ls -1 $tmplModulefilesDir); do
   \cp $srcModulefile $dstModulefile
 
   # Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
-  sed -i "" "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+  sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
 
 done
 
