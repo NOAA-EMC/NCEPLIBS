@@ -32,6 +32,7 @@ option(ENABLE_TESTS "Enable testing"          OFF)
 option(BUILD_CRTM   "Build CRTM library"      ON)
 option(BUILD_POST   "Build NCEPpost library"  ON)
 option(DEPLOY       "Deploy modulefiles"      OFF)
+option(FLAT         "Flat install structure" ON)
 option(LIBCOMPS     "File to read components from" ${DEFAULT_LIBCOMPS})
 
 # Read list of components to install from:
@@ -58,6 +59,15 @@ if(DEPLOY)
     message(STATUS "WARNING: Overwriting NCEPLIBS modulefiles is ON")
   endif()
 endif()
+
+function(getInstallDir FLAT lib ver installDir)
+  if(FLAT)
+    set(var ${lib}-${ver})
+  else()
+    set(var ${lib}/${lib}-${ver})
+  endif()
+  set(${installDir} ${var} PARENT_SCOPE)
+endfunction()
 
 # Function to get the Branch/Tag and Version
 function(getTagVer fileName libName tag ver)
@@ -112,19 +122,15 @@ set(w3emc_depends nemsio sigio)
 
 foreach(lib ${nceplibs})
   getTagVer("${LIBCOMPS_FILE}" "${lib}" tag ver)
-  if(DEPLOY)
-    set(lib_install ${lib}/${lib}-${ver})
-  else()
-    set(lib_install ${lib}-${ver})
-  endif()
-  
+  getInstallDir(${FLAT} ${lib} ${ver} installDir)
+
   ExternalProject_Add(${lib}
     GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-${lib}"
     GIT_TAG        "${tag}"
     PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
         "-DENABLE_TESTS=${ENABLE_TESTS}"
     DEPENDS ${${lib}_depends}
     )
@@ -133,31 +139,21 @@ endforeach()
 
 if(BUILD_CRTM)
   getTagVer("${LIBCOMPS_FILE}" "crtm" tag ver)
+  getInstallDir(${FLAT} "crtm" ${ver} installDir)
   
-  if(DEPLOY)
-    set(lib_install crtm/crtm-${ver})
-  else()
-    set(lib_install crtm-${ver})
-  endif()
-
   ExternalProject_Add(crtm
     GIT_REPOSITORY "https://github.com/noaa-emc/emc_crtm"
     GIT_TAG        "${tag}"
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
     )
 endif()
 
 if(BUILD_POST)
   getTagVer("${LIBCOMPS_FILE}" "nceppost" tag ver)
-  
-  if(DEPLOY)
-    set(lib_install nceppost/nceppost-${ver})
-  else()
-    set(lib_install nceppost-${ver})
-  endif()
+  getInstallDir(${FLAT} "nceppost" ${ver} installDir)
   
   ExternalProject_Add(nceppost
     GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
@@ -166,25 +162,24 @@ if(BUILD_POST)
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
     LIST_SEPARATOR |
     CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
         "-DOPENMP=${OPENMP}"
         "-DBUILD_POSTEXEC=OFF"
     DEPENDS bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
 
+# Prepare to deploy modulefiles
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
+  ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+  @ONLY)
+
+add_custom_target(prep2deploy ALL
+  COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
 
 # Deploy modulefiles (if enabled), but do not add to make all (make user do it)
 if(DEPLOY)
-  # Prepare to deploy modulefiles
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
-    ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-    @ONLY)
-  
-  add_custom_target(prep2deploy ALL
-    COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
-  
   add_custom_target(deploy
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
   
