@@ -105,7 +105,6 @@ endforeach()
 # Create CMAKE_PREFIX_PATH list with an alternate separator
 string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${_cpath}")
 
-
 set(nemsio_depends bacio sigio)
 set(nemsiogfs_depends nemsio)
 set(landsfcutil_depends nemsio)
@@ -147,7 +146,7 @@ if(BUILD_CRTM)
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
     )
 endif()
 
@@ -170,21 +169,24 @@ if(BUILD_POST)
     "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
     "-DOPENMP=${OPENMP}"
     "-DBUILD_POSTEXEC=OFF"
-    DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
+    DEPENDS bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
 
-# Prepare to deploy modulefiles
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
-               ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-               @ONLY)
-add_custom_target(prep2deploy ALL
-  COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
 
 # Deploy modulefiles (if enabled), but do not add to make all (make user do it)
 if(DEPLOY)
+  # Prepare to deploy modulefiles
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
+    ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+    @ONLY)
+  
+  add_custom_target(prep2deploy ALL
+    COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
+  
   add_custom_target(deploy
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
+  
   add_dependencies(deploy prep2deploy)
 endif()
