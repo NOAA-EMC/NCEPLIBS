@@ -32,7 +32,7 @@ option(ENABLE_TESTS "Enable testing"          OFF)
 option(BUILD_CRTM   "Build CRTM library"      ON)
 option(BUILD_POST   "Build NCEPpost library"  ON)
 option(DEPLOY       "Deploy modulefiles"      OFF)
-option(FLAT         "Flat install structure" ON)
+option(FLAT         "Flat install structure"  ON)
 option(LIBCOMPS     "File to read components from" ${DEFAULT_LIBCOMPS})
 
 # Read list of components to install from:
@@ -130,9 +130,9 @@ foreach(lib ${nceplibs})
     PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
-        "-DENABLE_TESTS=${ENABLE_TESTS}"
-    DEPENDS ${${lib}_depends}
+                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+                   "-DENABLE_TESTS=${ENABLE_TESTS}"
+    DEPENDS        ${${lib}_depends}
     )
 endforeach()
 
@@ -140,32 +140,32 @@ endforeach()
 if(BUILD_CRTM)
   getTagVer("${LIBCOMPS_FILE}" "crtm" tag ver)
   getInstallDir(${FLAT} "crtm" ${ver} installDir)
-  
+
   ExternalProject_Add(crtm
     GIT_REPOSITORY "https://github.com/noaa-emc/emc_crtm"
     GIT_TAG        "${tag}"
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
     )
 endif()
 
 if(BUILD_POST)
   getTagVer("${LIBCOMPS_FILE}" "nceppost" tag ver)
   getInstallDir(${FLAT} "nceppost" ${ver} installDir)
-  
+
   ExternalProject_Add(nceppost
     GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
     GIT_TAG        "${tag}"
     GIT_SUBMODULES "CMakeModules"
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
     LIST_SEPARATOR |
-    CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
-        "-DOPENMP=${OPENMP}"
-        "-DBUILD_POSTEXEC=OFF"
-    DEPENDS bacio w3nco w3emc g2 g2tmpl ip sp crtm
+    CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+                   "-DOPENMP=${OPENMP}"
+                   "-DBUILD_POSTEXEC=OFF"
+    DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
 
@@ -182,6 +182,5 @@ add_custom_target(prep2deploy ALL
 if(DEPLOY)
   add_custom_target(deploy
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
-  
   add_dependencies(deploy prep2deploy)
 endif()
