@@ -87,184 +87,79 @@ endfunction()
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
   bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc)
+set(nceplibs ${_comps})
+
 if(BUILD_CRTM)
   list(APPEND _comps crtm)
 endif()
 if(BUILD_POST)
   list(APPEND _comps nceppost)
 endif()
+
 list(APPEND _cpath "${CMAKE_PREFIX_PATH}")
 list(APPEND _cpath "${CMAKE_INSTALL_PREFIX}")
 foreach(_comp ${_comps})
   list(APPEND _cpath "${CMAKE_INSTALL_PREFIX}/${_comp}")
 endforeach()
+
 # Create CMAKE_PREFIX_PATH list with an alternate separator
 string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${_cpath}")
 
-getTagVer("${LIBCOMPS_FILE}" "bacio" tag ver)
-ExternalProject_Add(bacio
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-bacio"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/bacio"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/bacio/bacio-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  )
 
-getTagVer("${LIBCOMPS_FILE}" "sigio" tag ver)
-ExternalProject_Add(sigio
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-sigio"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/sigio"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/sigio/sigio-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  )
+set(nemsio_depends bacio sigio)
+set(nemsiogfs_depends nemsio)
+set(landsfcutil_depends nemsio)
+set(w3emc_depends nemsio sigio)
 
-getTagVer("${LIBCOMPS_FILE}" "sfcio" tag ver)
-ExternalProject_Add(sfcio
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-sfcio"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/sfcio"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/sfcio/sfcio-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  )
+foreach(lib ${nceplibs})
+  getTagVer("${LIBCOMPS_FILE}" "${lib}" tag ver)
+  if(DEPLOY)
+    set(lib_install ${lib}/${lib}-${ver})
+  else()
+    set(lib_install ${lib}-${ver})
+  endif()
+  
+  ExternalProject_Add(${lib}
+    GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-${lib}"
+    GIT_TAG        "${tag}"
+    PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
+    LIST_SEPARATOR |
+    CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+    "-DENABLE_TESTS=${ENABLE_TESTS}"
+    DEPENDS ${${lib}_depends}
+    )
+endforeach()
 
-getTagVer("${LIBCOMPS_FILE}" "gfsio" tag ver)
-ExternalProject_Add(gfsio
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-gfsio"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/gfsio"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/gfsio/gfsio-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "ip" tag ver)
-ExternalProject_Add(ip
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-ip"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/ip"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/ip/ip-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-                 "-DOPENMP=${OPENMP}"
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "sp" tag ver)
-ExternalProject_Add(sp
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-sp"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/sp"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/sp/sp-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-                 "-DOPENMP=${OPENMP}"
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "w3nco" tag ver)
-ExternalProject_Add(w3nco
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-w3nco"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/w3nco"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/w3nco/w3nco-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "nemsio" tag ver)
-ExternalProject_Add(nemsio
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-nemsio"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/nemsio"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/nemsio/nemsio-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  DEPENDS        bacio w3nco
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "nemsiogfs" tag ver)
-ExternalProject_Add(nemsiogfs
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-nemsiogfs"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/nemsiogfs"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/nemsiogfs/nemsiogfs-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-                 "-DOPENMP=${OPENMP}"
-  DEPENDS        nemsio
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "landsfcutil" tag ver)
-ExternalProject_Add(landsfcutil
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-landsfcutil"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/landsfcutil"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/landsfcutil/landsfcutil-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  DEPENDS        nemsio
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "g2" tag ver)
-ExternalProject_Add(g2
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-g2"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/g2"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/g2/g2-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "g2tmpl" tag ver)
-ExternalProject_Add(g2tmpl
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-g2tmpl"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/g2tmpl"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/g2tmpl/g2tmpl-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  )
-
-getTagVer("${LIBCOMPS_FILE}" "w3emc" tag ver)
-ExternalProject_Add(w3emc
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-w3emc"
-  GIT_TAG        "${tag}"
-  PREFIX         "${CMAKE_BINARY_DIR}/w3emc"
-  LIST_SEPARATOR |
-  CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                 "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/w3emc/w3emc-${ver}"
-                 "-DENABLE_TESTS=${ENABLE_TESTS}"
-  DEPENDS        nemsio sigio
-  )
 
 if(BUILD_CRTM)
   getTagVer("${LIBCOMPS_FILE}" "crtm" tag ver)
+  
+  if(DEPLOY)
+    set(lib_install crtm/crtm-${ver})
+  else()
+    set(lib_install crtm-${ver})
+  endif()
+
   ExternalProject_Add(crtm
     GIT_REPOSITORY "https://github.com/noaa-emc/emc_crtm"
     GIT_TAG        "${tag}"
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/crtm/crtm-${ver}"
+                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
     )
 endif()
 
 if(BUILD_POST)
   getTagVer("${LIBCOMPS_FILE}" "nceppost" tag ver)
+  
+  if(DEPLOY)
+    set(lib_install nceppost/nceppost-${ver})
+  else()
+    set(lib_install nceppost-${ver})
+  endif()
+  
   ExternalProject_Add(nceppost
     GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
     GIT_TAG        "${tag}"
@@ -272,9 +167,9 @@ if(BUILD_POST)
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/nceppost/nceppost-${ver}"
-                   "-DOPENMP=${OPENMP}"
-                   "-DBUILD_POSTEXEC=OFF"
+    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+    "-DOPENMP=${OPENMP}"
+    "-DBUILD_POSTEXEC=OFF"
     DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
