@@ -7,7 +7,7 @@ local pkgVersion = myModuleVersion()
 conflict(pkgName)
 
 local prefix = "#NCEPLIBS_ROOT#"
-local base = pathJoin(prefix,pkgName,pkgName .. '-' .. pkgVersion)
+local base = pathJoin(prefix,pkgName .. '-' .. pkgVersion)
 
 setenv("nemsio_ROOT", base)
 setenv("nemsio_VERSION", pkgVersion)
