@@ -124,8 +124,8 @@ foreach(lib ${nceplibs})
     PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
-    "-DENABLE_TESTS=${ENABLE_TESTS}"
+        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+        "-DENABLE_TESTS=${ENABLE_TESTS}"
     DEPENDS ${${lib}_depends}
     )
 endforeach()
@@ -146,7 +146,7 @@ if(BUILD_CRTM)
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
     )
 endif()
 
@@ -165,10 +165,10 @@ if(BUILD_POST)
     GIT_SUBMODULES "CMakeModules"
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
     LIST_SEPARATOR |
-    CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
-    "-DOPENMP=${OPENMP}"
-    "-DBUILD_POSTEXEC=OFF"
+    CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+        "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${lib_install}"
+        "-DOPENMP=${OPENMP}"
+        "-DBUILD_POSTEXEC=OFF"
     DEPENDS bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
