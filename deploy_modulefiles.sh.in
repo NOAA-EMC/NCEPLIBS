@@ -13,7 +13,7 @@ LIBCOMPS=@LIBCOMPS_FILE@
 DFLAT="@FLAT@"
 
 [[ $DOVERWRITEMODULES == "ON" ]] && OVERWRITE="Y" || OVERWRITE="N"
-[[ $DFLAT == "ON" ]] && FLAT ="Y" || FLAT="N"
+[[ $DFLAT == "ON" ]] && FLAT="Y" || FLAT="N"
 
 echo "Begin deploying modules ..."
 
