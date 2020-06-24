@@ -42,6 +42,7 @@ else()
   set(LIBCOMPS_FILE ${LIBCOMPS})
 endif()
 message(STATUS "Installing NCEPLIBS from ${LIBCOMPS_FILE}")
+message(STATUS "Installing NCEPLIBS at ${CMAKE_INSTALL_PREFIX}")
 
 # Enable CRTM if NCEPpost library is desired.
 if(BUILD_POST)
@@ -115,9 +116,8 @@ endforeach()
 # Create CMAKE_PREFIX_PATH list with an alternate separator
 string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${_cpath}")
 
-set(nemsio_depends bacio sigio)
+set(nemsio_depends bacio w3nco)
 set(nemsiogfs_depends nemsio)
-set(landsfcutil_depends nemsio)
 set(w3emc_depends nemsio sigio)
 
 foreach(lib ${nceplibs})
