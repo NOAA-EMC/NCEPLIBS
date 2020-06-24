@@ -7,7 +7,7 @@ local pkgVersion = myModuleVersion()
 conflict(pkgName)
 
 local prefix = "#NCEPLIBS_ROOT#"
-local base = pathJoin(prefix,pkgName,pkgName .. '-' .. pkgVersion)
+local base = pathJoin(prefix,pkgName .. '-' .. pkgVersion)
 
 setenv("sp_ROOT", base)
 setenv("sp_VERSION", pkgVersion)

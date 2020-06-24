@@ -4,20 +4,18 @@ set -e
 
 # Defaults to user options will be provided by CMake
 modulesDestDir=${1:-"@CMAKE_INSTALL_PREFIX@/modules"}
-OVERWRITEMODULES=${2:-"@OVERWRITEMODULES@"}
+DOVERWRITEMODULES=${2:-"@OVERWRITEMODULES@"}
 
 # These will be filled by CMake
 nceplibsInstallDir=@CMAKE_INSTALL_PREFIX@
 tmplModulefilesDir=@CMAKE_CURRENT_SOURCE_DIR@/tmplModulefiles
 LIBCOMPS=@LIBCOMPS_FILE@
+DFLAT="@FLAT@"
 
-[[ $OVERWRITEMODULES == "ON" ]] && OVERWRITE="Y" || OVERWRITE="N"
+[[ $DOVERWRITEMODULES == "ON" ]] && OVERWRITE="Y" || OVERWRITE="N"
+[[ $DFLAT == "ON" ]] && FLAT="Y" || FLAT="N"
 
 echo "Begin deploying modules ..."
-
-# sed does not like delimiter (/) to be a part of replacement string
-# so do magic
-repl=$(echo ${nceplibsInstallDir} | sed -e "s#/#\\\/#g")
 
 for libName in $(ls -1 $tmplModulefilesDir); do
 
@@ -44,6 +42,12 @@ for libName in $(ls -1 $tmplModulefilesDir); do
                                || ( echo "ERROR: $dstModulefile exists, ABORT!"; exit 1 )
   fi
   \cp $srcModulefile $dstModulefile
+
+  [[ $FLAT =~ [YyTt] ]] && prefix=${nceplibsInstallDir} || prefix=${nceplibsInstallDir}/$libName
+
+  # sed does not like delimiter (/) to be a part of replacement string
+  # so do magic
+  repl=$(echo ${prefix} | sed -e "s#/#\\\/#g")
 
   # Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
   sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
