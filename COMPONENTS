@@ -15,5 +15,5 @@ landsfcutil | develop            | develop
 g2          | develop            | develop
 g2tmpl      | develop            | develop
 crtm        | develop            | develop
-nceppost    | feature/cmake      | feature/cmake
+nceppost    | develop            | develop
 --------------------------------------------------------
