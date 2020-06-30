@@ -156,7 +156,7 @@ if(BUILD_POST)
   getInstallDir(${FLAT} "nceppost" ${ver} installDir)
 
   ExternalProject_Add(nceppost
-    GIT_REPOSITORY "https://github.com/aerorahul/emc_post"
+    GIT_REPOSITORY "https://github.com/noaa-emc/emc_post"
     GIT_TAG        "${tag}"
     GIT_SUBMODULES "CMakeModules"
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
