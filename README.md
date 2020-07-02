@@ -8,25 +8,22 @@ It includes the following libraries:
 
 | NCEP library         | Version                                               |
 |----------------------|-------------------------------------------------------|
-| NCEPLIBS-bacio       | 2.2.0                                                 |
+| NCEPLIBS-bacio       | 2.4.0                                                 |
 | NCEPLIBS-bufr        | not included in this release                          |
 | NCEPLIBS-crtm        | 2.3.0                                                 |
-| NCEPLIBS-g2          | 3.2.0                                                 |
-| NCEPLIBS-g2tmpl      | 1.7.0                                                 |
-| NCEPLIBS-gfsio       | 1.2.0                                                 |
-| NCEPLIBS-grib_util   | 1.2.0                                                 |
-| NCEPLIBS-ip          | 3.1.0                                                 |
-| NCEPLIBS-landsfcutil | 2.2.0                                                 |
-| NCEPLIBS-nemsio      | 2.3.0                                                 |
-| NCEPLIBS-nemsiogfs   | 2.3.0                                                 |
-| EMC_post             | 1.0.0                                                 |
-| NCEPLIBS-prod_util   | 1.2.0                                                 |
-| NCEPLIBS-sfcio       | 1.2.0                                                 |
-| NCEPLIBS-sigio       | 2.2.0                                                 |
-| NCEPLIBS-sp          | 2.1.0                                                 |
-| NCEPLIBS-w3emc       | 2.5.0                                                 |
-| NCEPLIBS-w3nco       | 2.1.0                                                 |
-| UFS_UTILS            | 1.0.0                                                 |
+| NCEPLIBS-g2          | 3.4.0                                                 |
+| NCEPLIBS-g2tmpl      | 1.9.0                                                 |
+| NCEPLIBS-gfsio       | 1.4.0                                                 |
+| NCEPLIBS-ip          | 3.3.0                                                 |
+| NCEPLIBS-landsfcutil | 2.4.0                                                 |
+| NCEPLIBS-nemsio      | 2.5.1                                                 |
+| NCEPLIBS-nemsiogfs   | 2.5.0                                                 |
+| EMC_post             | dceca26                                               |
+| NCEPLIBS-sfcio       | 1.4.0                                                 |
+| NCEPLIBS-sigio       | 2.3.0                                                 |
+| NCEPLIBS-sp          | 2.3.0                                                 |
+| NCEPLIBS-w3emc       | 2.7.0                                                 |
+| NCEPLIBS-w3nco       | 2.4.0                                                 |
 
 ## Building, Requirements, Troubleshooting, Support
 
