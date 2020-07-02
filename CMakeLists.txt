@@ -132,6 +132,8 @@ foreach(lib ${nceplibs})
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
                    "-DENABLE_TESTS=${ENABLE_TESTS}"
+		   "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+		   "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
     DEPENDS        ${${lib}_depends}
     )
 endforeach()
@@ -148,6 +150,8 @@ if(BUILD_CRTM)
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+		   "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+		   "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
     )
 endif()
 
@@ -165,6 +169,8 @@ if(BUILD_POST)
                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
                    "-DOPENMP=${OPENMP}"
                    "-DBUILD_POSTEXEC=OFF"
+		   "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+		   "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
     DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
     )
 endif()
