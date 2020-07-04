@@ -9,7 +9,7 @@ conflict(pkgName)
 local prefix = "#NCEPLIBS_ROOT#"
 local base = pathJoin(prefix,pkgName .. '-' .. pkgVersion)
 
-setenv("wrfio_ROOT", base)
-setenv("wrfio_VERSION", pkgVersion)
-setenv("WRFIO_INC", pathJoin(base,"include"))
-setenv("WRFIO_LIB", pathJoin(base,"lib/libwrfio.a"))
+setenv("wrf_io_ROOT", base)
+setenv("wrf_io_VERSION", pkgVersion)
+setenv("WRF_IO_INC", pathJoin(base,"include"))
+setenv("WRF_IO_LIB", pathJoin(base,"lib/libwrf_io.a"))
