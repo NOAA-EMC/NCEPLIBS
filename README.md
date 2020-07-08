@@ -2,15 +2,15 @@
 
 ## Introduction
 
-This is a compilation of libraries known as NCEPLIBS that are required for building and running the UFS weather model. For general information about NCEPLIBS and the UFS weather model, the user is referred to the [Wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki).
+This is a collection of libraries commonly known as NCEPLIBS that are required for several NCEP applications e.g. UFS, GSI, UPP, etc. For general information about NCEPLIBS, the user is referred to the [Wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki).
 
-It includes the following libraries:
+NCEPLIBS comprises of the following libraries:
 
 | NCEP library         | Version                                               |
 |----------------------|-------------------------------------------------------|
 | NCEPLIBS-bacio       | 2.4.0                                                 |
-| NCEPLIBS-bufr        | not included in this release                          |
-| NCEPLIBS-crtm        | 2.3.0                                                 |
+| NCEPLIBS-bufr        | coming soon                                           |
+| EMC-crtm             | 2.3.0                                                 |
 | NCEPLIBS-g2          | 3.4.0                                                 |
 | NCEPLIBS-g2tmpl      | 1.9.0                                                 |
 | NCEPLIBS-gfsio       | 1.4.0                                                 |
@@ -24,105 +24,86 @@ It includes the following libraries:
 | NCEPLIBS-sp          | 2.3.0                                                 |
 | NCEPLIBS-w3emc       | 2.7.0                                                 |
 | NCEPLIBS-w3nco       | 2.4.0                                                 |
+| NCEPLIBS-wrf_io      | 1.1.1                                                 |
 
-## Building, Requirements, Troubleshooting, Support
+## Required Software
 
-### Required Software 
-
-1. CMake version 3.15 or newer. If the existing CMake version is too old, you need to install a newer version. The NCEPLIBS-external code contains a recent version of cmake that users can install (see https://github.com/NOAA-EMC/NCEPLIBS-external and below).
-
-2. A supported C/C++ and Fortran compiler, see table below. Other versions may work, in particular if close to the versions listed below. If the chosen compiler is not the default compiler on the system, set the environment variables `export CC=...`, `export CXX=...`, `export FC=...`, before invoking `cmake`.
+A supported C/C++ and Fortran compiler (see table below).  Other versions may work, in particular if close to the versions listed below.
 
 | Compiler vendor | Supported (tested) versions                                |
 |-----------------|------------------------------------------------------------|
 | Intel           | 18.0.3.222, 18.0.5.274, 19.0.2.187, 19.0.5.281, 19.1.0.166 |
-| GNU             | 8.3.0, 9.1.0, 9.2.0                                        |
+| GNU             | 8.3.0, 9.X.0                                               |
 
-3. A supported MPI library unless installed as part of NCEPLIBS-external, see table below. Other versions may work, in particular if close to the versions listed below. It is recommended to compile the MPI library with the same compilers used to compile NCEPLIBS-external, NCEPLIBS and the UFS applications.
+A supported MPI library (see table below).  Other versions may work, in particular if close to the versions listed below.
 
 | MPI library     | Supported (tested) versions                                |
 |-----------------|------------------------------------------------------------|
 | MPICH           | 3.3.1, 3.3.2                                               |
 | MVAPICH2        | 2.3.3                                                      |
-| Open MPI        | 4.0.2                                                      |
+| Open MPI        | 3.1.5, 4.0.2                                               |
 | Intel MPI       | 2018.0.4, 2019.6.154, 2020.0.166                           |
 | SGI MPT         | 2.19                                                       |
 
-4. A software stack consisting of the following libraries, preferably compiled with the same compiler and MPI library (where applicable). Other versions may work, in particular if close to the versions listed below. The [NCEPLIBS-external project](https://github.com/NOAA-EMC/NCEPLIBS-external) provides an easy and convenient way to install the required libraries on supported platforms such as generic Linux/macOS systems. It is also possible to skip installing certain components and set the appropriate environment variables so that the NCEPLIBS build system finds them. This is also discussed in detail on the NCEPLIBS-external project.
+A software stack consisting of the following third-party libraries (TPL), compiled with the same compiler and MPI library (where applicable).  Other versions may work, in particular if close to the versions listed below.
 
 | Library         | Supported (tested) versions                                |
 |-----------------|------------------------------------------------------------|
 | CMake           | cmake-3.16.3                                               |
-| MPI             | openmpi-4.0.2                                              |
 | zlib            | zlib-1.2.11                                                |
-| HDF5            | hdf5-1.10.4                                                |
-| NetCDF          | netcdf-c-4.7.3, netcdf-fortran-4.5.2                       |
 | libpng          | libpng-1.6.35                                              |
 | libjpeg         | jpeg-9.1                                                   |
 | Jasper          | jasper-2.0.16                                              |
-| WGRIB2          | wgrib-2.0.8                                                |
-| ESMF            | esmf-8.0.0                                                 |
+| HDF5            | hdf5-1.10.4                                                |
+| NetCDF          | netcdf-c-4.7.3, netcdf-fortran-4.5.2                       |
 
-### Prepare to Build 
+ The [NCEPLIBS-external](https://github.com/NOAA-EMC/NCEPLIBS-external) project provides an convenient way to install the required TPL on supported platforms such as generic Linux/macOS systems.
 
-The [NCEPLIBS-external documentation](https://github.com/NOAA-EMC/NCEPLIBS-external) describes how to install the required dependencies and the NCEPLIBS on supported platforms, and how preconfigured platforms have been set up for the users. The definitions of the different support levels (e.g. pre-configured, configurable) are on the [Supported Platforms and Compilers](https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers) page. The following section provides general instructions for building the NCEPLIBS.
+## Obtaining, Building, Using NCEPLIBS
 
-### Get and Build the Code
+### Obtaining the code
 
-**Obtaining the code**
+Clone the repository:
 
-Clone the repository and its submodules:
+`git clone https://github.com/NOAA-EMC/NCEPLIBS`
 
-`git clone -b ufs-v1.0.0 --recursive https://github.com/NOAA-EMC/NCEPLIBS`
+### Building the libraries
 
-**Building**
+`CMake` employs an out-of-source build.  Create a directory for configuring the build and cd into it:
 
-CMake uses an out-of-source build, so create a directory for the build:
+`mkdir -p build && cd build`
 
-`mkdir build`
+Set the compilers, if needed, to match those being used for compiling the TPL listed above: `FC`, `CC`, and `CXX` environment variables can be used to point to the desired Fortran, C, and C++ compilers.
 
-`cd build`
+Execute `cmake` from inside your build directory.
 
-Set the compilers, if needed, to match those being used for compiling NCEPLIBS-external and the UFS applications later: `FC`, `CC`, and `CXX` environment variables can be used to point to the desired Fortran, C, and C++ compilers.
+`cmake -DCMAKE_INSTALL_PREFIX=<nceplibs-prefix> ../NCEPLIBS`
 
-Then, run CMake from inside your build directory and pass it the location of the NCEPLIBS-external install directory (if using).
+If the TPL are not located in a path recognized by `cmake` e.g. `/usr/local`, it may be necessary to provide the appropriate environment variables e.g. `<package_ROOT>` or `CMAKE_PREFIX_PATH` so that `cmake` is able to locate these dependencies.
 
-`cmake .. -DEXTERNAL_LIBS_DIR=<path-to-external-libs-install>`
+The installation prefix for NCEPLIBS is provided by the `cmake` command-line argument `-DCMAKE_INSTALL_PREFIX=<nceplibs-prefix>`
 
-For libraries that are installed by NCEPLIBS-external, no additional settings are required for building the NCEPLIBS other than the `-DEXTERNAL_LIBS_DIR` flag (but see the note on static builds below). For libraries that were installed separately from NCEPLIBS-external, it may be necessary to set the appropriate environment variables so that CMake is able to find them. Please refer to the [NCEPLIBS-external documentation](https://github.com/NOAA-EMC/NCEPLIBS-external) for details.
-
-The default install location is `<build_dir>/install`, but it can be modified by adding:
-
-`-DCMAKE_INSTALL_PREFIX=<path>` when running CMake
-
-When static linking is the default option on a given system (e.g. Cray), add
-```
--DSTATIC_IS_DEFAULT=ON
-```
-to the `cmake` call.
-
-Then, finally run:
+To build and install:
 
 ```
 make -j<x>
-make install
 ```
 
-This will make and install all the NCEPLIBS and place them into the install directory.
+This will build and install all the NCEPLIBS and place them into the installation prefix `<nceplibs-prefix>`.
 
-**Setting your environment to build the UFS Weather Model**
+Additional `cmake` command-line options while configuring NCEPLIBS:
 
-NCEPLIBS produces a shell script that can be sourced to setup your environment to build the UFS Weather Model. Located in `<install>/bin` are `setenv_nceplibs.sh` and `setenv_nceplibs.csh`. Sourcing them will set environment variables that tell the model where to find various libraries such as NCEPLIBS and NetCDF:
+`-DFLAT=ON|OFF` - determines the installation tree heirarchy
 
-`. <install>/bin/setenv_nceplibs.sh`
+`-DDEPLOY=ON|OFF` - prepares and deploys Lua modulefiles for each of the NCEPLIBS libraries.  To deploy modulefiles:
+```
+make deploy
+```
+[LMod](https://lmod.readthedocs.io/en/latest/) Environment module system is required to load/unload these modules.
 
-or, if running C shell,
+### Usage
 
-`source <install>/bin/setenv_nceplibs.csh`
-
-### Troubleshooting
-
-Make sure to check the [troubleshooting section of the NCEPLIBS-external documentation](https://github.com/NOAA-EMC/NCEPLIBS-external).
+`NCEPLIBS` can be used in any application that uses `cmake` to configure and build by adding `-DCMAKE_PREFIX_PATH=<nceplibs-prefix>` to the cmake command line during configuration.
 
 ## Disclaimer
 
