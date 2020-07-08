@@ -92,7 +92,9 @@ make -j<x>
 This will build and install all the NCEPLIBS and place them into the installation prefix `<nceplibs-prefix>`.
 
 Additional `cmake` command-line options while configuring NCEPLIBS:
+
 `-DFLAT=ON|OFF` - determines the installation tree heirarchy
+
 `-DDEPLOY=ON|OFF` - prepares and deploys Lua modulefiles for each of the NCEPLIBS libraries.  To deploy modulefiles:
 ```
 make deploy
