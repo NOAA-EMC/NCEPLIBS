@@ -1,20 +1,20 @@
 --------------------------------------------------------
-COMPONENT   | BRANCH / TAG       | VERSION
+COMPONENT   | GIT BRANCH/TAG    | INSTALL AS
 --------------------------------------------------------
-bacio       | v2.4.0            | v2.4.0
-sigio       | v2.3.0            | v2.3.0
-sfcio       | v1.4.0            | v1.4.0
-gfsio       | v1.4.0            | v1.4.0
-nemsio      | v2.5.1            | v2.5.1
-nemsiogfs   | v2.5.0            | v2.5.0
-w3emc       | v2.7.0            | v2.7.0
-w3nco       | v2.4.0            | v2.4.0
-ip          | v3.3.0            | v3.3.0
-sp          | v2.3.0            | v2.3.0
-landsfcutil | v2.4.0            | v2.4.0
-g2          | v3.4.0            | v3.4.0
-g2tmpl      | v1.9.0            | v1.9.0
-crtm        | v2.3.0            | v2.3.0
+bacio       | v2.4.0            | 2.4.0
+sigio       | v2.3.0            | 2.3.0
+sfcio       | v1.4.0            | 1.4.0
+gfsio       | v1.4.0            | 1.4.0
+nemsio      | v2.5.1            | 2.5.1
+nemsiogfs   | v2.5.0            | 2.5.0
+w3emc       | v2.7.0            | 2.7.0
+w3nco       | v2.4.0            | 2.4.0
+ip          | v3.3.0            | 3.3.0
+sp          | v2.3.0            | 2.3.0
+landsfcutil | v2.4.0            | 2.4.0
+g2          | v3.4.0            | 3.4.0
+g2tmpl      | v1.9.0            | 1.9.0
+crtm        | v2.3.0            | 2.3.0
 nceppost    | dceca26           | dceca26
-wrf_io      | v1.1.1-cmake      | v1.1.1
+wrf_io      | v1.1.1-cmake      | 1.1.1
 --------------------------------------------------------
