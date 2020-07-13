@@ -9,7 +9,7 @@ NCEPLIBS comprises of the following libraries:
 | NCEP library         | Version                                               |
 |----------------------|-------------------------------------------------------|
 | NCEPLIBS-bacio       | 2.4.0                                                 |
-| NCEPLIBS-bufr        | coming soon                                           |
+| NCEPLIBS-bufr        | 11.3.1.1                                              |
 | EMC-crtm             | 2.3.0                                                 |
 | NCEPLIBS-g2          | 3.4.0                                                 |
 | NCEPLIBS-g2tmpl      | 1.9.0                                                 |
