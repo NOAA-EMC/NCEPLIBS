@@ -10,6 +10,7 @@ nemsiogfs   | v2.5.0            | 2.5.0
 w3emc       | v2.7.0            | 2.7.0
 w3nco       | v2.4.0            | 2.4.0
 ip          | v3.3.0            | 3.3.0
+ip2         | v1.1.0            | 1.1.0
 sp          | v2.3.0            | 2.3.0
 landsfcutil | v2.4.0            | 2.4.0
 g2          | v3.4.0            | 3.4.0
@@ -18,4 +19,5 @@ crtm        | v2.3.0            | 2.3.0
 nceppost    | dceca26           | dceca26
 wrf_io      | v1.1.1-cmake      | 1.1.1
 bufr        | bufr_v11.3.1.1    | 11.3.1.1
+wgrib2      | feature/cmake     | 2.0.8-cmake
 --------------------------------------------------------

@@ -97,7 +97,7 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr)
+  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr ip2 wgrib2)
 set(nceplibs ${_comps})
 
 if(BUILD_CRTM)
@@ -119,6 +119,7 @@ string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${_cpath}")
 set(nemsio_depends bacio w3nco)
 set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
+set(wgrib2_depends ip2 sp)
 
 foreach(lib ${nceplibs})
   getTagVer("${LIBCOMPS_FILE}" "${lib}" tag ver)
