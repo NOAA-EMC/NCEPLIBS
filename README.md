@@ -101,6 +101,13 @@ make deploy
 ```
 [LMod](https://lmod.readthedocs.io/en/latest/) Environment module system is required to load/unload these modules.
 
+Some HPC systems use Tcl based Environment modules.  NCEPLIBS provides a means to deploy Tcl module files and can be exercised as follows:
+
+`-DTCLMOD=ON` - enables option to change Lua modulefiles to Tcl modulefiles for each of the NCEPLIBS libraries.  To make the change:
+```
+make tcl
+```
+
 ### Usage
 
 `NCEPLIBS` can be used in any application that uses `cmake` to configure and build by adding `-DCMAKE_PREFIX_PATH=<nceplibs-prefix>` to the cmake command line during configuration.

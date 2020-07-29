@@ -32,6 +32,7 @@ option(ENABLE_TESTS "Enable testing"          OFF)
 option(BUILD_CRTM   "Build CRTM library"      ON)
 option(BUILD_POST   "Build NCEPpost library"  ON)
 option(DEPLOY       "Deploy modulefiles"      OFF)
+option(TCLMOD       "Create Tcl modulefiles " OFF)
 option(FLAT         "Flat install structure"  ON)
 option(LIBCOMPS     "File to read components from" ${DEFAULT_LIBCOMPS})
 
@@ -189,4 +190,9 @@ if(DEPLOY)
   add_custom_target(deploy
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
   add_dependencies(deploy prep2deploy)
+  if(TCLMOD)
+    add_custom_target(tcl
+      COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lua2tcl.py ${CMAKE_INSTALL_PREFIX}/modules)
+    add_dependencies(tcl deploy)
+  endif()
 endif()
