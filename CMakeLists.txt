@@ -120,6 +120,7 @@ string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${_cpath}")
 set(nemsio_depends bacio w3nco)
 set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
+set(ip2_depends sp)
 set(wgrib2_depends ip2 sp)
 
 foreach(lib ${nceplibs})
