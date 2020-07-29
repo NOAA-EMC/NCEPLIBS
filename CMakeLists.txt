@@ -191,10 +191,8 @@ if(DEPLOY)
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
   add_dependencies(deploy prep2deploy)
   if(TCLMOD)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/lua2tcl.py
-                   ${CMAKE_CURRENT_BINARY_DIR}/lua2tcl.py COPYONLY)
     add_custom_target(tcl
-      COMMAND ${CMAKE_CURRENT_BINARY_DIR}/lua2tcl.py ${CMAKE_INSTALL_PREFIX}/modules)
+      COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lua2tcl.py ${CMAKE_INSTALL_PREFIX}/modules)
     add_dependencies(tcl deploy)
   endif()
 endif()
