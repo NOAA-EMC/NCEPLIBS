@@ -137,6 +137,7 @@ foreach(lib ${nceplibs})
                    "-DENABLE_TESTS=${ENABLE_TESTS}"
                    "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
                    "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+                   "-DOPENMP=${OPENMP}"
     DEPENDS        ${${lib}_depends}
     )
 endforeach()
