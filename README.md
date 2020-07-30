@@ -25,6 +25,8 @@ NCEPLIBS comprises of the following libraries:
 | NCEPLIBS-w3emc       | 2.7.0                                                 |
 | NCEPLIBS-w3nco       | 2.4.0                                                 |
 | NCEPLIBS-wrf_io      | 1.1.1                                                 |
+| NCEPLIBS-ip2         | 1.1.0                                                 |
+| NCEPLIBS-wgrib2      | 2.0.8                                                 |
 
 ## Required Software
 
