@@ -57,9 +57,6 @@ endif()
 # By default turn off OpenMP support
 option(OPENMP "use OpenMP threading" OFF)
 
-# Indicate to cmake what the default link type is STATIC
-option(STATIC_IS_DEFAULT "turn on for systems that use static linking by default" OFF)
-
 if(DEFINED EXTERNAL_LIBS_DIR)
   # Append to CMAKE_PREFIX_PATH for PkgConfig
   list(APPEND CMAKE_PREFIX_PATH ${EXTERNAL_LIBS_DIR})
@@ -72,9 +69,6 @@ if(DEFINED EXTERNAL_LIBS_DIR)
     message(FATAL_ERROR "CMake configuration for NCEPLIBS-external not found: ${CMAKE_CONFIG_FILE_EXTERNAL}")
   endif()
   # Set RPATH for shared linking
-  if(NOT STATIC_IS_DEFAULT)
-    set(CMAKE_INSTALL_RPATH "${EXTERNAL_LIBS_DIR}/${CMAKE_INSTALL_LIBDIR}")
-  endif()
 endif()
 
 # If NETCDF is not set in the NCEPLIBS-external cmake configuration file,
@@ -90,18 +84,6 @@ if(NOT NETCDF)
   if(DEFINED ENV{NETCDF_FORTRAN})
     list(APPEND CMAKE_PREFIX_PATH $ENV{NETCDF_FORTRAN})
   endif()
-endif()
-
-# Configure RPATH for shared linking
-if(NOT STATIC_IS_DEFAULT)
-  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
-endif()
-
-# Flag for using static netCDF
-if(STATIC_IS_DEFAULT)
-  set(NETCDF_USE_STATIC_LIBRARIES TRUE)
-else()
-  set(NETCDF_USE_STATIC_LIBRARIES FALSE)
 endif()
 
 add_subdirectory(NCEPLIBS-crtm)
