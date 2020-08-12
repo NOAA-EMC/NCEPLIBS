@@ -19,14 +19,14 @@ It includes the following libraries:
 | NCEPLIBS-landsfcutil | 2.2.0                                                 |
 | NCEPLIBS-nemsio      | 2.3.0                                                 |
 | NCEPLIBS-nemsiogfs   | 2.3.0                                                 |
-| EMC_post             | 1.0.0                                                 |
+| EMC_post             | 1.1.0                                                 |
 | NCEPLIBS-prod_util   | 1.2.0                                                 |
 | NCEPLIBS-sfcio       | 1.2.0                                                 |
 | NCEPLIBS-sigio       | 2.2.0                                                 |
 | NCEPLIBS-sp          | 2.1.0                                                 |
 | NCEPLIBS-w3emc       | 2.5.0                                                 |
 | NCEPLIBS-w3nco       | 2.1.0                                                 |
-| UFS_UTILS            | 1.0.0                                                 |
+| UFS_UTILS            | 1.1.0                                                 |
 
 ## Building, Requirements, Troubleshooting, Support
 
@@ -39,7 +39,7 @@ It includes the following libraries:
 | Compiler vendor | Supported (tested) versions                                |
 |-----------------|------------------------------------------------------------|
 | Intel           | 18.0.3.222, 18.0.5.274, 19.0.2.187, 19.0.5.281, 19.1.0.166 |
-| GNU             | 8.3.0, 9.1.0, 9.2.0                                        |
+| GNU             | 8.3.0, 9.1.0, 9.2.0, 10.2.0                                |
 
 3. A supported MPI library unless installed as part of NCEPLIBS-external, see table below. Other versions may work, in particular if close to the versions listed below. It is recommended to compile the MPI library with the same compilers used to compile NCEPLIBS-external, NCEPLIBS and the UFS applications.
 
@@ -58,12 +58,12 @@ It includes the following libraries:
 | CMake           | cmake-3.16.3                                               |
 | MPI             | openmpi-4.0.2                                              |
 | zlib            | zlib-1.2.11                                                |
-| HDF5            | hdf5-1.10.4                                                |
-| NetCDF          | netcdf-c-4.7.3, netcdf-fortran-4.5.2                       |
+| HDF5            | hdf5-1.10.6                                                |
+| NetCDF          | netcdf-c-4.7.4, netcdf-fortran-4.5.3                       |
 | libpng          | libpng-1.6.35                                              |
 | libjpeg         | jpeg-9.1                                                   |
 | Jasper          | jasper-2.0.16                                              |
-| WGRIB2          | wgrib-2.0.8                                                |
+| WGRIB2          | NCEPLIBS-wgrib2 ufs-v1.1.0                                 |
 | ESMF            | esmf-8.0.0                                                 |
 
 ### Prepare to Build 
@@ -76,7 +76,7 @@ The [NCEPLIBS-external documentation](https://github.com/NOAA-EMC/NCEPLIBS-exter
 
 Clone the repository and its submodules:
 
-`git clone -b ufs-v1.0.0 --recursive https://github.com/NOAA-EMC/NCEPLIBS`
+`git clone -b ufs-v1.1.0 --recursive https://github.com/NOAA-EMC/NCEPLIBS`
 
 **Building**
 
@@ -98,13 +98,7 @@ The default install location is `<build_dir>/install`, but it can be modified by
 
 `-DCMAKE_INSTALL_PREFIX=<path>` when running CMake
 
-When static linking is the default option on a given system (e.g. Cray), add
-```
--DSTATIC_IS_DEFAULT=ON
-```
-to the `cmake` call.
-
-Then, finally run:
+Then, run:
 
 ```
 make -j<x>
