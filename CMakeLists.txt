@@ -162,8 +162,8 @@ getInstallDir(${FLAT} wgrib2 ${ver} installDir)
 ExternalProject_Add(wgrib2
   GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-wgrib2"
   GIT_TAG "${tag}"
-  PREFIX "${CMAKE_BINARY_DIR}/wgrib2
-  LIST_SEPARATOR |
+  PREFIX "${CMAKE_BINARY_DIR}/wgrib2"
+  LIST_SEPARATOR | 
   CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
              "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
              "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
