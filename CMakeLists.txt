@@ -98,7 +98,13 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr wgrib2)
+  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr)
+  
+# ip and ip2 cannot coexist in a flat structure because they share module names which overwrite each other
+if(NOT FLAT)
+  list(APPEND _comps ip2)
+endif()
+
 set(nceplibs ${_comps})
 
 if(BUILD_CRTM)
@@ -120,6 +126,7 @@ string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${_cpath}")
 set(nemsio_depends bacio w3nco)
 set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
+set(ip2_depends sp)
 
 foreach(lib ${nceplibs})
   getTagVer("${LIBCOMPS_FILE}" "${lib}" tag ver)
@@ -140,6 +147,33 @@ foreach(lib ${nceplibs})
     )
 endforeach()
 
+if(NOT FLAT)
+  set(USE_IPOLATES 3)
+  set(USE_SPECTRAL ON)
+  set(wgrib2_depends ip2 sp)
+else()
+  set(USE_IPOLATES 0)
+  set(USE_SPECTRAL OFF)
+  set(wgrib2_depends "")
+endif()
+
+getTagVer("${LIBCOMPS_FILE}" "wgrib2" tag ver)
+getInstallDir(${FLAT} wgrib2 ${ver} installDir)
+ExternalProject_Add(wgrib2
+  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-wgrib2"
+  GIT_TAG "${tag}"
+  PREFIX "${CMAKE_BINARY_DIR}/wgrib2
+  LIST_SEPARATOR |
+  CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+             "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+             "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+             "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+             "-DOPENMP=${OPENMP}"
+             "-DUSE_IPOLATES=${USE_IPOLATES}"
+             "-DUSE_SPECTRAL=${USE_SPECTRAL}"
+  DEPENDS    ${wgrib2_depends}
+  )
+        
 
 if(BUILD_CRTM)
   getTagVer("${LIBCOMPS_FILE}" "crtm" tag ver)
