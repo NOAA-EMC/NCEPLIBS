@@ -2,6 +2,7 @@ build*/
 install*/
 modules*/
 test*/
+download*/
 
 *.[ao]
 *.mod
