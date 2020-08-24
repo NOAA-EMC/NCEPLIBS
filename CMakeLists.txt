@@ -176,8 +176,6 @@ foreach(lib ${nceplibs})
     )
 endforeach()
 
-return()
-
 if(NOT FLAT)
   set(USE_IPOLATES 3)
   set(USE_SPECTRAL ON)
@@ -292,6 +290,12 @@ if(BUILD_POST)
     BUILD_COMMAND     ${BUILD_ONLY}
     INSTALL_COMMAND   ${INSTALL_ONLY}
     )
+endif()
+
+if(DOWNLOAD_ONLY)
+  add_custom_target(tarball
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMAND tar -czf nceplibs.tgz download)
 endif()
 
 # Prepare to deploy modulefiles
