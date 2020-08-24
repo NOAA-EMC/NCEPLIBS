@@ -3,6 +3,8 @@ install*/
 modules*/
 test*/
 download*/
+nceplibs-*/
+emc_*/
 
 *.[aox]
 *.mod
@@ -10,5 +12,6 @@ download*/
 *.exe
 *.tgz
 *.tar*
+
 
 .DS_Store

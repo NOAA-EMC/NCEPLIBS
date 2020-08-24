@@ -68,6 +68,12 @@ if(DEPLOY)
   endif()
 endif()
 
+function(trapLocalError sourceDir)
+  if(NOT EXISTS ${sourceDir})
+    message(FATAL_ERROR "Directory does not exist ${sourceDir}, ABORT!")
+  endif()
+endfunction()
+
 function(getInstallDir FLAT lib ver installDir)
   if(FLAT)
     set(var ${lib}-${ver})
@@ -104,7 +110,7 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr)
+  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr wgrib2)
 
 # ip and ip2 cannot coexist in a flat structure because they share module names which overwrite each other
 if(NOT FLAT)
@@ -134,6 +140,18 @@ set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
 set(ip2_depends sp)
 
+if(NOT FLAT)
+  set(USE_IPOLATES 3)
+  set(USE_SPECTRAL ON)
+  set(wgrib2_depends ip2 sp)
+else()
+  set(USE_IPOLATES 0)
+  set(USE_SPECTRAL OFF)
+  set(wgrib2_depends "")
+endif()
+list(APPEND wgrib2_CMAKE_ARGS -DUSE_IPOLATES=${USE_IPOLATES}
+                              -DUSE_SPECTRAL=${USE_SPECTRAL})
+
 if(DOWNLOAD_ONLY)
   set(CONFIGURE_ONLY "echo")
   set(BUILD_ONLY     "echo")
@@ -149,6 +167,7 @@ foreach(lib ${nceplibs})
     set(GIT_URL      "")
     set(GIT_TAG      "")
     set(SOURCE_DIR   "${CMAKE_SOURCE_DIR}/download/nceplibs-${lib}")
+    trapLocalError(${SOURCE_DIR})
   endif()
 
   if(DOWNLOAD_ONLY)
@@ -169,58 +188,13 @@ foreach(lib ${nceplibs})
                    "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
                    "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
                    "-DOPENMP=${OPENMP}"
+                   ${${lib}_CMAKE_ARGS}
     DEPENDS        ${${lib}_depends}
     CONFIGURE_COMMAND ${CONFIGURE_ONLY}
     BUILD_COMMAND     ${BUILD_ONLY}
     INSTALL_COMMAND   ${INSTALL_ONLY}
     )
 endforeach()
-
-if(NOT FLAT)
-  set(USE_IPOLATES 3)
-  set(USE_SPECTRAL ON)
-  set(wgrib2_depends ip2 sp)
-else()
-  set(USE_IPOLATES 0)
-  set(USE_SPECTRAL OFF)
-  set(wgrib2_depends "")
-endif()
-
-getTagVer("${LIBCOMPS_FILE}" "wgrib2" GIT_TAG ver)
-getInstallDir(${FLAT} wgrib2 ${ver} installDir)
-set(GIT_URL "https://github.com/noaa-emc/nceplibs-wgrib2")
-
-if(USE_LOCAL)
-  set(GIT_URL      "")
-  set(GIT_TAG      "")
-  set(SOURCE_DIR   "${CMAKE_SOURCE_DIR}/download/nceplibs-wgrib2")
-endif()
-
-if(DOWNLOAD_ONLY)
-  set(DOWNLOAD_DIR "${CMAKE_SOURCE_DIR}/download/nceplibs-wgrib2")
-  set(SOURCE_DIR   "${DOWNLOAD_DIR}")
-endif()
-
-ExternalProject_Add(wgrib2
-  GIT_REPOSITORY "${GIT_URL}"
-  GIT_TAG        "${GIT_TAG}"
-  PREFIX         "${CMAKE_BINARY_DIR}/wgrib2"
-  DOWNLOAD_DIR   "${DOWNLOAD_DIR}"
-  SOURCE_DIR     "${SOURCE_DIR}"
-  LIST_SEPARATOR |
-  CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-             "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
-             "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
-             "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
-             "-DOPENMP=${OPENMP}"
-             "-DUSE_IPOLATES=${USE_IPOLATES}"
-             "-DUSE_SPECTRAL=${USE_SPECTRAL}"
-  DEPENDS    ${wgrib2_depends}
-  CONFIGURE_COMMAND ${CONFIGURE_ONLY}
-  BUILD_COMMAND     ${BUILD_ONLY}
-  INSTALL_COMMAND   ${INSTALL_ONLY}
-  )
-
 
 if(BUILD_CRTM)
   getTagVer("${LIBCOMPS_FILE}" "crtm" GIT_TAG ver)
@@ -231,6 +205,7 @@ if(BUILD_CRTM)
     set(GIT_URL      "")
     set(GIT_TAG      "")
     set(SOURCE_DIR   "${CMAKE_SOURCE_DIR}/download/emc_crtm")
+    trapLocalError(${SOURCE_DIR})
   endif()
 
   if(DOWNLOAD_ONLY)
@@ -264,6 +239,7 @@ if(BUILD_POST)
     set(GIT_URL      "")
     set(GIT_TAG      "")
     set(SOURCE_DIR   "${CMAKE_SOURCE_DIR}/download/emc_post")
+    trapLocalError(${SOURCE_DIR})
   endif()
 
   if(DOWNLOAD_ONLY)
