@@ -10,7 +10,7 @@ project(
 include(ExternalProject)
 include(GNUInstallDirs)
 
-if(NOT CMAKE_BUILD_TYPE MATCHES "^(Portable|Debug|Release|RelWithDebInfo|MinSizeRel)$")
+if(NOT CMAKE_BUILD_TYPE MATCHES "^(Tarball|Portable|Debug|Release|RelWithDebInfo|MinSizeRel)$")
   message(STATUS "Setting build type to 'Release' as none was specified.")
   set(CMAKE_BUILD_TYPE
     "Release"
@@ -133,7 +133,7 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src)
 else()
   set(gitloc "https://github.com/noaa-emc" )
 endif()  
-if(CMAKE_BUILD_TYPE STREQUAL "Portable")
+if(CMAKE_BUILD_TYPE STREQUAL "Tarball")
   find_package(Git QUIET)
   message("creating portable tarball")
   set(gitloc "https://github.com/noaa-emc" )
@@ -173,7 +173,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Portable")
         endif()
       endif()
     endforeach()
-  set(tar_args cfz nceplibs.release-v2.tar.gz ${CMAKE_CURRENT_SOURCE_DIR} )
+  get_filename_component(barename ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+  set(tar_args cfz nceplibs.release-v2.tar.gz ${barename} )
   execute_process(COMMAND tar ${tar_args} 
                     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
                     RESULT_VARIABLE TAR_RESULT)
@@ -185,8 +186,21 @@ else()
   foreach(lib ${nceplibs})
     getTagVer("${LIBCOMPS_FILE}" "${lib}" tag ver)
     getInstallDir(${FLAT} ${lib} ${ver} installDir)
-  
-    ExternalProject_Add(${lib}
+    if(${CMAKE_BUILD_TYPE STREQUAL "Portable") 
+      ExternalProject_Add(${lib}
+      URL            "${gitloc}/nceplibs-${lib}"
+      PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
+      LIST_SEPARATOR |
+      CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+                     "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+                     "-DENABLE_TESTS=${ENABLE_TESTS}"
+                     "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+                     "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+                     "-DOPENMP=${OPENMP}"
+      DEPENDS        ${${lib}_depends}
+      )
+    else()
+      ExternalProject_Add(${lib}
       GIT_REPOSITORY "${gitloc}/nceplibs-${lib}"
       GIT_TAG        "${tag}"
       PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
@@ -199,6 +213,7 @@ else()
                      "-DOPENMP=${OPENMP}"
       DEPENDS        ${${lib}_depends}
       )
+    endif()
   endforeach()
   
   if(NOT FLAT)
@@ -213,7 +228,22 @@ else()
   
   getTagVer("${LIBCOMPS_FILE}" "wgrib2" tag ver)
   getInstallDir(${FLAT} wgrib2 ${ver} installDir)
-  ExternalProject_Add(wgrib2
+  if(${CMAKE_BUILD_TYPE STREQUAL "Portable") 
+    ExternalProject_Add(wgrib2
+    URL "${gitloc}/nceplibs-wgrib2"
+    PREFIX "${CMAKE_BINARY_DIR}/wgrib2"
+    LIST_SEPARATOR | 
+    CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+               "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+               "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+               "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+               "-DOPENMP=${OPENMP}"
+               "-DUSE_IPOLATES=${USE_IPOLATES}"
+               "-DUSE_SPECTRAL=${USE_SPECTRAL}"
+    DEPENDS    ${wgrib2_depends}
+    )
+  else()
+    ExternalProject_Add(wgrib2
     GIT_REPOSITORY "${gitloc}/nceplibs-wgrib2"
     GIT_TAG "${tag}"
     PREFIX "${CMAKE_BINARY_DIR}/wgrib2"
@@ -227,13 +257,24 @@ else()
                "-DUSE_SPECTRAL=${USE_SPECTRAL}"
     DEPENDS    ${wgrib2_depends}
     )
-          
+  endif()          
   
   if(BUILD_CRTM)
     getTagVer("${LIBCOMPS_FILE}" "crtm" tag ver)
     getInstallDir(${FLAT} "crtm" ${ver} installDir)
   
-    ExternalProject_Add(crtm
+    if(${CMAKE_BUILD_TYPE STREQUAL "Portable") 
+      ExternalProject_Add(crtm
+      URL "${gitloc}/emc_crtm"
+      PREFIX         "${CMAKE_BINARY_DIR}/crtm"
+      LIST_SEPARATOR |
+      CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+                     "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+                     "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+                     "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+      )
+    else()
+      ExternalProject_Add(crtm
       GIT_REPOSITORY "${gitloc}/emc_crtm"
       GIT_TAG        "${tag}"
       PREFIX         "${CMAKE_BINARY_DIR}/crtm"
@@ -243,15 +284,16 @@ else()
                      "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
                      "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
       )
+    endif()
   endif()
   
   if(BUILD_POST)
     getTagVer("${LIBCOMPS_FILE}" "nceppost" tag ver)
     getInstallDir(${FLAT} "nceppost" ${ver} installDir)
   
-    ExternalProject_Add(nceppost
-      GIT_REPOSITORY "${gitloc}/emc_post"
-      GIT_TAG        "${tag}"
+    if(${CMAKE_BUILD_TYPE STREQUAL "Portable") 
+      ExternalProject_Add(nceppost
+      URL "${gitloc}/emc_post"
       GIT_SUBMODULES "CMakeModules"
       PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
       LIST_SEPARATOR |
@@ -263,6 +305,22 @@ else()
                      "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
       DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
       )
+    else()
+      ExternalProject_Add(nceppost
+      GIT_REPOSITORY "${gitloc}/emc_post"
+      GIT_TAG        "${tag}"
+      GIT_SUBMODULES "CMakeModules"
+      PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
+      LIST_SEPARATOR |
+      CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+                     "-DOPENMP=${OPENMP}"
+                     "-DBUILD_POSTEXEC=OFF"
+                     "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+                     "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+      DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
+      )
+    endif()
   endif()
   
   # Prepare to deploy modulefiles
