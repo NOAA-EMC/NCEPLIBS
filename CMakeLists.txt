@@ -10,7 +10,7 @@ project(
 include(ExternalProject)
 include(GNUInstallDirs)
 
-if(NOT CMAKE_BUILD_TYPE MATCHES "^(Tarball|Portable|Debug|Release|RelWithDebInfo|MinSizeRel)$")
+if(NOT CMAKE_BUILD_TYPE MATCHES "^(Portable|Debug|Release|RelWithDebInfo|MinSizeRel)$")
   message(STATUS "Setting build type to 'Release' as none was specified.")
   set(CMAKE_BUILD_TYPE
     "Release"
@@ -130,10 +130,11 @@ set(ip2_depends sp)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src) 
   # This is a portable version with pre-cloned repos
   set(gitloc ${CMAKE_CURRENT_SOURCE_DIR}/src)
+  set(TARBALL TRUE)
 else()
   set(gitloc "https://github.com/noaa-emc" )
 endif()  
-if(${CMAKE_BUILD_TYPE} STREQUAL "Tarball")
+if(${CMAKE_BUILD_TYPE} STREQUAL "Portable")
   find_package(Git QUIET)
   message("creating portable tarball")
   set(gitloc "https://github.com/noaa-emc" )
@@ -186,7 +187,7 @@ else()
   foreach(lib ${nceplibs})
     getTagVer("${LIBCOMPS_FILE}" "${lib}" tag ver)
     getInstallDir(${FLAT} ${lib} ${ver} installDir)
-    if(${CMAKE_BUILD_TYPE} STREQUAL "Portable") 
+    if(${TARBALL}) 
       ExternalProject_Add(${lib}
       URL            "${gitloc}/nceplibs-${lib}"
       PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
@@ -228,7 +229,7 @@ else()
   
   getTagVer("${LIBCOMPS_FILE}" "wgrib2" tag ver)
   getInstallDir(${FLAT} wgrib2 ${ver} installDir)
-  if(${CMAKE_BUILD_TYPE} STREQUAL "Portable") 
+  if(${TARBALL}) 
     ExternalProject_Add(wgrib2
     URL "${gitloc}/nceplibs-wgrib2"
     PREFIX "${CMAKE_BINARY_DIR}/wgrib2"
@@ -263,7 +264,7 @@ else()
     getTagVer("${LIBCOMPS_FILE}" "crtm" tag ver)
     getInstallDir(${FLAT} "crtm" ${ver} installDir)
   
-    if(${CMAKE_BUILD_TYPE} STREQUAL "Portable") 
+    if(${TARBALL}) 
       ExternalProject_Add(crtm
       URL "${gitloc}/emc_crtm"
       PREFIX         "${CMAKE_BINARY_DIR}/crtm"
@@ -291,7 +292,7 @@ else()
     getTagVer("${LIBCOMPS_FILE}" "nceppost" tag ver)
     getInstallDir(${FLAT} "nceppost" ${ver} installDir)
   
-    if(${CMAKE_BUILD_TYPE} STREQUAL "Portable") 
+    if(${TARBALL}) 
       ExternalProject_Add(nceppost
       URL "${gitloc}/emc_post"
       GIT_SUBMODULES "CMakeModules"
