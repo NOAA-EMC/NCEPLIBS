@@ -4,10 +4,11 @@ modules*/
 test*/
 download*/
 
-*.[ao]
+*.[aox]
 *.mod
 *.swp
 *.exe
-*.x
+*.tgz
+*.tar*
 
 .DS_Store
