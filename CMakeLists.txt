@@ -110,7 +110,7 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr wgrib2)
+  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr)
 
 # ip and ip2 cannot coexist in a flat structure because they share module names which overwrite each other
 if(NOT FLAT)
