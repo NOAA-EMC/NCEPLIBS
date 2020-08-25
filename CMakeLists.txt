@@ -161,25 +161,20 @@ endif()
 foreach(lib ${nceplibs})
   getTagVer("${LIBCOMPS_FILE}" "${lib}" GIT_TAG ver)
   getInstallDir(${FLAT} ${lib} ${ver} installDir)
-  set(GIT_URL "https://github.com/noaa-emc/nceplibs-${lib}")
+
+  set(GIT_URL    "https://github.com/noaa-emc/nceplibs-${lib}")
+  set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/download/nceplibs-${lib}")
 
   if(USE_LOCAL)
     set(GIT_URL      "")
     set(GIT_TAG      "")
-    set(SOURCE_DIR   "${CMAKE_SOURCE_DIR}/download/nceplibs-${lib}")
     trapLocalError(${SOURCE_DIR})
-  endif()
-
-  if(DOWNLOAD_ONLY)
-    set(DOWNLOAD_DIR "${CMAKE_SOURCE_DIR}/download/nceplibs-${lib}")
-    set(SOURCE_DIR   "${DOWNLOAD_DIR}")
   endif()
 
   ExternalProject_Add(${lib}
     GIT_REPOSITORY "${GIT_URL}"
     GIT_TAG        "${GIT_TAG}"
     PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
-    DOWNLOAD_DIR   "${DOWNLOAD_DIR}"
     SOURCE_DIR     "${SOURCE_DIR}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
@@ -199,25 +194,20 @@ endforeach()
 if(BUILD_CRTM)
   getTagVer("${LIBCOMPS_FILE}" "crtm" GIT_TAG ver)
   getInstallDir(${FLAT} "crtm" ${ver} installDir)
-  set(GIT_URL "https://github.com/noaa-emc/emc_crtm")
+
+  set(GIT_URL    "https://github.com/noaa-emc/emc_crtm")
+  set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/download/emc_crtm")
 
   if(USE_LOCAL)
     set(GIT_URL      "")
     set(GIT_TAG      "")
-    set(SOURCE_DIR   "${CMAKE_SOURCE_DIR}/download/emc_crtm")
     trapLocalError(${SOURCE_DIR})
-  endif()
-
-  if(DOWNLOAD_ONLY)
-    set(DOWNLOAD_DIR "${CMAKE_SOURCE_DIR}/download/emc_crtm")
-    set(SOURCE_DIR   "${DOWNLOAD_DIR}")
   endif()
 
   ExternalProject_Add(crtm
     GIT_REPOSITORY "${GIT_URL}"
     GIT_TAG        "${GIT_TAG}"
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
-    DOWNLOAD_DIR   "${DOWNLOAD_DIR}"
     SOURCE_DIR     "${SOURCE_DIR}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
@@ -233,18 +223,14 @@ endif()
 if(BUILD_POST)
   getTagVer("${LIBCOMPS_FILE}" "nceppost" GIT_TAG ver)
   getInstallDir(${FLAT} "nceppost" ${ver} installDir)
-  set(GIT_URL "https://github.com/noaa-emc/emc_post")
+
+  set(GIT_URL    "https://github.com/noaa-emc/emc_post")
+  set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/download/emc_post")
 
   if(USE_LOCAL)
     set(GIT_URL      "")
     set(GIT_TAG      "")
-    set(SOURCE_DIR   "${CMAKE_SOURCE_DIR}/download/emc_post")
     trapLocalError(${SOURCE_DIR})
-  endif()
-
-  if(DOWNLOAD_ONLY)
-    set(DOWNLOAD_DIR "${CMAKE_SOURCE_DIR}/download/emc_post")
-    set(SOURCE_DIR   "${DOWNLOAD_DIR}")
   endif()
 
   ExternalProject_Add(nceppost
@@ -252,7 +238,6 @@ if(BUILD_POST)
     GIT_TAG        "${GIT_TAG}"
     GIT_SUBMODULES "CMakeModules"
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
-    DOWNLOAD_DIR   "${DOWNLOAD_DIR}"
     SOURCE_DIR     "${SOURCE_DIR}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
