@@ -257,6 +257,7 @@ if(DOWNLOAD_ONLY)
   add_custom_target(tarball
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMAND tar -czf nceplibs.tgz download)
+    add_dependencies(tarball ${_comps})
 endif()
 
 # Prepare to deploy modulefiles
