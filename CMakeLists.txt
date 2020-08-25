@@ -27,14 +27,20 @@ endif()
 set(DEFAULT_LIBCOMPS ${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS)
 
 # User options
-option(OPENMP       "Enable OpenMP threading" OFF)
-option(ENABLE_TESTS "Enable testing"          OFF)
-option(BUILD_CRTM   "Build CRTM library"      ON)
-option(BUILD_POST   "Build NCEPpost library"  ON)
-option(DEPLOY       "Deploy modulefiles"      OFF)
-option(TCLMOD       "Create Tcl modulefiles " OFF)
-option(FLAT         "Flat install structure"  ON)
-option(LIBCOMPS     "File to read components from" ${DEFAULT_LIBCOMPS})
+option(OPENMP        "Enable OpenMP threading" OFF)
+option(ENABLE_TESTS  "Enable testing"          OFF)
+option(BUILD_CRTM    "Build CRTM library"      ON)
+option(BUILD_POST    "Build NCEPpost library"  ON)
+option(DEPLOY        "Deploy modulefiles"      OFF)
+option(TCLMOD        "Create Tcl modulefiles " OFF)
+option(FLAT          "Flat install structure"  ON)
+option(LIBCOMPS      "File to read components from" ${DEFAULT_LIBCOMPS})
+option(DOWNLOAD_ONLY "Just download the components" OFF)
+option(USE_LOCAL     "Use locally downloaded components" OFF)
+
+if(DOWNLOAD_ONLY AND USE_LOCAL)
+  message(FATAL_ERROR "DOWNLOAD_ONLY AND USE_LOCAL CANNOT BOTH BE ON, ABORT!")
+endif()
 
 # Read list of components to install from:
 if(NOT LIBCOMPS)
@@ -61,6 +67,12 @@ if(DEPLOY)
     message(STATUS "WARNING: Overwriting NCEPLIBS modulefiles is ON")
   endif()
 endif()
+
+function(trapLocalError sourceDir)
+  if(NOT EXISTS ${sourceDir})
+    message(FATAL_ERROR "Directory does not exist ${sourceDir}, ABORT!")
+  endif()
+endfunction()
 
 function(getInstallDir FLAT lib ver installDir)
   if(FLAT)
@@ -98,8 +110,8 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr)
-  
+  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr wgrib2)
+
 # ip and ip2 cannot coexist in a flat structure because they share module names which overwrite each other
 if(NOT FLAT)
   list(APPEND _comps ip2)
@@ -128,25 +140,6 @@ set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
 set(ip2_depends sp)
 
-foreach(lib ${nceplibs})
-  getTagVer("${LIBCOMPS_FILE}" "${lib}" tag ver)
-  getInstallDir(${FLAT} ${lib} ${ver} installDir)
-
-  ExternalProject_Add(${lib}
-    GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-${lib}"
-    GIT_TAG        "${tag}"
-    PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
-    LIST_SEPARATOR |
-    CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
-                   "-DENABLE_TESTS=${ENABLE_TESTS}"
-                   "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
-                   "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
-                   "-DOPENMP=${OPENMP}"
-    DEPENDS        ${${lib}_depends}
-    )
-endforeach()
-
 if(NOT FLAT)
   set(USE_IPOLATES 3)
   set(USE_SPECTRAL ON)
@@ -156,50 +149,96 @@ else()
   set(USE_SPECTRAL OFF)
   set(wgrib2_depends "")
 endif()
+list(APPEND wgrib2_CMAKE_ARGS -DUSE_IPOLATES=${USE_IPOLATES}
+                              -DUSE_SPECTRAL=${USE_SPECTRAL})
 
-getTagVer("${LIBCOMPS_FILE}" "wgrib2" tag ver)
-getInstallDir(${FLAT} wgrib2 ${ver} installDir)
-ExternalProject_Add(wgrib2
-  GIT_REPOSITORY "https://github.com/noaa-emc/nceplibs-wgrib2"
-  GIT_TAG "${tag}"
-  PREFIX "${CMAKE_BINARY_DIR}/wgrib2"
-  LIST_SEPARATOR | 
-  CMAKE_ARGS "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
-             "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
-             "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
-             "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
-             "-DOPENMP=${OPENMP}"
-             "-DUSE_IPOLATES=${USE_IPOLATES}"
-             "-DUSE_SPECTRAL=${USE_SPECTRAL}"
-  DEPENDS    ${wgrib2_depends}
-  )
-        
+if(DOWNLOAD_ONLY)
+  set(CONFIGURE_ONLY "echo")
+  set(BUILD_ONLY     "echo")
+  set(INSTALL_ONLY   "echo")
+endif()
+
+foreach(lib ${nceplibs})
+  getTagVer("${LIBCOMPS_FILE}" "${lib}" GIT_TAG ver)
+  getInstallDir(${FLAT} ${lib} ${ver} installDir)
+
+  set(GIT_URL    "https://github.com/noaa-emc/nceplibs-${lib}")
+  set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/download/nceplibs-${lib}")
+
+  if(USE_LOCAL)
+    set(GIT_URL      "")
+    set(GIT_TAG      "")
+    trapLocalError(${SOURCE_DIR})
+  endif()
+
+  ExternalProject_Add(${lib}
+    GIT_REPOSITORY "${GIT_URL}"
+    GIT_TAG        "${GIT_TAG}"
+    PREFIX         "${CMAKE_BINARY_DIR}/${lib}"
+    SOURCE_DIR     "${SOURCE_DIR}"
+    LIST_SEPARATOR |
+    CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+                   "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
+                   "-DENABLE_TESTS=${ENABLE_TESTS}"
+                   "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+                   "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+                   "-DOPENMP=${OPENMP}"
+                   ${${lib}_CMAKE_ARGS}
+    DEPENDS        ${${lib}_depends}
+    CONFIGURE_COMMAND ${CONFIGURE_ONLY}
+    BUILD_COMMAND     ${BUILD_ONLY}
+    INSTALL_COMMAND   ${INSTALL_ONLY}
+    )
+endforeach()
 
 if(BUILD_CRTM)
-  getTagVer("${LIBCOMPS_FILE}" "crtm" tag ver)
+  getTagVer("${LIBCOMPS_FILE}" "crtm" GIT_TAG ver)
   getInstallDir(${FLAT} "crtm" ${ver} installDir)
 
+  set(GIT_URL    "https://github.com/noaa-emc/emc_crtm")
+  set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/download/emc_crtm")
+
+  if(USE_LOCAL)
+    set(GIT_URL      "")
+    set(GIT_TAG      "")
+    trapLocalError(${SOURCE_DIR})
+  endif()
+
   ExternalProject_Add(crtm
-    GIT_REPOSITORY "https://github.com/noaa-emc/emc_crtm"
-    GIT_TAG        "${tag}"
+    GIT_REPOSITORY "${GIT_URL}"
+    GIT_TAG        "${GIT_TAG}"
     PREFIX         "${CMAKE_BINARY_DIR}/crtm"
+    SOURCE_DIR     "${SOURCE_DIR}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
                    "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
                    "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+    CONFIGURE_COMMAND ${CONFIGURE_ONLY}
+    BUILD_COMMAND     ${BUILD_ONLY}
+    INSTALL_COMMAND   ${INSTALL_ONLY}
     )
 endif()
 
 if(BUILD_POST)
-  getTagVer("${LIBCOMPS_FILE}" "nceppost" tag ver)
+  getTagVer("${LIBCOMPS_FILE}" "nceppost" GIT_TAG ver)
   getInstallDir(${FLAT} "nceppost" ${ver} installDir)
 
+  set(GIT_URL    "https://github.com/noaa-emc/emc_post")
+  set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/download/emc_post")
+
+  if(USE_LOCAL)
+    set(GIT_URL      "")
+    set(GIT_TAG      "")
+    trapLocalError(${SOURCE_DIR})
+  endif()
+
   ExternalProject_Add(nceppost
-    GIT_REPOSITORY "https://github.com/noaa-emc/emc_post"
-    GIT_TAG        "${tag}"
+    GIT_REPOSITORY "${GIT_URL}"
+    GIT_TAG        "${GIT_TAG}"
     GIT_SUBMODULES "CMakeModules"
     PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
+    SOURCE_DIR     "${SOURCE_DIR}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
                    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${installDir}"
@@ -208,7 +247,17 @@ if(BUILD_POST)
                    "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
                    "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
     DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
+    CONFIGURE_COMMAND ${CONFIGURE_ONLY}
+    BUILD_COMMAND     ${BUILD_ONLY}
+    INSTALL_COMMAND   ${INSTALL_ONLY}
     )
+endif()
+
+if(DOWNLOAD_ONLY)
+  add_custom_target(tarball
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMAND tar -czf nceplibs.tgz download)
+    add_dependencies(tarball ${_comps})
 endif()
 
 # Prepare to deploy modulefiles

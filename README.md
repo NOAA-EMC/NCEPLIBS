@@ -110,6 +110,8 @@ Some HPC systems use Tcl based Environment modules.  NCEPLIBS provides a means t
 make tcl
 ```
 
+On machines that do not provide access to Github, a `DOWNLOAD_ONLY` and `USE_LOCAL` option is provided.  To download the NCEPLIBS without building them use the cmake command line option `-DDOWNLOAD_ONLY=ON`.  This will download all the NCEPLIBS in a local `download` folder.  `make tarball` will tar and zip this folder into `nceplibs.tgz` which can then be transferred to the machine without GitHub access.  Untar the tarball, and use the cmake command line option `USE_LOCAL` as `-DUSE_LOCAL=ON`.  This will use the source code from the download directory.
+
 ### Usage
 
 `NCEPLIBS` can be used in any application that uses `cmake` to configure and build by adding `-DCMAKE_PREFIX_PATH=<nceplibs-prefix>` to the cmake command line during configuration.

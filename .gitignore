@@ -2,11 +2,16 @@ build*/
 install*/
 modules*/
 test*/
+download*/
+nceplibs-*/
+emc_*/
 
-*.[ao]
+*.[aox]
 *.mod
 *.swp
 *.exe
-*.x
+*.tgz
+*.tar*
+
 
 .DS_Store
