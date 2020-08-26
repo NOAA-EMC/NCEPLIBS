@@ -110,7 +110,7 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr wgrib2)
+  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr)
 
 # ip and ip2 cannot coexist in a flat structure because they share module names which overwrite each other
 if(NOT FLAT)
@@ -139,18 +139,6 @@ set(nemsio_depends bacio w3nco)
 set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
 set(ip2_depends sp)
-
-if(NOT FLAT)
-  set(USE_IPOLATES 3)
-  set(USE_SPECTRAL ON)
-  set(wgrib2_depends ip2 sp)
-else()
-  set(USE_IPOLATES 0)
-  set(USE_SPECTRAL OFF)
-  set(wgrib2_depends "")
-endif()
-list(APPEND wgrib2_CMAKE_ARGS -DUSE_IPOLATES=${USE_IPOLATES}
-                              -DUSE_SPECTRAL=${USE_SPECTRAL})
 
 if(DOWNLOAD_ONLY)
   set(CONFIGURE_ONLY "echo")
