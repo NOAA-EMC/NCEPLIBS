@@ -140,18 +140,6 @@ set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
 set(ip2_depends sp)
 
-if(NOT FLAT)
-  set(USE_IPOLATES 3)
-  set(USE_SPECTRAL ON)
-  set(wgrib2_depends ip2 sp)
-else()
-  set(USE_IPOLATES 0)
-  set(USE_SPECTRAL OFF)
-  set(wgrib2_depends "")
-endif()
-list(APPEND wgrib2_CMAKE_ARGS -DUSE_IPOLATES=${USE_IPOLATES}
-                              -DUSE_SPECTRAL=${USE_SPECTRAL})
-
 if(DOWNLOAD_ONLY)
   set(CONFIGURE_ONLY "echo")
   set(BUILD_ONLY     "echo")
