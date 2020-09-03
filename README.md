@@ -8,24 +8,24 @@ NCEPLIBS comprises of the following libraries:
 
 | NCEP library         | Version                                               |
 |----------------------|-------------------------------------------------------|
-| NCEPLIBS-bacio       | 2.4.0                                                 |
-| NCEPLIBS-bufr        | 11.3.1.1                                              |
+| NCEPLIBS-bacio       | 2.4.1                                                 |
+| NCEPLIBS-bufr        | 11.4.0                                                |
 | EMC-crtm             | 2.3.0                                                 |
-| NCEPLIBS-g2          | 3.4.0                                                 |
+| NCEPLIBS-g2          | 3.4.1                                                 |
 | NCEPLIBS-g2tmpl      | 1.9.0                                                 |
-| NCEPLIBS-gfsio       | 1.4.0                                                 |
-| NCEPLIBS-ip          | 3.3.0                                                 |
-| NCEPLIBS-landsfcutil | 2.4.0                                                 |
-| NCEPLIBS-nemsio      | 2.5.1                                                 |
-| NCEPLIBS-nemsiogfs   | 2.5.0                                                 |
+| NCEPLIBS-gfsio       | 1.4.1                                                 |
+| NCEPLIBS-ip          | 3.3.2                                                 |
+| NCEPLIBS-landsfcutil | 2.4.1                                                 |
+| NCEPLIBS-nemsio      | 2.5.2                                                 |
+| NCEPLIBS-nemsiogfs   | 2.5.2                                                 |
 | EMC_post             | dceca26                                               |
-| NCEPLIBS-sfcio       | 1.4.0                                                 |
-| NCEPLIBS-sigio       | 2.3.0                                                 |
-| NCEPLIBS-sp          | 2.3.0                                                 |
-| NCEPLIBS-w3emc       | 2.7.0                                                 |
-| NCEPLIBS-w3nco       | 2.4.0                                                 |
+| NCEPLIBS-sfcio       | 1.4.1                                                 |
+| NCEPLIBS-sigio       | 2.3.2                                                 |
+| NCEPLIBS-sp          | 2.3.2                                                 |
+| NCEPLIBS-w3emc       | 2.7.2                                                 |
+| NCEPLIBS-w3nco       | 2.4.1                                                 |
 | NCEPLIBS-wrf_io      | 1.1.1                                                 |
-| NCEPLIBS-ip2         | 1.1.0                                                 |
+| NCEPLIBS-ip2         | 1.1.2                                                 |
 | NCEPLIBS-wgrib2      | 2.0.8                                                 |
 
 ## Required Software
