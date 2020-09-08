@@ -18,6 +18,6 @@ Fixed installation of scripts using INSTALL command instead of copying them
 Updated submodules for grib\_util, post, prod\_util, UFS\_UTILS
 
 
-## ufs-v1.0.0
+## v1.0.0
 
 CMake-based build for NCEPLIBS public release
