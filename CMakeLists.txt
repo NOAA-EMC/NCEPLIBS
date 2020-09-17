@@ -221,6 +221,12 @@ if(BUILD_POST)
     trapLocalError(${SOURCE_DIR})
   endif()
 
+  if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
+    set(EMC_POST_PATCH_COMMAND "${CMAKE_SOURCE_DIR}/emc_post_gfortran-10.sh")
+  else()
+    set(EMC_POST_PATCH_COMMAND "echo")
+  endif()
+
   ExternalProject_Add(nceppost
     GIT_REPOSITORY "${GIT_URL}"
     GIT_TAG        "${GIT_TAG}"
@@ -235,6 +241,7 @@ if(BUILD_POST)
                    "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
                    "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
     DEPENDS        bacio w3nco w3emc g2 g2tmpl ip sp crtm
+    PATCH_COMMAND     "${EMC_POST_PATCH_COMMAND}"
     CONFIGURE_COMMAND ${CONFIGURE_ONLY}
     BUILD_COMMAND     ${BUILD_ONLY}
     INSTALL_COMMAND   ${INSTALL_ONLY}

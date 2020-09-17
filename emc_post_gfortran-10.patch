@@ -1,0 +1,13 @@
+--- download/emc_post/sorc/ncep_post.fd/CMakeLists.txt	2020-09-17 13:04:57.000000000 -0600
++++ download/emc_post/sorc/ncep_post.fd/CMakeLists.txt	2020-09-17 13:05:53.000000000 -0600
+@@ -187,6 +187,10 @@
+   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check")
+ endif()
+ 
++if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
++  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -w -fallow-argument-mismatch") # " -fallow-invalid-boz")
++endif()
++
+ set(LIBNAME "nceppost")
+ set(EXENAME "nceppost.x")
+ 
