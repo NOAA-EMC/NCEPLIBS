@@ -72,5 +72,7 @@
 	branch = release/public-v1
 [submodule "UFS_UTILS"]
 	path = UFS_UTILS
-	url = https://github.com/NOAA-EMC/UFS_UTILS
-	branch = release/public-v1
+	#url = https://github.com/NOAA-EMC/UFS_UTILS
+	#branch = release/public-v1
+	url = https://github.com/climbfuji/UFS_UTILS
+	branch = fix_grib2_errors_mrwapp
