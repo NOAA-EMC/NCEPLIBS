@@ -68,8 +68,10 @@
 	branch = release/public-v1
 [submodule "NCEPLIBS-post"]
 	path = NCEPLIBS-post
-	url = https://github.com/NOAA-EMC/EMC_post
-	branch = release/public-v1
+	#url = https://github.com/NOAA-EMC/EMC_post
+	#branch = release/public-v1
+	url = https://github.com/climbfuji/EMC_post
+	branch = find_netcdf_bugfix_release_public_v1
 [submodule "UFS_UTILS"]
 	path = UFS_UTILS
 	url = https://github.com/NOAA-EMC/UFS_UTILS
