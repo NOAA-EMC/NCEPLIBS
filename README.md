@@ -6,27 +6,27 @@ This is a collection of libraries commonly known as NCEPLIBS that are required f
 
 NCEPLIBS comprises of the following libraries:
 
-| NCEP library         | Version                                               |
-|----------------------|-------------------------------------------------------|
-| NCEPLIBS-bacio       | 2.4.1                                                 |
-| NCEPLIBS-bufr        | 11.4.0                                                |
-| EMC-crtm             | 2.3.0                                                 |
-| NCEPLIBS-g2          | 3.4.1                                                 |
-| NCEPLIBS-g2tmpl      | 1.9.1                                                 |
-| NCEPLIBS-gfsio       | 1.4.1                                                 |
-| NCEPLIBS-ip          | 3.3.3                                                 |
-| NCEPLIBS-landsfcutil | 2.4.1                                                 |
-| NCEPLIBS-nemsio      | 2.5.2                                                 |
-| NCEPLIBS-nemsiogfs   | 2.5.3                                                 |
-| EMC_post             | dceca26                                               |
-| NCEPLIBS-sfcio       | 1.4.1                                                 |
-| NCEPLIBS-sigio       | 2.3.2                                                 |
-| NCEPLIBS-sp          | 2.3.3                                                 |
-| NCEPLIBS-w3emc       | 2.7.3                                                 |
-| NCEPLIBS-w3nco       | 2.4.1                                                 |
-| NCEPLIBS-wrf_io      | 1.1.1                                                 |
-| NCEPLIBS-ip2         | 1.1.2                                                 |
-| NCEPLIBS-wgrib2      | 2.0.8                                                 |
+ NCEP library         | Version
+----------------------|---------------------------------------------------
+[NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio)             | 2.4.1
+[NCEPLIBS-bufr](https://github.com/NOAA-EMC/NCEPLIBS-bufr)               | 11.4.0
+[EMC-crtm](https://github.com/noaa-emc/emc_crtm)                         | 2.3.0
+[NCEPLIBS-g2](https://github.com/NOAA-EMC/NCEPLIBS-g2)                   | 3.4.1
+[NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl)           | 1.9.1
+[NCEPLIBS-gfsio](https://github.com/NOAA-EMC/NCEPLIBS-gfsio)             | 1.4.1
+[NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip)                   | 3.3.3
+[NCEPLIBS-landsfcutil](https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil) | 2.4.1
+[NCEPLIBS-nemsio](https://github.com/NOAA-EMC/NCEPLIBS-nemsio)           | 2.5.2
+[NCEPLIBS-nemsiogfs](https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs)     | 2.5.3
+[EMC_post](https://github.com/NOAA-EMC/EMC_post)                         | dceca26
+[NCEPLIBS-sfcio](https://github.com/NOAA-EMC/NCEPLIBS-sfcio)             | 1.4.1
+[NCEPLIBS-sigio](https://github.com/NOAA-EMC/NCEPLIBS-sigio)             | 2.3.2
+[NCEPLIBS-sp](https://github.com/NOAA-EMC/NCEPLIBS-sp)                   | 2.3.3
+[NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc)             | 2.7.3
+[NCEPLIBS-w3nco](https://github.com/NOAA-EMC/NCEPLIBS-w3nco)             | 2.4.1
+[NCEPLIBS-wrf_io](https://github.com/NOAA-EMC/NCEPLIBS-wrf_io)           | 1.1.1
+[NCEPLIBS-ip2](https://github.com/NOAA-EMC/NCEPLIBS-ip2)                 | 1.1.2
+[NCEPLIBS-wgrib2](https://github.com/NOAA-EMC/NCEPLIBS-wgrib2)           | 2.0.8
 
 ## Required Software
 
