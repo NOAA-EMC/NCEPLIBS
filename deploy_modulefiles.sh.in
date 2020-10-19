@@ -14,6 +14,13 @@ DFLAT="@FLAT@"
 
 [[ $DFLAT == "ON" ]] && FLAT="Y" || FLAT="N"
 
+# Account for differences in the sed command on Linux and macOS
+if [[ "@CMAKE_SYSTEM_NAME@" == "Darwin" ]]; then
+  sedI="-i ''"
+else
+  sedI="-i"
+fi
+
 # All module load commands for the umbrella module
 moduleLoadCommands=""
 
@@ -52,7 +59,7 @@ for libName in $(ls -1 $tmplModulefilesDir); do
   repl=$(echo ${prefix} | sed -e "s#/#\\\/#g")
 
   # Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
-  sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+  sed $sedI -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
 
   # Add to module load commands for umbrella module
   moduleLoadCommands="${moduleLoadCommands}
@@ -74,21 +81,18 @@ mkdir -p $modulesDestDir/NCEPLIBS
 
 # Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
 repl=$(echo ${nceplibsInstallDir} | sed -e "s#/#\\\/#g")
-sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+sed $sedI -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
 
 # Set compiler environment variables for the umbrella modulefile
 repl=$(echo "@CMAKE_C_COMPILER@" | sed -e "s#/#\\\/#g")
-sed -i -e "s/#CC#/${repl}/g" $dstModulefile
+sed $sedI -e "s/#CC#/${repl}/g" $dstModulefile
 repl=$(echo "@CMAKE_CXX_COMPILER@" | sed -e "s#/#\\\/#g")
-sed -i -e "s/#CXX#/${repl}/g" $dstModulefile
+sed $sedI -e "s/#CXX#/${repl}/g" $dstModulefile
 repl=$(echo "@CMAKE_Fortran_COMPILER@" | sed -e "s#/#\\\/#g")
-sed -i -e "s/#FC#/${repl}/g" $dstModulefile
+sed $sedI -e "s/#FC#/${repl}/g" $dstModulefile
 
 # Append all module load commands to umbrella module
 echo "${moduleLoadCommands}" >> $dstModulefile
-
-# Temporary workaround: if exists, remove .lua-e file that gets created by sed for a reason I don't understand
-rm -vf ${dstModulefile}-e
 
 echo "Done deploying modules ..."
 
