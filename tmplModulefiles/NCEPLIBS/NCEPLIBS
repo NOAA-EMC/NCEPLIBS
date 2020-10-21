@@ -11,6 +11,7 @@ setenv #NAME#_ROOT    "#NCEPLIBS_ROOT#"
 setenv #NAME#_VERSION "#VERSION#"
 
 prepend-path CMAKE_PREFIX_PATH "#NCEPLIBS_ROOT#"
+prepend-path PATH "#NCEPLIBS_ROOT#/bin"
 
 setenv CC "#CC#"
 setenv CXX "#CXX#"
