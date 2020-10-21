@@ -63,7 +63,7 @@ endif()
 
 # Deploy modulefile if requested
 if(DEPLOY)
-  message(STATUS "Installing NCEPLIBS modulefiles at ${CMAKE_INSTALL_PREFIX}/modules, NCEPLIBs shell scripts at ${CMAKE_INSTALL_PREFIX}/bin")
+  message(STATUS "Installing NCEPLIBS modulefiles at ${CMAKE_INSTALL_PREFIX}/modules, NCEPLIBS shell scripts at ${CMAKE_INSTALL_PREFIX}/bin")
 endif()
 
 function(trapLocalError sourceDir)
@@ -253,24 +253,29 @@ if(DOWNLOAD_ONLY)
     add_dependencies(tarball ${_comps})
 endif()
 
-# Prepare to deploy
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
-  ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-  @ONLY)
-
-add_custom_target(prep2deploy ALL
-  COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
-
-# Deploy modulefiles and shell scripts (if enabled), but do not add to make all (make user do it)
 if(DEPLOY)
+  # Find NetCDF so that NETCDF can be added to the
+  # umbrella module file and the umbrella shell scripts
+  find_package(NetCDF REQUIRED COMPONENTS C Fortran)
+  execute_process(COMMAND ${NetCDF_Fortran_CONFIG_EXECUTABLE} --prefix
+                  OUTPUT_VARIABLE NetCDF_ROOT OUTPUT_STRIP_TRAILING_WHITESPACE)
+                  message(STATUS "Found NetCDF: ${NetCDF_ROOT}")
   # Find ESMF so that ESMFMKFILE can be added to the
   # umbrella module file and the umbrella shell scripts
   find_package(ESMF REQUIRED)
   if (NOT ESMF_FOUND)
     message(FATAL_ERROR "ESMF not found, abort")
   endif()
-  #
+
+  # Prepare to deploy
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
+    ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+    @ONLY)
+  add_custom_target(prep2deploy ALL
+    COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
+
+  # Deploy modulefiles and shell scripts (if enabled), but do not add to make all (make user do it)
   add_custom_target(deploy
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
   add_dependencies(deploy prep2deploy)

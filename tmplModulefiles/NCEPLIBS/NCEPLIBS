@@ -17,6 +17,7 @@ setenv CC "#CC#"
 setenv CXX "#CXX#"
 setenv FC "#FC#"
 
+setenv NETCDF "#NETCDF#"
 setenv ESMFMKFILE "#ESMFMKFILE#"
 
 # Module load commands

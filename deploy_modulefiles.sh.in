@@ -18,8 +18,10 @@ DFLAT="@FLAT@"
 moduleLoadCommands=""
 
 # All export statements for the umbrella shell scripts
-bashScriptContents="#!/bin/bash"
-tcshScriptContents="#!/bin/tcsh"
+bashScriptContents="#!/bin/bash
+echo \"Setting environment variables for ufs-srweather-app/ufs-weather-model\""
+tcshScriptContents="#!/bin/tcsh
+echo \"Setting environment variables for ufs-srweather-app/ufs-weather-model\""
 
 echo "Begin deploying modules ..."
 
@@ -95,6 +97,8 @@ repl=$(echo "@CMAKE_CXX_COMPILER@" | sed -e "s#/#\\\/#g")
 sed -i -e "s/#CXX#/${repl}/g" $dstModulefile
 repl=$(echo "@CMAKE_Fortran_COMPILER@" | sed -e "s#/#\\\/#g")
 sed -i -e "s/#FC#/${repl}/g" $dstModulefile
+repl=$(echo "@NetCDF_ROOT@" | sed -e "s#/#\\\/#g")
+sed -i -e "s/#NETCDF#/${repl}/g" $dstModulefile
 repl=$(echo "@ESMFMKFILE@" | sed -e "s#/#\\\/#g")
 sed -i -e "s/#ESMFMKFILE#/${repl}/g" $dstModulefile
 
@@ -118,6 +122,7 @@ export CXX=\"@CMAKE_CXX_COMPILER@\"
 export FC=\"@CMAKE_Fortran_COMPILER@\"
 export PATH=\"@CMAKE_PREFIX_PATH@:\${PATH}\"
 export CMAKE_PREFIX_PATH=\"@CMAKE_PREFIX_PATH@\${CMAKE_PREFIX_PATH:+:\$CMAKE_PREFIX_PATH}\"
+export NETCDF=\"@NetCDF_ROOT@\"
 export ESMFMKFILE=\"@ESMFMKFILE@\""
 tcshScriptContents="${tcshScriptContents}
 setenv CC \"@CMAKE_C_COMPILER@\"
@@ -129,6 +134,7 @@ if (! \$?CMAKE_PREFIX_PATH) then
 else
   setenv CMAKE_PREFIX_PATH \"@CMAKE_PREFIX_PATH@:\${CMAKE_PREFIX_PATH}\"
 endif
+setenv NETCDF \"@NetCDF_ROOT@\"
 setenv ESMFMKFILE \"@ESMFMKFILE@\""
 
 echo "${bashScript}"
