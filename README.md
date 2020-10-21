@@ -33,8 +33,8 @@ NCEPLIBS comprises of the following libraries:
 
 The following projects are also related to the NCEPLIBS project:
  - [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c)
- - [NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib-util)
- - [NCEPLIBS-prod_util](https://github.com/NOAA-EMC/NCEPLIBS-prod-util)
+ - [NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util)
+ - [NCEPLIBS-prod_util](https://github.com/NOAA-EMC/NCEPLIBS-prod_util)
  - [UFS_UTILS](https://github.com/NOAA-EMC/UFS_UTILS)
 
 ## Required Software
