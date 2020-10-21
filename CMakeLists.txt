@@ -11,6 +11,8 @@ project(
 include(ExternalProject)
 include(GNUInstallDirs)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/Modules/")
+
 if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
   message(STATUS "Setting build type to 'Release' as none was specified.")
   set(CMAKE_BUILD_TYPE
@@ -33,7 +35,6 @@ option(ENABLE_TESTS  "Enable testing"                  OFF)
 option(BUILD_CRTM    "Build CRTM library"              ON)
 option(BUILD_POST    "Build NCEPpost library"          ON)
 option(DEPLOY        "Deploy modulefiles/shellscripts" ON)
-option(TCLMOD        "Create Tcl modulefiles "         OFF)
 option(FLAT          "Flat install structure"          ON)
 option(LIBCOMPS      "File to read components from" ${DEFAULT_LIBCOMPS})
 option(DOWNLOAD_ONLY "Just download the components" OFF)
@@ -263,12 +264,14 @@ add_custom_target(prep2deploy ALL
 
 # Deploy modulefiles and shell scripts (if enabled), but do not add to make all (make user do it)
 if(DEPLOY)
+  # Find ESMF so that ESMFMKFILE can be added to the
+  # umbrella module file and the umbrella shell scripts
+  find_package(ESMF REQUIRED)
+  if (NOT ESMF_FOUND)
+    message(FATAL_ERROR "ESMF not found, abort")
+  endif()
+  #
   add_custom_target(deploy
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
   add_dependencies(deploy prep2deploy)
-  if(TCLMOD)
-    add_custom_target(tcl
-      COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lua2tcl.py ${CMAKE_INSTALL_PREFIX}/modules)
-    add_dependencies(tcl deploy)
-  endif()
 endif()

@@ -14,13 +14,6 @@ DFLAT="@FLAT@"
 
 [[ $DFLAT == "ON" ]] && FLAT="Y" || FLAT="N"
 
-# Account for differences in the sed command on Linux and macOS
-if [[ "@CMAKE_SYSTEM_NAME@" == "Darwin" ]]; then
-  sedI="-i ''"
-else
-  sedI="-i"
-fi
-
 # All module load commands for the umbrella module
 moduleLoadCommands=""
 
@@ -45,8 +38,8 @@ for libName in $(ls -1 $tmplModulefilesDir); do
 
   # Define source and destination modulefile name
   # Destination filename must be consistent with CMakeLists.txt
-  srcModulefile=$tmplModulefilesDir/$libName/$libName.lua
-  dstModulefile=$modulesDestDir/$libName/$ver.lua
+  srcModulefile=$tmplModulefilesDir/$libName/$libName
+  dstModulefile=$modulesDestDir/$libName/$ver
 
   # Create destination directory for the modulefile and copy template to it
   mkdir -p $modulesDestDir/$libName
@@ -54,12 +47,18 @@ for libName in $(ls -1 $tmplModulefilesDir); do
 
   [[ $FLAT =~ [YyTt] ]] && prefix=${nceplibsInstallDir} || prefix=${nceplibsInstallDir}/$libName
 
+  # Replace #NAME# and #VERSION#
+  sed -i -e "s/#NAME#/${libName}/g" $dstModulefile
+  sed -i -e "s/#VERSION#/${ver}/g" $dstModulefile
+
   # sed does not like delimiter (/) to be a part of replacement string
-  # so do magic
   repl=$(echo ${prefix} | sed -e "s#/#\\\/#g")
 
   # Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
-  sed $sedI -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+  sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+
+  # Workaround for macOS: remove files created because of differing sed syntax
+  rm -f ${dstModulefile}-e
 
   # Add to module load commands for umbrella module
   moduleLoadCommands="${moduleLoadCommands}
@@ -74,25 +73,36 @@ setenv ${libName}_ROOT \"${prefix}\""
 done
 
 # Create NCEPLIBS umbrella module file
-srcModulefile=$tmplModulefilesDir/NCEPLIBS/nceplibs.lua
-dstModulefile=$modulesDestDir/NCEPLIBS/${NCEPLIBS_VERSION}.lua
+srcModulefile=$tmplModulefilesDir/NCEPLIBS/nceplibs
+dstModulefile=$modulesDestDir/NCEPLIBS/${NCEPLIBS_VERSION}
 mkdir -p $modulesDestDir/NCEPLIBS
 \cp $srcModulefile $dstModulefile
 
-# Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
+# Replace #NAME# and #VERSION#
+sed -i -e "s/#NAME#/NCEPLIBS/g" $dstModulefile
+sed -i -e "s/#VERSION#/${NCEPLIBS_VERSION}/g" $dstModulefile
+
+# sed does not like delimiter (/) to be a part of replacement string
 repl=$(echo ${nceplibsInstallDir} | sed -e "s#/#\\\/#g")
-sed $sedI -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+
+# Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
+sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
 
 # Set compiler environment variables for the umbrella modulefile
 repl=$(echo "@CMAKE_C_COMPILER@" | sed -e "s#/#\\\/#g")
-sed $sedI -e "s/#CC#/${repl}/g" $dstModulefile
+sed -i -e "s/#CC#/${repl}/g" $dstModulefile
 repl=$(echo "@CMAKE_CXX_COMPILER@" | sed -e "s#/#\\\/#g")
-sed $sedI -e "s/#CXX#/${repl}/g" $dstModulefile
+sed -i -e "s/#CXX#/${repl}/g" $dstModulefile
 repl=$(echo "@CMAKE_Fortran_COMPILER@" | sed -e "s#/#\\\/#g")
-sed $sedI -e "s/#FC#/${repl}/g" $dstModulefile
+sed -i -e "s/#FC#/${repl}/g" $dstModulefile
+repl=$(echo "@ESMFMKFILE@" | sed -e "s#/#\\\/#g")
+sed -i -e "s/#ESMFMKFILE#/${repl}/g" $dstModulefile
 
 # Append all module load commands to umbrella module
 echo "${moduleLoadCommands}" >> $dstModulefile
+
+# Workaround for macOS: remove files created because of differing sed syntax
+rm -f ${dstModulefile}-e
 
 echo "Done deploying modules ..."
 
@@ -105,11 +115,19 @@ tcshScript="@CMAKE_INSTALL_PREFIX@/bin/setenv_nceplibs.csh"
 bashScriptContents="${bashScriptContents}
 export CC=\"@CMAKE_C_COMPILER@\"
 export CXX=\"@CMAKE_CXX_COMPILER@\"
-export FC=\"@CMAKE_Fortran_COMPILER@\""
+export FC=\"@CMAKE_Fortran_COMPILER@\"
+export CMAKE_PREFIX_PATH=\"@CMAKE_PREFIX_PATH@\${CMAKE_PREFIX_PATH:+:\$CMAKE_PREFIX_PATH}\"
+export ESMFMKFILE=\"@ESMFMKFILE@\""
 tcshScriptContents="${tcshScriptContents}
 setenv CC \"@CMAKE_C_COMPILER@\"
 setenv CXX \"@CMAKE_CXX_COMPILER@\"
-setenv FC \"@CMAKE_Fortran_COMPILER@\""
+setenv FC \"@CMAKE_Fortran_COMPILER@\"
+if (! \$?CMAKE_PREFIX_PATH) then 
+  setenv CMAKE_PREFIX_PATH \"@CMAKE_PREFIX_PATH@\"
+else
+  setenv CMAKE_PREFIX_PATH \"@CMAKE_PREFIX_PATH@:\${CMAKE_PREFIX_PATH}\"
+endif
+setenv ESMFMKFILE \"@ESMFMKFILE@\""
 
 echo "${bashScript}"
 echo "${bashScriptContents}" > $bashScript
