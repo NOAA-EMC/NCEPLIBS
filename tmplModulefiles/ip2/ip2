@@ -1,0 +1,21 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv IP2_INC4 "${base}/include_4"
+setenv IP2_INC8 "${base}/include_8"
+setenv IP2_INCd "${base}/include_d"
+setenv IP2_LIB4 "${base}/lib/libip2_4.a"
+setenv IP2_LIB8 "${base}/lib/libip2_8.a"
+setenv IP2_LIBd "${base}/lib/libip2_d.a"

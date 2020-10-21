@@ -1,0 +1,19 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv G2_INC4 "${base}/include_4"
+setenv G2_INCd "${base}/include_d"
+setenv G2_LIB4 "${base}/lib/libg2_4.a"
+setenv G2_LIBd "${base}/lib/libg2_d.a"

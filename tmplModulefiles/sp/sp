@@ -1,0 +1,21 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv SP_INC4 "${base}/include_4"
+setenv SP_INC8 "${base}/include_8"
+setenv SP_INCd "${base}/include_d"
+setenv SP_LIB4 "${base}/lib/libsp_4.a"
+setenv SP_LIB8 "${base}/lib/libsp_8.a"
+setenv SP_LIBd "${base}/lib/libsp_d.a"

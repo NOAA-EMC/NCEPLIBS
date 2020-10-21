@@ -1,0 +1,19 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+setenv #NAME#_ROOT    "#NCEPLIBS_ROOT#"
+setenv #NAME#_VERSION "#VERSION#"
+
+prepend-path CMAKE_PREFIX_PATH "#NCEPLIBS_ROOT#"
+
+setenv CC "#CC#"
+setenv CXX "#CXX#"
+setenv FC "#FC#"
+
+# Module load commands
