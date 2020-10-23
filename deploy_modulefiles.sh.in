@@ -75,7 +75,7 @@ setenv ${libName}_ROOT \"${prefix}\""
 done
 
 # Create NCEPLIBS umbrella module file
-srcModulefile=$tmplModulefilesDir/NCEPLIBS/nceplibs
+srcModulefile=$tmplModulefilesDir/NCEPLIBS/NCEPLIBS
 dstModulefile=$modulesDestDir/NCEPLIBS/${NCEPLIBS_VERSION}
 mkdir -p $modulesDestDir/NCEPLIBS
 \cp $srcModulefile $dstModulefile
