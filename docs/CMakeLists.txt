@@ -1,6 +1,6 @@
-# This is the CMake file for building the docs directory of NCEPLIBS-ip.
+# This is the CMake file for building the docs directory of NCEPLIBS.
 #
-# Ed Hartnett 10/5/20
+# Ed Hartnett 10/24/20
 
 if(ENABLE_DOCS)
 
