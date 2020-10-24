@@ -36,7 +36,7 @@ option(FLAT          "Flat install structure"  ON)
 option(LIBCOMPS      "File to read components from" ${DEFAULT_LIBCOMPS})
 option(DOWNLOAD_ONLY "Just download the components" OFF)
 option(USE_LOCAL     "Use locally downloaded components" OFF)
-OPTION(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
 
 if(DOWNLOAD_ONLY AND USE_LOCAL)
   message(FATAL_ERROR "DOWNLOAD_ONLY AND USE_LOCAL CANNOT BOTH BE ON, ABORT!")
