@@ -7,7 +7,10 @@ required for several NCEP applications e.g. UFS, GSI, UPP, etc. For
 general information about NCEPLIBS, the user is referred to the
 [Wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki).
 
-NCEPLIBS comprises of the following libraries:
+For full documentation of each package see
+https://noaa-emc.github.io/NCEPLIBS/.
+
+NCEPLIBS is comprised of the following libraries:
 
  NCEP library         | Version
 ----------------------|---------------------------------------------------
