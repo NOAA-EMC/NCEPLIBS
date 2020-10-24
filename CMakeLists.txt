@@ -270,10 +270,10 @@ if(DEPLOY)
 endif()
 
 # Determine whether or not to generate documentation.
-IF(ENABLE_DOCS)
-  FIND_PACKAGE(Doxygen REQUIRED)
-ENDIF()
-ADD_SUBDIRECTORY(docs)  
+if(ENABLE_DOCS)
+  find_package(Doxygen REQUIRED)
+endif()
+add_subdirectory(docs)  
 
 
 
