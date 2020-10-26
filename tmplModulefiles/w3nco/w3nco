@@ -1,0 +1,21 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv W3NCO_INC4 "${base}/include_4"
+setenv W3NCO_INC8 "${base}/include_8"
+setenv W3NCO_INCd "${base}/include_d"
+setenv W3NCO_LIB4 "${base}/lib/libw3nco_4.a"
+setenv W3NCO_LIB8 "${base}/lib/libw3nco_8.a"
+setenv W3NCO_LIBd "${base}/lib/libw3nco_d.a"

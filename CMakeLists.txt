@@ -5,10 +5,13 @@ file(STRINGS "VERSION" pVersion)
 project(
   NCEPLIBS
   VERSION ${pVersion}
-  LANGUAGES C Fortran)
+  # CXX isn't actually used, but need CMAKE_CXX_COMPILER in umbrella module
+  LANGUAGES C CXX Fortran)
 
 include(ExternalProject)
 include(GNUInstallDirs)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/Modules/")
 
 if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
   message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -27,13 +30,12 @@ endif()
 set(DEFAULT_LIBCOMPS ${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS)
 
 # User options
-option(OPENMP        "Enable OpenMP threading" OFF)
-option(ENABLE_TESTS  "Enable testing"          OFF)
-option(BUILD_CRTM    "Build CRTM library"      ON)
-option(BUILD_POST    "Build NCEPpost library"  ON)
-option(DEPLOY        "Deploy modulefiles"      OFF)
-option(TCLMOD        "Create Tcl modulefiles " OFF)
-option(FLAT          "Flat install structure"  ON)
+option(OPENMP        "Enable OpenMP threading"         OFF)
+option(ENABLE_TESTS  "Enable testing"                  OFF)
+option(BUILD_CRTM    "Build CRTM library"              ON)
+option(BUILD_POST    "Build NCEPpost library"          ON)
+option(DEPLOY        "Deploy modulefiles/shellscripts" ON)
+option(FLAT          "Flat install structure"          ON)
 option(LIBCOMPS      "File to read components from" ${DEFAULT_LIBCOMPS})
 option(DOWNLOAD_ONLY "Just download the components" OFF)
 option(USE_LOCAL     "Use locally downloaded components" OFF)
@@ -59,13 +61,9 @@ if(BUILD_POST)
   set(BUILD_CRTM ON)
 endif()
 
-# Option to overwrite modulefile (if DEPLOY = ON)
+# Deploy modulefile if requested
 if(DEPLOY)
-  message(STATUS "Installing NCEPLIBS modulefiles at ${CMAKE_INSTALL_PREFIX}/modules")
-  option(OVERWRITEMODULES "Overwrite existing modules (if found!)" OFF)
-  if(OVERWRITEMODULES)
-    message(STATUS "WARNING: Overwriting NCEPLIBS modulefiles is ON")
-  endif()
+  message(STATUS "Installing NCEPLIBS modulefiles at ${CMAKE_INSTALL_PREFIX}/modules, NCEPLIBS shell scripts at ${CMAKE_INSTALL_PREFIX}/bin")
 endif()
 
 function(trapLocalError sourceDir)
@@ -255,23 +253,30 @@ if(DOWNLOAD_ONLY)
     add_dependencies(tarball ${_comps})
 endif()
 
-# Prepare to deploy modulefiles
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
-  ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-  @ONLY)
-
-add_custom_target(prep2deploy ALL
-  COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
-  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
-
-# Deploy modulefiles (if enabled), but do not add to make all (make user do it)
 if(DEPLOY)
+  # Find NetCDF so that NETCDF can be added to the
+  # umbrella module file and the umbrella shell scripts
+  find_package(NetCDF REQUIRED COMPONENTS C Fortran)
+  execute_process(COMMAND ${NetCDF_Fortran_CONFIG_EXECUTABLE} --prefix
+                  OUTPUT_VARIABLE NetCDF_ROOT OUTPUT_STRIP_TRAILING_WHITESPACE)
+                  message(STATUS "Found NetCDF: ${NetCDF_ROOT}")
+  # Find ESMF so that ESMFMKFILE can be added to the
+  # umbrella module file and the umbrella shell scripts
+  find_package(ESMF REQUIRED)
+  if (NOT ESMF_FOUND)
+    message(FATAL_ERROR "ESMF not found, abort")
+  endif()
+
+  # Prepare to deploy
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/deploy_modulefiles.sh.in
+    ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+    @ONLY)
+  add_custom_target(prep2deploy ALL
+    COMMAND chmod +x ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
+
+  # Deploy modulefiles and shell scripts (if enabled), but do not add to make all (make user do it)
   add_custom_target(deploy
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/deploy_modulefiles.sh)
   add_dependencies(deploy prep2deploy)
-  if(TCLMOD)
-    add_custom_target(tcl
-      COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lua2tcl.py ${CMAKE_INSTALL_PREFIX}/modules)
-    add_dependencies(tcl deploy)
-  endif()
 endif()

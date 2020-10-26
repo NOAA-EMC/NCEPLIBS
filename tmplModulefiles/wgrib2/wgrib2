@@ -1,0 +1,19 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv WGRIB2_INC "${base}/include"
+setenv WGRIB_LIB "${base}/lib/libwgrib2.a"
+setenv WGRIB2_LIBAPI "${base}/lib/libwgrib2_api.a"
+prepend-path PATH "${base}/bin"

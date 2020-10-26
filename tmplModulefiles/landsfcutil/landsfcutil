@@ -1,0 +1,19 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv LANDSFCUTIL_INC4 "${base}/include_4"
+setenv LANDSFCUTIL_INCd "${base}/include_d"
+setenv LANDSFCUTIL_LIB4 "${base}/lib/liblandsfcutil_4.a"
+setenv LANDSFCUTIL_LIBd "${base}/lib/liblandsfcutil_d.a"

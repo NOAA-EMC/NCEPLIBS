@@ -1,0 +1,27 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv BUFR_INC4     "${base}/include_4"
+setenv BUFR_INC8     "${base}/include_8"
+setenv BUFR_INCd     "${base}/include_d"
+setenv BUFR_LIB4     "${base}/lib/libbufr_4.a"
+setenv BUFR_LIB8     "${base}/lib/libbufr_8.a"
+setenv BUFR_LIBd     "${base}/lib/libbufr_d.a"
+setenv BUFR_INC4_DA  "${base}/include_4_DA"
+setenv BUFR_INC8_DA  "${base}/include_8_DA"
+setenv BUFR_INCd_DA  "${base}/include_d_DA"
+setenv BUFR_LIB4_DA  "${base}/lib/libbufr_4_DA.a"
+setenv BUFR_LIB8_DA  "${base}/lib/libbufr_8_DA.a"
+setenv BUFR_LIBd_DA  "${base}/lib/libbufr_d_DA.a"

@@ -1,0 +1,19 @@
+#%Module######################################################################
+
+proc ModulesHelp { } {
+  puts "Set environment variables for #NAME#-#VERSION#"
+}
+
+# Make sure another version of the same package is not already loaded
+conflict #NAME#
+
+# Set environment variables
+set base "#NCEPLIBS_ROOT#/#NAME#-#VERSION#"
+
+setenv #NAME#_ROOT    "${base}"
+setenv #NAME#_VERSION "#VERSION#"
+
+setenv BACIO_INC4 "${base}/include_4"
+setenv BACIO_INC8 "${base}/include_8"
+setenv BACIO_LIB4 "${base}/lib/libbacio_4.a"
+setenv BACIO_LIB8 "${base}/lib/libbacio_8.a"

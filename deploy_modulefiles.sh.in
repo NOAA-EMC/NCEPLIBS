@@ -3,8 +3,8 @@
 set -e
 
 # Defaults to user options will be provided by CMake
-modulesDestDir=${1:-"@CMAKE_INSTALL_PREFIX@/modules"}
-DOVERWRITEMODULES=${2:-"@OVERWRITEMODULES@"}
+modulesDestDir="@CMAKE_INSTALL_PREFIX@/modules"
+NCEPLIBS_VERSION="@pVersion@"
 
 # These will be filled by CMake
 nceplibsInstallDir=@CMAKE_INSTALL_PREFIX@
@@ -12,14 +12,22 @@ tmplModulefilesDir=@CMAKE_CURRENT_SOURCE_DIR@/tmplModulefiles
 LIBCOMPS=@LIBCOMPS_FILE@
 DFLAT="@FLAT@"
 
-[[ $DOVERWRITEMODULES == "ON" ]] && OVERWRITE="Y" || OVERWRITE="N"
 [[ $DFLAT == "ON" ]] && FLAT="Y" || FLAT="N"
+
+# All module load commands for the umbrella module
+moduleLoadCommands=""
+
+# All export statements for the umbrella shell scripts
+bashScriptContents="#!/bin/bash
+echo \"Setting environment variables for ufs-srweather-app/ufs-weather-model\""
+tcshScriptContents="#!/bin/tcsh
+echo \"Setting environment variables for ufs-srweather-app/ufs-weather-model\""
 
 echo "Begin deploying modules ..."
 
 for libName in $(ls -1 $tmplModulefilesDir); do
 
-  # Ensure $libName is indeed a library being installed
+  # Ensure $libName is indeed a library being installed - this will skip the umbrella module "NCEPLIBS"
   isAbsent=$(cat $LIBCOMPS | grep -w $libName | wc -l)
   [[ $isAbsent -eq 0 ]] && continue
 
@@ -32,28 +40,108 @@ for libName in $(ls -1 $tmplModulefilesDir); do
 
   # Define source and destination modulefile name
   # Destination filename must be consistent with CMakeLists.txt
-  srcModulefile=$tmplModulefilesDir/$libName/$libName.lua
-  dstModulefile=$modulesDestDir/$libName/$ver.lua
+  srcModulefile=$tmplModulefilesDir/$libName/$libName
+  dstModulefile=$modulesDestDir/$libName/$ver
 
   # Create destination directory for the modulefile and copy template to it
   mkdir -p $modulesDestDir/$libName
-  if [[ -f $dstModulefile ]]; then
-    [[ $OVERWRITE =~ [YyTt] ]] && ( echo "WARNING: $dstModulefile exists, OVERWRITING!"; \rm -f $dstModulefile ) \
-                               || ( echo "ERROR: $dstModulefile exists, ABORT!"; exit 1 )
-  fi
   \cp $srcModulefile $dstModulefile
 
   [[ $FLAT =~ [YyTt] ]] && prefix=${nceplibsInstallDir} || prefix=${nceplibsInstallDir}/$libName
 
+  # Replace #NAME# and #VERSION#
+  sed -i -e "s/#NAME#/${libName}/g" $dstModulefile
+  sed -i -e "s/#VERSION#/${ver}/g" $dstModulefile
+
   # sed does not like delimiter (/) to be a part of replacement string
-  # so do magic
   repl=$(echo ${prefix} | sed -e "s#/#\\\/#g")
 
   # Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
   sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
 
+  # Workaround for macOS: remove files created because of differing sed syntax
+  rm -f ${dstModulefile}-e
+
+  # Add to module load commands for umbrella module
+  moduleLoadCommands="${moduleLoadCommands}
+module load $libName/$ver"
+
+  # Add to export statements for umbrella shell scripts
+  bashScriptContents="${bashScriptContents}
+export ${libName}_ROOT=\"${prefix}\""
+  tcshScriptContents="${tcshScriptContents}
+setenv ${libName}_ROOT \"${prefix}\""
+
 done
 
+# Create NCEPLIBS umbrella module file
+srcModulefile=$tmplModulefilesDir/NCEPLIBS/NCEPLIBS
+dstModulefile=$modulesDestDir/NCEPLIBS/${NCEPLIBS_VERSION}
+mkdir -p $modulesDestDir/NCEPLIBS
+\cp $srcModulefile $dstModulefile
+
+# Replace #NAME# and #VERSION#
+sed -i -e "s/#NAME#/NCEPLIBS/g" $dstModulefile
+sed -i -e "s/#VERSION#/${NCEPLIBS_VERSION}/g" $dstModulefile
+
+# sed does not like delimiter (/) to be a part of replacement string
+repl=$(echo ${nceplibsInstallDir} | sed -e "s#/#\\\/#g")
+
+# Replace #NCEPLIBS_ROOT# from template with $nceplibsInstallDir
+sed -i -e "s/#NCEPLIBS_ROOT#/${repl}/g" $dstModulefile
+
+# Set compiler environment variables for the umbrella modulefile
+repl=$(echo "@CMAKE_C_COMPILER@" | sed -e "s#/#\\\/#g")
+sed -i -e "s/#CC#/${repl}/g" $dstModulefile
+repl=$(echo "@CMAKE_CXX_COMPILER@" | sed -e "s#/#\\\/#g")
+sed -i -e "s/#CXX#/${repl}/g" $dstModulefile
+repl=$(echo "@CMAKE_Fortran_COMPILER@" | sed -e "s#/#\\\/#g")
+sed -i -e "s/#FC#/${repl}/g" $dstModulefile
+repl=$(echo "@NetCDF_ROOT@" | sed -e "s#/#\\\/#g")
+sed -i -e "s/#NETCDF#/${repl}/g" $dstModulefile
+repl=$(echo "@ESMFMKFILE@" | sed -e "s#/#\\\/#g")
+sed -i -e "s/#ESMFMKFILE#/${repl}/g" $dstModulefile
+
+# Append all module load commands to umbrella module
+echo "${moduleLoadCommands}" >> $dstModulefile
+
+# Workaround for macOS: remove files created because of differing sed syntax
+rm -f ${dstModulefile}-e
+
 echo "Done deploying modules ..."
+
+echo "Generating shell scripts ..."
+
+bashScript="@CMAKE_INSTALL_PREFIX@/bin/setenv_nceplibs.sh"
+tcshScript="@CMAKE_INSTALL_PREFIX@/bin/setenv_nceplibs.csh"
+
+# Set compiler environment variables for the shell scripts
+bashScriptContents="${bashScriptContents}
+export CC=\"@CMAKE_C_COMPILER@\"
+export CXX=\"@CMAKE_CXX_COMPILER@\"
+export FC=\"@CMAKE_Fortran_COMPILER@\"
+export PATH=\"@CMAKE_PREFIX_PATH@:\${PATH}\"
+export CMAKE_PREFIX_PATH=\"@CMAKE_PREFIX_PATH@\${CMAKE_PREFIX_PATH:+:\$CMAKE_PREFIX_PATH}\"
+export NETCDF=\"@NetCDF_ROOT@\"
+export ESMFMKFILE=\"@ESMFMKFILE@\""
+tcshScriptContents="${tcshScriptContents}
+setenv CC \"@CMAKE_C_COMPILER@\"
+setenv CXX \"@CMAKE_CXX_COMPILER@\"
+setenv FC \"@CMAKE_Fortran_COMPILER@\"
+setenv PATH \"@CMAKE_PREFIX_PATH@:\${PATH}\"
+if (! \$?CMAKE_PREFIX_PATH) then 
+  setenv CMAKE_PREFIX_PATH \"@CMAKE_PREFIX_PATH@\"
+else
+  setenv CMAKE_PREFIX_PATH \"@CMAKE_PREFIX_PATH@:\${CMAKE_PREFIX_PATH}\"
+endif
+setenv NETCDF \"@NetCDF_ROOT@\"
+setenv ESMFMKFILE \"@ESMFMKFILE@\""
+
+echo "${bashScript}"
+echo "${bashScriptContents}" > $bashScript
+echo "${tcshScript}"
+echo "${tcshScriptContents}" > $tcshScript
+
+echo "Done generating shell scripts ..."
 
 exit 0
