@@ -120,7 +120,7 @@ bashScriptContents="${bashScriptContents}
 export CC=\"@CMAKE_C_COMPILER@\"
 export CXX=\"@CMAKE_CXX_COMPILER@\"
 export FC=\"@CMAKE_Fortran_COMPILER@\"
-export PATH=\"@CMAKE_PREFIX_PATH@:\${PATH}\"
+export PATH=\"@CMAKE_PREFIX_PATH@/bin:\${PATH}\"
 export CMAKE_PREFIX_PATH=\"@CMAKE_PREFIX_PATH@\${CMAKE_PREFIX_PATH:+:\$CMAKE_PREFIX_PATH}\"
 export NETCDF=\"@NetCDF_ROOT@\"
 export ESMFMKFILE=\"@ESMFMKFILE@\""
@@ -128,7 +128,7 @@ tcshScriptContents="${tcshScriptContents}
 setenv CC \"@CMAKE_C_COMPILER@\"
 setenv CXX \"@CMAKE_CXX_COMPILER@\"
 setenv FC \"@CMAKE_Fortran_COMPILER@\"
-setenv PATH \"@CMAKE_PREFIX_PATH@:\${PATH}\"
+setenv PATH \"@CMAKE_PREFIX_PATH@/bin:\${PATH}\"
 if (! \$?CMAKE_PREFIX_PATH) then 
   setenv CMAKE_PREFIX_PATH \"@CMAKE_PREFIX_PATH@\"
 else
