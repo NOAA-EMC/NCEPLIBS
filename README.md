@@ -10,6 +10,9 @@ general information about NCEPLIBS, the user is referred to the
 For full documentation of each package see
 https://noaa-emc.github.io/NCEPLIBS/.
 
+For installing NCEPLIBS on NOAA HPC systems, see the
+[hpc-stack](https://github.com/NOAA-EMC/hpc-stack) project.
+
 NCEPLIBS is comprised of the following libraries:
 
  NCEP library         | Version
