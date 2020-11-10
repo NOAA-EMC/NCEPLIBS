@@ -11,7 +11,9 @@ For full documentation of each package see
 https://noaa-emc.github.io/NCEPLIBS/.
 
 For installing NCEPLIBS on NOAA HPC systems, see the
-[hpc-stack](https://github.com/NOAA-EMC/hpc-stack) project.
+[hpc-stack](https://github.com/NOAA-EMC/hpc-stack) project. To install
+the third-party libraries needed by NCEPLIBS, see
+[NCEPLIBS-external](https://github.com/NOAA-EMC/NCEPLIBS-external).
 
 NCEPLIBS is comprised of the following libraries:
 
@@ -67,8 +69,10 @@ in particular if close to the versions listed below.
 
 A software stack consisting of the following third-party libraries
 (TPL), compiled with the same compiler and MPI library (where
-applicable).  Other versions may work, in particular if close to the
-versions listed below.
+applicable). Other versions may work, in particular if close to the
+versions listed below. To install the third-party libraries needed by
+NCEPLIBS, see
+[NCEPLIBS-external](https://github.com/NOAA-EMC/NCEPLIBS-external).
 
 | Library         | Supported (tested) versions                                |
 |-----------------|------------------------------------------------------------|
