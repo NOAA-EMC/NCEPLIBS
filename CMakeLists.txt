@@ -29,7 +29,7 @@ set(DEFAULT_LIBCOMPS ${CMAKE_CURRENT_SOURCE_DIR}/COMPONENTS)
 option(OPENMP        "Enable OpenMP threading" OFF)
 option(ENABLE_TESTS  "Enable testing"          OFF)
 option(BUILD_CRTM    "Build CRTM library"      ON)
-option(BUILD_POST    "Build NCEPpost library"  ON)
+option(BUILD_UPP    "Build UPP library"  ON)
 option(DEPLOY        "Deploy modulefiles"      OFF)
 option(TCLMOD        "Create Tcl modulefiles " OFF)
 option(FLAT          "Flat install structure"  ON)
@@ -51,10 +51,10 @@ endif()
 message(STATUS "Installing NCEPLIBS from ${LIBCOMPS_FILE}")
 message(STATUS "Installing NCEPLIBS at ${CMAKE_INSTALL_PREFIX}")
 
-# Enable CRTM if NCEPpost library is desired.
-if(BUILD_POST)
+# Enable CRTM if UPP library is desired.
+if(BUILD_UPP)
   if(NOT BUILD_CRTM)
-    message(STATUS "Enabling NCEPpost will enable CRTM")
+    message(STATUS "Enabling UPP will enable CRTM")
   endif()
   set(BUILD_CRTM ON)
 endif()
@@ -110,20 +110,15 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio ip sp w3nco g2 g2tmpl nemsio nemsiogfs landsfcutil w3emc wrf_io bufr wgrib2)
-
-# ip and ip2 cannot coexist in a flat structure because they share module names which overwrite each other
-if(NOT FLAT)
-  list(APPEND _comps ip2)
-endif()
+  bacio sigio sfcio gfsio sp ip ip2 w3nco g2 g2c g2tmpl nemsio nemsiogfs landsfcutil prod_util w3emc wrf_io bufr wgrib2)
 
 set(nceplibs ${_comps})
 
 if(BUILD_CRTM)
   list(APPEND _comps crtm)
 endif()
-if(BUILD_POST)
-  list(APPEND _comps nceppost)
+if(BUILD_UPP)
+  list(APPEND _comps upp)
 endif()
 
 list(APPEND _cpath "${CMAKE_PREFIX_PATH}")
@@ -139,12 +134,16 @@ set(nemsio_depends bacio w3nco)
 set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
 set(ip2_depends sp)
+set(prod_util_depends w3nco)
 
 if(DOWNLOAD_ONLY)
   set(CONFIGURE_ONLY "echo")
   set(BUILD_ONLY     "echo")
   set(INSTALL_ONLY   "echo")
 endif()
+
+set(wgrib2_CMAKE_ARGS "-DUSE_IPOLATES=3" "-DUSE_SPECTRAL=ON" "-DUSE_NETCDF4=ON")
+set(wgrib2_depends ip2)
 
 foreach(lib ${nceplibs})
   getTagVer("${LIBCOMPS_FILE}" "${lib}" GIT_TAG ver)
@@ -208,9 +207,9 @@ if(BUILD_CRTM)
     )
 endif()
 
-if(BUILD_POST)
-  getTagVer("${LIBCOMPS_FILE}" "nceppost" GIT_TAG ver)
-  getInstallDir(${FLAT} "nceppost" ${ver} installDir)
+if(BUILD_UPP)
+  getTagVer("${LIBCOMPS_FILE}" "upp" GIT_TAG ver)
+  getInstallDir(${FLAT} "upp" ${ver} installDir)
 
   set(GIT_URL    "https://github.com/noaa-emc/emc_post")
   set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/download/emc_post")
@@ -221,11 +220,11 @@ if(BUILD_POST)
     trapLocalError(${SOURCE_DIR})
   endif()
 
-  ExternalProject_Add(nceppost
+  ExternalProject_Add(upp
     GIT_REPOSITORY "${GIT_URL}"
     GIT_TAG        "${GIT_TAG}"
     GIT_SUBMODULES "CMakeModules"
-    PREFIX         "${CMAKE_BINARY_DIR}/nceppost"
+    PREFIX         "${CMAKE_BINARY_DIR}/upp"
     SOURCE_DIR     "${SOURCE_DIR}"
     LIST_SEPARATOR |
     CMAKE_ARGS     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
