@@ -110,7 +110,7 @@ endfunction()
 
 # Collect list of components to append to CMAKE_PREFIX_PATH
 list(APPEND _comps
-  bacio sigio sfcio gfsio sp ip ip2 w3nco g2 g2c g2tmpl nemsio nemsiogfs landsfcutil prod_util w3emc wrf_io bufr wgrib2)
+  bacio sigio sfcio gfsio sp ip ip2 w3nco g2 g2c g2tmpl nemsio nemsiogfs landsfcutil prod_util grib_util w3emc wrf_io bufr wgrib2)
 
 set(nceplibs ${_comps})
 
@@ -135,6 +135,7 @@ set(nemsiogfs_depends nemsio)
 set(w3emc_depends nemsio sigio)
 set(ip2_depends sp)
 set(prod_util_depends w3nco)
+set(grib_util_depends w3nco g2 bacio ip sp)
 
 if(DOWNLOAD_ONLY)
   set(CONFIGURE_ONLY "echo")
