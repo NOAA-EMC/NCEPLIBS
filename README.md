@@ -23,13 +23,14 @@ NCEPLIBS is comprised of the following libraries:
 [NCEPLIBS-bufr](https://github.com/NOAA-EMC/NCEPLIBS-bufr)               | 11.4.0
 [EMC-crtm](https://github.com/noaa-emc/emc_crtm)                         | 2.3.0
 [NCEPLIBS-g2](https://github.com/NOAA-EMC/NCEPLIBS-g2)                   | 3.4.1
+[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c)                 | 1.6.2
 [NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl)           | 1.9.1
 [NCEPLIBS-gfsio](https://github.com/NOAA-EMC/NCEPLIBS-gfsio)             | 1.4.1
 [NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip)                   | 3.3.3
 [NCEPLIBS-landsfcutil](https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil) | 2.4.1
 [NCEPLIBS-nemsio](https://github.com/NOAA-EMC/NCEPLIBS-nemsio)           | 2.5.2
 [NCEPLIBS-nemsiogfs](https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs)     | 2.5.3
-[EMC_post](https://github.com/NOAA-EMC/EMC_post)                         | dceca26
+[UPP](https://github.com/NOAA-EMC/EMC_post)                              | 10.0.0
 [NCEPLIBS-sfcio](https://github.com/NOAA-EMC/NCEPLIBS-sfcio)             | 1.4.1
 [NCEPLIBS-sigio](https://github.com/NOAA-EMC/NCEPLIBS-sigio)             | 2.3.2
 [NCEPLIBS-sp](https://github.com/NOAA-EMC/NCEPLIBS-sp)                   | 2.3.3
