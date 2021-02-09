@@ -28,6 +28,7 @@ NCEPLIBS is comprised of the following libraries:
 [NCEPLIBS-gfsio](https://github.com/NOAA-EMC/NCEPLIBS-gfsio)             | 1.4.1
 [NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip)                   | 3.3.3
 [NCEPLIBS-landsfcutil](https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil) | 2.4.1
+[NCEPLIBS-ncio](https://github.com/NOAA-EMC/NCEPLIBS-ncio)               | 1.0.0
 [NCEPLIBS-nemsio](https://github.com/NOAA-EMC/NCEPLIBS-nemsio)           | 2.5.2
 [NCEPLIBS-nemsiogfs](https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs)     | 2.5.3
 [UPP](https://github.com/NOAA-EMC/EMC_post)                              | 10.0.0
