@@ -17,32 +17,31 @@ the third-party libraries needed by NCEPLIBS, see
 
 NCEPLIBS is comprised of the following libraries:
 
- NCEP library         | Version
+ NCEP library         | Description
 ----------------------|---------------------------------------------------
-[NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio)             | 2.4.1
-[NCEPLIBS-bufr](https://github.com/NOAA-EMC/NCEPLIBS-bufr)               | 11.4.0
-[EMC-crtm](https://github.com/noaa-emc/emc_crtm)                         | 2.3.0
-[NCEPLIBS-g2](https://github.com/NOAA-EMC/NCEPLIBS-g2)                   | 3.4.1
-[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c)                 | 1.6.2
-[NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl)           | 1.9.1
-[NCEPLIBS-gfsio](https://github.com/NOAA-EMC/NCEPLIBS-gfsio)             | 1.4.1
-[NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip)                   | 3.3.3
-[NCEPLIBS-landsfcutil](https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil) | 2.4.1
-[NCEPLIBS-ncio](https://github.com/NOAA-EMC/NCEPLIBS-ncio)               | 1.0.0
-[NCEPLIBS-nemsio](https://github.com/NOAA-EMC/NCEPLIBS-nemsio)           | 2.5.2
-[NCEPLIBS-nemsiogfs](https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs)     | 2.5.3
-[UPP](https://github.com/NOAA-EMC/EMC_post)                              | 10.0.0
-[NCEPLIBS-sfcio](https://github.com/NOAA-EMC/NCEPLIBS-sfcio)             | 1.4.1
-[NCEPLIBS-sigio](https://github.com/NOAA-EMC/NCEPLIBS-sigio)             | 2.3.2
-[NCEPLIBS-sp](https://github.com/NOAA-EMC/NCEPLIBS-sp)                   | 2.3.3
-[NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc)             | 2.7.3
-[NCEPLIBS-w3nco](https://github.com/NOAA-EMC/NCEPLIBS-w3nco)             | 2.4.1
-[NCEPLIBS-wrf_io](https://github.com/NOAA-EMC/NCEPLIBS-wrf_io)           | 1.1.1
-[NCEPLIBS-ip2](https://github.com/NOAA-EMC/NCEPLIBS-ip2)                 | 1.1.2
-[NCEPLIBS-wgrib2](https://github.com/NOAA-EMC/NCEPLIBS-wgrib2)           | 2.0.8
+[NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio)             | binary I/O for the NCEP models
+[NCEPLIBS-bufr](https://github.com/NOAA-EMC/NCEPLIBS-bufr)               | working with the BUFR format
+[EMC-crtm](https://github.com/noaa-emc/emc_crtm)                         | Community Radiative Transfer Model
+[NCEPLIBS-g2](https://github.com/NOAA-EMC/NCEPLIBS-g2)                   | coding/decoding GRIB2 messages
+[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c)                 | C decoder/encoder routines for GRIB edition 2
+[NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl)           | Utilities for GRIB2 templates
+[NCEPLIBS-gfsio](https://github.com/NOAA-EMC/NCEPLIBS-gfsio)             | convert GFS Gaussian output into grib output
+[NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip)                   | general interpolation library 
+[NCEPLIBS-landsfcutil](https://github.com/NOAA-EMC/NCEPLIBS-landsfcutil) | initializing land-surface states
+[NCEPLIBS-ncio](https://github.com/NOAA-EMC/NCEPLIBS-ncio)               | read the GFS forecast files
+[NCEPLIBS-nemsio](https://github.com/NOAA-EMC/NCEPLIBS-nemsio)           | I/O for the NCEP models using NEMS
+[NCEPLIBS-nemsiogfs](https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs)     | I/O for the NEMS-GFS model
+[NCEPLIBS-sfcio](https://github.com/NOAA-EMC/NCEPLIBS-sfcio)             | surface files I/O
+[NCEPLIBS-sigio](https://github.com/NOAA-EMC/NCEPLIBS-sigio)             | I/O on the sigma restart file of the global spectral model
+[NCEPLIBS-sp](https://github.com/NOAA-EMC/NCEPLIBS-sp)                   | spectral transform library 
+[NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc)             | decoder/encoder routines for GRIB edition 1
+[NCEPLIBS-w3nco](https://github.com/NOAA-EMC/NCEPLIBS-w3nco)             | decoder/encoder routines for GRIB edition 1
+[NCEPLIBS-wrf_io](https://github.com/NOAA-EMC/NCEPLIBS-wrf_io)           | lightweight WRF-IO API library for Unified Post Processor (UPP)
+[NCEPLIBS-ip2](https://github.com/NOAA-EMC/NCEPLIBS-ip2)                 | general interpolation library 2
+[NCEPLIBS-wgrib2](https://github.com/NOAA-EMC/NCEPLIBS-wgrib2)           | interacting with, reading, writing, and manipulating grib2 files
+[UPP](https://github.com/NOAA-EMC/EMC_post)                              | Unified Post Processor
 
 The following projects are also related to the NCEPLIBS project:
- - [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c)
  - [NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util)
  - [NCEPLIBS-prod_util](https://github.com/NOAA-EMC/NCEPLIBS-prod_util)
  - [UFS_UTILS](https://github.com/NOAA-EMC/UFS_UTILS)
