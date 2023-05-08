@@ -21,7 +21,6 @@ NCEPLIBS is comprised of the following libraries:
 ----------------------|---------------------------------------------------
 [NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio)             | binary I/O for the NCEP models
 [NCEPLIBS-bufr](https://github.com/NOAA-EMC/NCEPLIBS-bufr)               | working with the BUFR format
-[EMC-crtm](https://github.com/noaa-emc/emc_crtm)                         | Community Radiative Transfer Model
 [NCEPLIBS-g2](https://github.com/NOAA-EMC/NCEPLIBS-g2)                   | coding/decoding GRIB2 messages
 [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c)                 | C decoder/encoder routines for GRIB edition 2
 [NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl)           | Utilities for GRIB2 templates
@@ -38,8 +37,6 @@ NCEPLIBS is comprised of the following libraries:
 [NCEPLIBS-w3nco](https://github.com/NOAA-EMC/NCEPLIBS-w3nco)             | decoder/encoder routines for GRIB edition 1
 [NCEPLIBS-wrf_io](https://github.com/NOAA-EMC/NCEPLIBS-wrf_io)           | lightweight WRF-IO API library for Unified Post Processor (UPP)
 [NCEPLIBS-ip2](https://github.com/NOAA-EMC/NCEPLIBS-ip2)                 | general interpolation library 2
-[NCEPLIBS-wgrib2](https://github.com/NOAA-EMC/NCEPLIBS-wgrib2)           | interacting with, reading, writing, and manipulating grib2 files
-[UPP](https://github.com/NOAA-EMC/EMC_post)                              | Unified Post Processor
 
 The following projects are also related to the NCEPLIBS project:
  - [NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util)
