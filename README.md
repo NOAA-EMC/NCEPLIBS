@@ -48,14 +48,15 @@ NCEPLIBS is comprised of the following libraries:
 [NCEPLIBS-nemsiogfs](https://github.com/NOAA-EMC/NCEPLIBS-nemsiogfs)     | nemsiogfs          | I/O for the NEMS-GFS model
 [NCEPLIBS-sfcio](https://github.com/NOAA-EMC/NCEPLIBS-sfcio)             | sfcio              | Surface files I/O
 [NCEPLIBS-sigio](https://github.com/NOAA-EMC/NCEPLIBS-sigio)             | sigio              | I/O on the sigma restart file of the global spectral model
-[NCEPLIBS-sp](https://github.com/NOAA-EMC/NCEPLIBS-sp)                   | sp                 | Spectral transform library 
 [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc)             | w3emc              | Decoder/encoder routines for GRIB edition 1
 [NCEPLIBS-wrf_io](https://github.com/NOAA-EMC/NCEPLIBS-wrf_io)           | wrf-io             | Lightweight WRF-IO API library for Unified Post Processor (UPP)
 
-The [NCEPLIBS-w3nco](https://github.com/NOAA-EMC/NCEPLIBS-w3nco) and
-[NCEPLIBS-ip2](https://github.com/NOAA-EMC/NCEPLIBS-ip2) libraries
-('w3nco' and 'ip2' in Spack, respectively) are deprecated, and
-NCEPLIBS-w3emc and NCEPLIBS-ip, respectively, should be used instead.
+The [NCEPLIBS-w3nco](https://github.com/NOAA-EMC/NCEPLIBS-w3nco),
+[NCEPLIBS-ip2](https://github.com/NOAA-EMC/NCEPLIBS-ip2),
+and [NCEPLIBS-sp](https://github.com/NOAA-EMC/NCEPLIBS-sp) libraries
+('w3nco', 'ip2', and 'sp' in Spack, respectively) are deprecated.
+NCEPLIBS-w3emc replaces NCEPLIBS-w3nco, and NCEPLIBS-ip replaces NCEPLIBS-ip2
+and NCEPLIBS-sp.
 
 The following projects are also related to the NCEPLIBS project:
  - [NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util) ('grib-util' in Spack)
