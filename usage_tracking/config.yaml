@@ -1,0 +1,63 @@
+libraries:
+  - ip
+  - w3emc
+  - bacio
+  - bufr
+  - wgrib2
+  - g2
+  - g2c
+  - g2tmpl
+  - ncio
+  - gfsio
+  - grib_util
+  - ip2
+  - landsfcutil
+  - nemsio
+  - nemsiogfs
+  - sfcio
+  - sigio
+  - sp
+  - w3nco
+  - wrf_io
+
+deprecated:
+  - gfsio
+  - grib_util
+  - ip2
+  - landsfcutil
+  - nemsio
+  - nemsiogfs
+  - sfcio
+  - sigio
+  - sp
+  - w3nco
+  - wrf_io
+
+modulefiles:
+  UFS Weather Model: https://raw.githubusercontent.com/ufs-community/ufs-weather-model/develop/modulefiles/ufs_common.lua
+  Global Workflow: https://raw.githubusercontent.com/NOAA-EMC/global-workflow/develop/modulefiles/module_base.gaeac6.lua
+  RRFS Workflow: https://raw.githubusercontent.com/NOAA-EMC/rrfs-workflow/refs/heads/main/modulefiles/rrfs_common.lua
+  AQM utils: https://raw.githubusercontent.com/NOAA-EMC/AQM-utils/refs/heads/develop/modulefiles/build_hera.intel.lua
+  UFS SRW: https://raw.githubusercontent.com/ufs-community/ufs-srweather-app/refs/heads/develop/modulefiles/srw_common.lua
+  GSI: https://raw.githubusercontent.com/NOAA-EMC/GSI/refs/heads/develop/modulefiles/gsi_common.lua
+  UPP: https://raw.githubusercontent.com/NOAA-EMC/UPP/refs/heads/develop/modulefiles/upp_common.lua
+  UFS_UTILS: https://raw.githubusercontent.com/ufs-community/UFS_UTILS/refs/heads/develop/modulefiles/build.hercules.intel.lua
+
+nwprod_base_url: https://www.nco.ncep.noaa.gov/pmb/codes/nwprod/
+
+repos:
+  - NOAA-EMC/NCEPLIBS-ip
+  - NOAA-EMC/NCEPLIBS-w3emc
+  - NOAA-EMC/NCEPLIBS-bacio
+  - NOAA-EMC/wgrib2
+  - NOAA-EMC/NCEPLIBS-g2
+  - NOAA-EMC/NCEPLIBS-g2c
+  - NOAA-EMC/NCEPLIBS-g2tmpl
+
+rdhpcs_module_loads:
+  Hera:
+    data_path: usage_tracking/rdhpcs_module_loads/Hera/out-LMOD-2025.06-hfe.agg.count.sorted
+    date_range: "June 1-20, 2025"
+  Jet:
+    data_path: usage_tracking/rdhpcs_module_loads/Jet/out-LMOD-2025.06-fe.agg.count.sorted
+    date_range: "June 1-24, 2025"
