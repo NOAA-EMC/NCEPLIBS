@@ -45,7 +45,7 @@ jobs:
           echo -e "\nProcessing RDHPCS module load statistics..."
           usage_tracking/report_rdhpcs_usage.py usage_tracking/config.yaml > tmp/rdhpcs_report.md
           echo -e "\nGetting GitHub repo statistics..."
-          usage_tracking/github_stats.py usage_tracking/config.yaml > tmp/github_stats.md tmp/github_stats.json
+          usage_tracking/github_stats.py usage_tracking/config.yaml tmp/github_stats.json > tmp/github_stats.md
 
           # Generate visualization
           usage_tracking/plot_github_stats.py tmp/github_stats.json dashboard/github_stats.png
