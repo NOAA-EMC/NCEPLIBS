@@ -1,0 +1,83 @@
+name: Generate NCEPLIBS Usage Dashboard
+
+on:
+  workflow_dispatch:
+#  schedule:
+#    - cron: '0 3 1 * *'  # 3am UTC on the first of every month
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests PyGithub pyyaml beautifulsoup4 matplotlib
+          sudo apt install pandoc
+
+      - name: Generate dashboard content
+        env:
+          GH_PAT: ${{ secrets.ALEX_GH_PAT }}
+        run: |
+          mkdir -p dashboard
+          mkdir -p tmp
+          echo -e "\nChecking various EMC module files..."
+          usage_tracking/check_emc_modulefiles.py usage_tracking/config.yaml > tmp/modulefile_report.md
+          echo -e "\nChecking nwprod codes..."
+          usage_tracking/check_nwprod_versions.py usage_tracking/config.yaml > tmp/nwprod_report.md
+          echo -e "\nProcessing RDHPCS module load statistics..."
+          usage_tracking/report_rdhpcs_usage.py usage_tracking/config.yaml > tmp/rdhpcs_report.md
+          echo -e "\nGetting GitHub repo statistics..."
+          usage_tracking/github_stats.py usage_tracking/config.yaml tmp/github_stats.json > tmp/github_stats.md
+
+          # Generate visualization
+          usage_tracking/plot_github_stats.py tmp/github_stats.json dashboard/github_stats.png
+
+          echo "Generated on $(date -u)" > dashboard/index.md
+          echo "" >> dashboard/index.md
+          cat tmp/modulefile_report.md >> dashboard/index.md
+          echo >> dashboard/index.md
+          cat tmp/nwprod_report.md >> dashboard/index.md
+          echo >> dashboard/index.md
+          cat tmp/rdhpcs_report.md >> dashboard/index.md
+          echo >> dashboard/index.md
+          cat tmp/github_stats.md >> dashboard/index.md
+          echo >> dashboard/index.md
+          echo "![GitHub statistics](github_stats.png)" >> dashboard/index.md
+          cp usage_tracking/template.css dashboard/.
+          cd dashboard # css path is embedded in HTML output
+          pandoc --metadata title="NCEPLIBS usage dashboard" -f gfm --standalone --css template.css -t html5 -o index.html index.md
+
+      - name: Upload dashboard artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dashboard
+
+  deploy-dashboard:
+    needs: build-dashboard
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
