@@ -17,8 +17,9 @@ def create_plot(json_path, output_png):
 
     # Extract sorted list of day intervals (e.g., 30, 60, etc.)
     sample_keys = data[repos[0]].keys()
-    day_numbers = sorted(int(re.search(r'\d+', key).group()) for key in sample_keys if key.startswith("commits_"))
-
+    day_numbers = sorted(
+        int(match.group()) for key in sample_keys if key.startswith("commits_") and (match := re.search(r'\d+', key))
+    )
     # Build a dict of {days: [commit_counts per repo]}
     commits_by_day = {d: [] for d in day_numbers}
     for repo in repos:
