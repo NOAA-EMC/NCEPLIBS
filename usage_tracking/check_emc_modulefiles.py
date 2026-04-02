@@ -57,6 +57,12 @@ def main(config_path):
                     lib_found = True
                     version_match = m
                     break
+                # Lua variable declaration: [local] <lib>_ver=os.getenv("...") or "version"
+                m = re.search(rf'(?:local\s+)?{re.escape(lib)}_ver\s*=.*?or\s+"([^"]+)"', line)
+                if m:
+                    lib_found = True
+                    version_match = m
+                    break
                 # Lua/modulefile format: lib name in brackets or quotes
                 if re.search(rf'[\[\"\']{lib}[\]\"\'/]', line):
                     lib_found = True
