@@ -37,7 +37,7 @@ modulefiles:
   UFS Weather Model: https://raw.githubusercontent.com/ufs-community/ufs-weather-model/develop/modulefiles/ufs_common.lua
   Global Workflow: https://raw.githubusercontent.com/NOAA-EMC/global-workflow/refs/heads/develop/versions/spack.ver
   RRFS Workflow: https://raw.githubusercontent.com/NOAA-EMC/rrfs-workflow/refs/heads/main/modulefiles/rrfs_common.lua
-  AQM utils: https://raw.githubusercontent.com/NOAA-EMC/AQM-utils/refs/heads/develop/modulefiles/build_hera.intel.lua
+  AQM utils: https://raw.githubusercontent.com/NOAA-EMC/AQM-utils/refs/heads/develop/modulefiles/aqm-utils_common.lua
   UFS SRW: https://raw.githubusercontent.com/ufs-community/ufs-srweather-app/refs/heads/develop/modulefiles/srw_common.lua
   GSI: https://raw.githubusercontent.com/NOAA-EMC/GSI/refs/heads/develop/modulefiles/gsi_common.lua
   UPP: https://raw.githubusercontent.com/NOAA-EMC/UPP/refs/heads/develop/modulefiles/upp_common.lua
