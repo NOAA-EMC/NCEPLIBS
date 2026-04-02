@@ -51,6 +51,13 @@ def main(config_path):
             lib_found = False
 
             for line in uncommented:
+                # *.ver format: export <lib>_ver=<version>
+                m = re.search(rf'^\s*export\s+{re.escape(lib)}_ver\s*=\s*v?(\S+)', line)
+                if m:
+                    lib_found = True
+                    version_match = m
+                    break
+                # Lua/modulefile format: lib name in brackets or quotes
                 if re.search(rf'[\[\"\']{lib}[\]\"\'/]', line):
                     lib_found = True
                     version_match = re.search(r'[\"\'/]((?:\d+\.)+\d+)[\"\']', line)
