@@ -1,4 +1,5 @@
 libraries:
+  - spack-stack
   - ip
   - w3emc
   - bacio
@@ -42,6 +43,16 @@ modulefiles:
   GSI: https://raw.githubusercontent.com/NOAA-EMC/GSI/refs/heads/develop/modulefiles/gsi_common.lua
   UPP: https://raw.githubusercontent.com/NOAA-EMC/UPP/refs/heads/develop/modulefiles/upp_common.lua
   UFS_UTILS: https://raw.githubusercontent.com/ufs-community/UFS_UTILS/refs/heads/develop/modulefiles/build.hercules.intel.lua
+
+modulefiles_for_spack_stack_versions:
+  UFS Weather Model: https://raw.githubusercontent.com/ufs-community/ufs-weather-model/refs/heads/develop/modulefiles/ufs_orion.intel.lua
+  Global Workflow: https://raw.githubusercontent.com/NOAA-EMC/global-workflow/refs/heads/develop/modulefiles/gw_setup.orion.lua
+  RRFS Workflow: https://raw.githubusercontent.com/NOAA-EMC/rrfs-workflow/refs/heads/rrfs-nco/modulefiles/build_orion_intel.lua
+  AQM utils: https://raw.githubusercontent.com/NOAA-EMC/AQM-utils/refs/heads/develop/modulefiles/aqm-utils_orion.intel.lua
+  UFS SRW: https://raw.githubusercontent.com/ufs-community/ufs-srweather-app/refs/heads/develop/modulefiles/build_orion_intel.lua
+  GSI: https://raw.githubusercontent.com/NOAA-EMC/GSI/refs/heads/develop/modulefiles/gsi_orion.intel.lua
+  UPP: https://raw.githubusercontent.com/NOAA-EMC/UPP/refs/heads/develop/modulefiles/orion_intel.lua
+  UFS_UTILS: https://raw.githubusercontent.com/ufs-community/UFS_UTILS/refs/heads/develop/modulefiles/build.orion.intel.lua
 
 nwprod_base_url: https://www.nco.ncep.noaa.gov/pmb/codes/nwprod/
 

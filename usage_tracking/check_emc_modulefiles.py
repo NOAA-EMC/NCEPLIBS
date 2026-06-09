@@ -18,6 +18,7 @@ def main(config_path):
     libs = cfg['libraries']
     deprecated = cfg['deprecated']
     modulefiles = cfg['modulefiles']
+    modulefiles_for_spack_stack_versions = cfg['modulefiles_for_spack_stack_versions']
 
     results = {}
     print("## Library usage in EMC models\n")
@@ -39,6 +40,8 @@ def main(config_path):
         uncommented = [line for line in lines if not line.strip().startswith('--')]
         content = '\n'.join(uncommented)
 
+        text_spack_stack = fetch_text(modulefiles_for_spack_stack_versions[model])
+
         modfile_name = basename(urlparse(url).path)
         label = f"{model} ({modfile_name})"
 
@@ -50,25 +53,31 @@ def main(config_path):
             version_match = None
             lib_found = False
 
-            for line in uncommented:
-                # *.ver format: export <lib>_ver=<version>
-                m = re.search(rf'^\s*export\s+{re.escape(lib)}_ver\s*=\s*v?(\S+)', line)
+            if lib == "spack-stack":
+                m = re.search(r"/spack-stack-(\d[^/]+)/", text_spack_stack)
                 if m:
                     lib_found = True
                     version_match = m
-                    break
-                # Lua variable declaration: [local] <lib>_ver=os.getenv("...") or "version"
-                m = re.search(rf'(?:local\s+)?{re.escape(lib)}_ver\s*=.*?or\s+"([^"]+)"', line)
-                if m:
-                    lib_found = True
-                    version_match = m
-                    break
-                # Lua/modulefile format: lib name in brackets or quotes
-                if re.search(rf'[\[\"\']{lib}[\]\"\'/]', line):
-                    lib_found = True
-                    version_match = re.search(r'[\"\'/]((?:\d+\.)+\d+)[\"\']', line)
-                    if version_match:
+            else:
+                for line in uncommented:
+                    # *.ver format: export <lib>_ver=<version>
+                    m = re.search(rf'^\s*export\s+{re.escape(lib)}_ver\s*=\s*v?(\S+)', line)
+                    if m:
+                        lib_found = True
+                        version_match = m
                         break
+                    # Lua variable declaration: [local] <lib>_ver=os.getenv("...") or "version"
+                    m = re.search(rf'(?:local\s+)?{re.escape(lib)}_ver\s*=.*?or\s+"([^"]+)"', line)
+                    if m:
+                        lib_found = True
+                        version_match = m
+                        break
+                    # Lua/modulefile format: lib name in brackets or quotes
+                    if re.search(rf'[\[\"\']{lib}[\]\"\'/]', line):
+                        lib_found = True
+                        version_match = re.search(r'[\"\'/]((?:\d+\.)+\d+)[\"\']', line)
+                        if version_match:
+                            break
 
             if version_match:
                 version = version_match.group(1)
