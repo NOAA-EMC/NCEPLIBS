@@ -9,6 +9,12 @@ code best practices, contributor expectations, and continuous integration
 methods, can be found in the [NCEPLIBS
 wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki).
 
+This repository provides the following:
+- This README, which provides an overview of NCEPLIBS.
+- A wiki with various useful information on NCEPLIBS, continuous integration, best practices, etc.
+- A CI workflow+scripts for generating a dashboard that tracks NCEPLIBS code usage at https://noaa-emc.github.io/NCEPLIBS/.
+- Issue tracking for issues affected multiple libraries, such as general process improvements.
+
 For using NCEPLIBS on [NOAA HPC
 systems](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html),
 see the [spack-stack](https://github.com/JCSDA/spack-stack) project's [Getting
