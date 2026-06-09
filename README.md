@@ -25,11 +25,6 @@ environments](https://spack-stack.readthedocs.io/en/latest/AddingTestPackages.ht
 in order to re-use dependencies already provided by official spack-stack
 deployments.
 
-> [!WARNING]  
-> This repository contains long disused scripts for compiling NCEPLIBS. **These
-are not in any way maintained or supported. Use as at your own risk.** See
-instructions below for obtaining NCEPLIBS.
-
 NCEPLIBS is comprised of the following libraries. *Italicization* indicates a
 repository that as of Summer 2025 is no longer actively developed, therefore
 NOAA developers are suggested to avoid using them, or to confer with the NCEPLIBS
