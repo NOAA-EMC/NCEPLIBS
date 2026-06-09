@@ -4,16 +4,13 @@
 
 NCEPLIBS is a collection of libraries used by a range of NCEP R&D and
 operational applications, including UFS (Weather Model, SRW, etc.), GSI/Global
-Workflow, UFS_UTILS, and UPP. General information about NCEPLIBS, including
-code best practices, contributor expectations, and continuous integration
-methods, can be found in the [NCEPLIBS
-wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki).
+Workflow, UFS_UTILS, and UPP.
 
 This repository provides the following:
 - This README, which provides an overview of NCEPLIBS.
-- A wiki with various useful information on NCEPLIBS, continuous integration, best practices, etc.
+- A [wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki) with various useful information on NCEPLIBS, continuous integration, best practices, etc.
 - A CI workflow+scripts for generating a dashboard that tracks NCEPLIBS code usage at https://noaa-emc.github.io/NCEPLIBS/.
-- Issue tracking for issues affected multiple libraries, such as general process improvements.
+- Issue tracking for issues affecting multiple libraries, such as general process improvements, compiler compatibility matters, etc.
 
 For using NCEPLIBS on [NOAA HPC
 systems](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html),
