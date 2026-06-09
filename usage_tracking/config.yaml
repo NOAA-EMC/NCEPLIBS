@@ -65,6 +65,9 @@ repos:
   - NOAA-EMC/NCEPLIBS-g2tmpl
 
 rdhpcs_module_loads:
+  Ursa:
+    data_path: usage_tracking/rdhpcs_module_loads/Ursa/may2026-module-usage.txt
+    date_range: "May 1-31, 2026"
   Hera:
     data_path: usage_tracking/rdhpcs_module_loads/Hera/out-LMOD-2025.06-hfe.agg.count.sorted
     date_range: "June 1-20, 2025"
