@@ -44,7 +44,7 @@ def main(config_path):
     else:
         dirs = [d + "/versions/" for d in list_version_dirs(base_url)]
 
-    print("## Library usage in operational code (NCO/WCOSS2)\n")
+    print("## Library usage in operational code (NCO/WCOSS)\n")
     print("The following table is based on each ops model's versions/{build,run}.ver files.\n")
 
     # Header row
