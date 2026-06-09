@@ -15,7 +15,7 @@ def main(config_path):
     with open(config_path) as f:
         cfg = yaml.safe_load(f)
 
-    libs = cfg['libraries']
+    libs = ['spack-stack'] + cfg['libraries']
     deprecated = cfg['deprecated']
     modulefiles = cfg['modulefiles']
     modulefiles_for_spack_stack_versions = cfg['modulefiles_for_spack_stack_versions']

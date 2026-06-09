@@ -1,5 +1,4 @@
 libraries:
-  - spack-stack
   - ip
   - w3emc
   - bacio
