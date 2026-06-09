@@ -1,5 +1,4 @@
 body {
-  max-width: 800px;
   margin: 2em auto;
   font-family: sans-serif;
   line-height: 1.6;
@@ -9,7 +8,7 @@ body {
 }
 
 h1, h2, h3 {
-  text-align: center;
+  text-align: left;
   color: #2a2a2a;
 }
 
@@ -22,7 +21,7 @@ img {
 
 /* Optional: Make tables look better */
 table {
-  width: 100%;
+  width: auto;
   border-collapse: collapse;
   margin: 1em 0;
 }
@@ -35,4 +34,3 @@ th, td {
   padding: 0.5em;
   text-align: center;
 }
-
