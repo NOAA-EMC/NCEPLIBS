@@ -9,7 +9,7 @@ Workflow, UFS_UTILS, and UPP.
 This repository provides the following:
 - This README, which provides an overview of NCEPLIBS.
 - A [wiki](https://github.com/NOAA-EMC/NCEPLIBS/wiki) with various useful information on NCEPLIBS, continuous integration, best practices, etc.
-- A CI workflow+scripts for generating a dashboard that tracks NCEPLIBS code usage at https://noaa-emc.github.io/NCEPLIBS/.
+- A CI workflow+scripts for generating a dashboard that tracks NCEPLIBS code usage at https://noaa-emc.github.io/NCEPLIBS/. _To generate the dashboard, go to [Actions](https://github.com/NOAA-EMC/NCEPLIBS/actions), click on the "Generate NCEPLIBS Usage Dashboard" workflow, open the "Run workflow" menu, and press "Run workflow" with the develop branch selected._
 - Issue tracking for issues affecting multiple libraries, such as general process improvements, compiler compatibility matters, etc.
 
 For using NCEPLIBS on [NOAA HPC
