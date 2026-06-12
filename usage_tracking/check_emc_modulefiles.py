@@ -20,16 +20,13 @@ def main(config_path):
     modulefiles = cfg['modulefiles']
     modulefiles_for_spack_stack_versions = cfg['modulefiles_for_spack_stack_versions']
 
-    results = {}
     print("## Library usage in EMC models\n")
     print("The following table is based on module file contents, using version information when available.\n")
 
     # Header
     colorized_libs = [f'<span style="color:red"><code>{l}</code></span>' if l in deprecated else f"`{l}`" for l in libs]
-    header = "| Model | " + " | ".join(f"{lib}" for lib in colorized_libs) + " |"
-    separator = "|--------|" + "|".join(["---"] * len(libs)) + "|"
-    print(header)
-    print(separator)
+    print("| Model | " + " | ".join(f"{lib}" for lib in colorized_libs) + " |")
+    print("|--------|" + "|".join(["---"] * len(libs)) + "|")
 
     lib_counts = {lib: 0 for lib in libs}
 
@@ -38,15 +35,14 @@ def main(config_path):
         text = fetch_text(url)
         lines = text.splitlines()
         uncommented = [line for line in lines if not line.strip().startswith('--')]
-        content = '\n'.join(uncommented)
 
-        text_spack_stack = fetch_text(modulefiles_for_spack_stack_versions[model])
+        if model in modulefiles_for_spack_stack_versions:
+            text_spack_stack = fetch_text(modulefiles_for_spack_stack_versions[model])
 
         modfile_name = basename(urlparse(url).path)
         label = f"{model} ({modfile_name})"
 
         row = [label]
-        results[model] = {}
 
         for lib in libs:
             # Match any line containing the lib name in brackets or quotes and extract a version number if present
@@ -83,14 +79,11 @@ def main(config_path):
                 version = version_match.group(1)
                 row.append(version)
                 lib_counts[lib] += 1
-                results[model][lib] = version
             elif lib_found:
                 row.append("✅")
                 lib_counts[lib] += 1
-                results[model][lib] = True
             else:
                 row.append("❌")
-                results[model][lib] = False
 
         print("| " + " | ".join(row) + " |")
 

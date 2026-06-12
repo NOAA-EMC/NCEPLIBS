@@ -50,12 +50,10 @@ def main(config_path):
     # Header row
     colorized_libs = [f'<span style="color:red"><code>{l}</code></span>' if l in deprecated else f"`{l}`" for l in libs]
     header = "| prod code | " + " | ".join(f"{lib}" for lib in colorized_libs) + " |"
-    separator = "|-------------|" + "|".join(["---"] * len(libs)) + "|"
     print(header)
-    print(separator)
+    print("|-------------|" + "|".join(["---"] * len(libs)) + "|")
 
     lib_counts = {lib: 0 for lib in libs}
-    total_rows = 0
 
     for dir in sorted(dirs):
         print(f"Processing: {dir}", file=sys.stderr)
@@ -73,7 +71,6 @@ def main(config_path):
                 else:
                     row.append("❌")
         print("| " + " | ".join(row) + " |")
-        total_rows += 1
 
     # TOTAL row
     total_row = ["**TOTAL**"]
@@ -81,7 +78,7 @@ def main(config_path):
         total_row.append(str(lib_counts[lib]))
     print("| " + " | ".join(total_row) + " |")
 
-    print(header.replace("prod code", ""))
+    print(header_str.replace("prod code", ""))
 
 if __name__ == '__main__':
     main(sys.argv[1])
