@@ -78,7 +78,7 @@ def main(config_path):
         total_row.append(str(lib_counts[lib]))
     print("| " + " | ".join(total_row) + " |")
 
-    print(header_str.replace("prod code", ""))
+    print(header.replace("prod code", ""))
 
 if __name__ == '__main__':
     main(sys.argv[1])
