@@ -31,7 +31,7 @@ def create_plot(json_path, output_png):
     _, ax = plt.subplots(figsize=(12, 6))
 
     for d in day_numbers:
-        ax.plot(x, commits_by_day[d], marker='o', label=f"Last {d} days")
+        ax.bar(x, commits_by_day[d], label=f"Last {d} days")
 
     ax.set_xticks(x)
     ax.set_xticklabels(repos, rotation=45, ha='right')
